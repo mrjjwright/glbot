@@ -11,7 +11,31 @@ const config = {
   outdir: 'www/js',
   assetNames: '[name]-[hash]',
   minify: process.argv.includes('--minify'),
-  sourcemap: true
+  sourcemap: true,
+  plugins: [
+    {
+      name: 'react',
+      setup(build) {
+        build.onResolve({ filter: /^react$/ }, (args) => {
+          return {
+            path: './node_modules/react/cjs/react.development.js',
+            external: true
+          }
+        })
+      }
+    },
+    {
+      name: 'react-dom',
+      setup(build) {
+        build.onResolve({ filter: /^react-dom$/ }, (args) => {
+          return {
+            path: './node_modules/react-dom/cjs/react-dom.development.js',
+            external: true
+          }
+        })
+      }
+    }
+  ]
 } satisfies esbuild.BuildOptions
 
 async function build() {
