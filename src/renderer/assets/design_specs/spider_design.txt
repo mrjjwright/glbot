@@ -1,0 +1,48 @@
+  ----------               ----------------------------------------------                                           -----------------------------                    ----------------
+||  User    ||           ||                   XAPIS                      ||                                       ||     Spider Farm Machines    ||                ||  S3 Bucket     ||
+||----------||           ||----------------------------------------------||                                       ||-----------------------------||                ||----------------||
+||          ||           ||    Staging or RC    ||        PROD           ||                                       ||                             ||                ||                ||
+||          ||           ||----------------------------------------------||                                       ||           crontab           ||                ||                ||
+||          ||           ||                     ||                       ||                                       ||  each minute run FarmWorker ||                ||                ||
+||  Hit     ||  Start    ||                     ||                       ||                                       ||                             ||                ||                ||
+||  Button  ||  Spider   ||                     ||                       ||                                       || - - - - - - - - - - - - - - ||                ||                ||
+||          ||  -------> ||  Create Spider      ||  Create Spider        ||                                       ||                             ||                ||                ||
+||          ||           ||  Job in Database    ||  Job in Database      ||                                       ||       FarmWorker            ||                ||                ||
+||          ||           ||        |            ||        |              ||                                       ||       Java Program          ||                ||                ||
+||          ||           ||        |            ||        |              ||     Is there a Spider Job to run?     ||                             ||                ||                ||
+||          ||           ||        v            ||        v              || <------------------------------------ ||  GET jobs from PROD XAPIS   ||                ||                ||
+  ----------             ||  Give Sider Job   --->  Put Spider in Queue  || ------------------------------------> ||                             ||                ||                ||
+                         ||  to PROD for QUEUE  ||  status=QUEUED        ||  Spider Job Info (or 204 No-Content)  ||  if I get Job Info          ||                ||                ||
+                         ||                     ||                       ||                                       ||    Start Tarantula Spiders  ||                ||                ||
+                         ||                     ||                       ||                                       ||            |                ||                ||                ||
+                         ||                     ||                       ||                                       ||            |                ||                ||                ||
+                         ||                     ||                       ||                                       ||            v                ||                ||                ||
+                         || - - - - - - - - - - - - - - - - - - - - - - -||                                       || - - - - - - - - - - - - - - ||                ||                ||
+                         ||                                              ||                                       ||                             ||                ||                ||
+                         ||                                              ||                                       ||       Tarantula             ||                ||                ||
+                         ||                                              ||                                       ||       Java Program          ||                ||                ||
+                         ||                                              ||                                       ||                             ||                ||                ||
+                         ||                                              ||                                       ||                             ||                ||                ||
+                         ||                                              ||  GET Spider Job Detail for "job_id"   ||       Get info for          ||                ||                ||
+                         ||                                              || <------------------------------------ ||       this spiderJob        ||                ||                ||
+                         ||                                              || ------------------------------------> ||            |                ||                ||                ||
+                         ||                                              ||    (pkey, tkey, mode, s3_host, etc.)  ||            |                ||                ||                ||
+                         ||                                              ||                                       ||            |                ||                ||                ||
+                         ||                                              ||                                       ||            |                ||                ||                ||
+                         ||                                              ||    Status Changes                     ||            |                ||                ||                ||
+                         ||                                              ||    RUNNING, SUCCEEDED, etc.           ||            v                ||                ||                ||
+                         ||          Save Status to Database             || <------------------------------------ ||       Status Changes        ||                ||                ||
+                         ||                                              ||                                       ||            |                ||                ||                ||
+                         ||                                              ||                                       ||            |                ||                ||                ||
+                         ||                                              ||    Spider Page Content                ||            v                ||                ||                ||
+                         ||          Save Contents to Database           || <------------------------------------ ||       Spider Data           ||                ||                ||
+                         ||                                              ||                                       ||            |                ||                ||                ||
+                         ||                                              ||                                       ||            |                ||  Spider Asset  ||                ||
+                         ||                                              ||    Spider Asset Info                  ||            v                ||  Content       || Contents Saved ||
+                         ||          Save Assets to Database             || <------------------------------------ ||       Spider Data           || -------------> || to S3 Bucket   ||
+                         ||                                              ||                                       ||            |                ||                ||                || 
+                         ||                                              ||                                       ||            |                ||                  ----------------
+                         ||                                              ||    Spider Log Info                    ||            v                ||
+                         ||          Save Log Info to Database           || <------------------------------------ ||       Spider SCLOG          ||
+                         ||                                              ||                                       ||                             ||
+                           ----------------------------------------------                                           -----------------------------

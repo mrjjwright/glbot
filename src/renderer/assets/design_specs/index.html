@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h1 id="onelink-js-specifications">OneLink JS specifications</h1>
+<h2 id="config-specifications">Config specifications</h2>
+<h3 id="the-following-files-define-the-specifications-for-the-onelink-js-translation_config">The following files define the specifications for the OneLink JS translation_config</h3>
+<p>translation_config.json - All configuration parameters and their defaults<br>translation_config_examples.json - All configuration parameters with random examples<br>translation_config_help.json - Text descriptions of all configuration parameters</p>
+<h3 id="the-following-files-define-the-specifications-for-the-onelink-js-target_config">The following files define the specifications for the OneLink JS target_config</h3>
+<p>target_config.json - All configuration parameters and their defaults<br>target_config_examples.json - All configuration parameters with random examples<br>target_config_help.json - Text descriptions of all configuration parameters</p>
+<h3 id="the-following-files-define-the-specifications-for-the-glnow-glnow_config">The following files define the specifications for the GLNOW glnow_config</h3>
+<p>glnow_config.json - All configuration parameters and their defaults<br>glnow_config_examples.json - All configuration parameters with random examples<br>glnow_config_help.json - Text descriptions of all configuration parameters</p>
+<h3 id="duticx">DUTICX</h3>
+<p>When applying OneLink JS configuration, such as excluding whole elements from translation, or tokenizing numbers, dates, order numbers, and other text, it is necessary to identify which urls and DOM elements to which the configuration applies.  DUTICX is a flexible mechanism for this purpose, and as seen in <code>translation_config_examples.json</code>, is accepted for most config properties.</p>
+<p>DUTICX stands for:</p>
+<ul>
+<li><strong>D</strong>, the domain, a regular expression that identifies one or more domains to which to apply the configuration rule. Comparison is made to the document.location.host. </li>
+<li><strong>U</strong>, the URL, a regular expression that identifies one or more urls to which to apply the configuration rule. Comparison is made to the document.location.pathname + document.location.search. </li>
+<li><strong>T</strong>, a regular expression for the tag, e.g. <code>div</code> or <code>span</code>, to which to apply the configuration rule. </li>
+<li><strong>I</strong>, a regular expresssion for the DOM id, the id attribute to which to apply the configuration rule. </li>
+<li><strong>C</strong>, a regular expresion for the class, to which to apply the configuration rule. </li>
+<li><strong>X</strong>, a valid CSS selector string (does not support regular expressions), to which to apply the configuration rule.  E.g. <code>#header div.dropdown</code>.  This gives the full power of CSS to customize OneLink JS configuration.</li>
+</ul>
+<p><em>Please note the following important rule: when identifying an element, the configuration should supply EITHER some combination of <strong>TIC</strong> values OR an <strong>X</strong> CSS selector but NOT both.  If both TIC and X values are used to identify elements for the configuration, <strong>the X CSS selector will take precedence and the TIC values ignored</strong>.  In such a case there will be a console warning in the browser.</em> </p>
+<p>Currently the X in DUTICX is valid for any rule that formerly took DUTIC except <code>no_ami</code>.</p>
+<p>Again, for examples see, <code>translation_config_examples.json</code>.</p>
+<h3 id="xapis-database">XAPIS Database</h3>
+<p>The JSON translation_config and target_config are stored as hex encoded strings in the XAPIS database in the XAPIS_PROJECT_TRANSLATION table<br>They can be accessed through the /xapis/ProjectTranslation API<br>The JSON glnow_config is stored as hex encoded strings in the XAPIS database in the XAPIS_PROJECT table<br>It can be accessed through the /xapis/Project API </p>
+<h2 id="spider-design-work-flow">Spider Design Work Flow</h2>
+<p>spider_design.txt - Spider work flow for XAPIS, AWS, Tarantula and S3. </p>
+<h2 id="reference-urls">Reference URLs</h2>
+<p>The specifications are available at the following URLs  </p>
+<p><a href="translation_config.json">translation_config.json</a><br><a href="translation_config_examples.json">translation_config_examples.json</a><br><a href="translation_config_help.json">translation_config_help.json</a>  </p>
+<p><a href="target_config.json">target_config.json</a><br><a href="target_config_examples.json">target_config_examples.json</a><br><a href="target_config_help.json">target_config_help.json</a>  </p>
+<p><a href="glnow_config.json">glnow_config.json</a><br><a href="glnow_config_examples.json">glnow_config_examples.json</a><br><a href="glnow_config_help.json">glnow_config_help.json</a>  </p>
+<p><a href="spider_design.txt">spider_design.txt</a></p>
+</body>
+</html>
+

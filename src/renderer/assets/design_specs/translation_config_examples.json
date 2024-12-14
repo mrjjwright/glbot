@@ -1,0 +1,79 @@
+{
+  "spider_rules": {
+    "start_uris": ["http://example.com"],
+    "sitemap": "http://example.com/sitemap.xml",
+    "truncate_urls_at": ["&visitId=", "&dataId="],
+    "truncate_url_hash": false,
+    "remove_url_param": ["id", "sessionid"],
+    "use_sitemaps": true,
+    "robots": true,
+    "follow_links": true,
+    "find_js_links": true,
+    "capture_text": false,
+    "check_meta_robots": true,
+    "enable_images": false,
+    "download_assets": ["pdf", "word", "xls", "csv"],
+    "crawl_delay": 10000,
+    "max_pending": 5,
+    "max_uri_recursion": 4,
+    "headers": {
+      "Cache-Control": "no-cache"
+    },
+    "login": {
+      "type": "basic",
+      "username": "testuser",
+      "password": "password123"
+    },
+    "login_all_pages": true,
+    "login_page_js": [
+      {
+        "async": "6c65742063616c6c6261636b203d20617267756d656e74735b617267756d656e74732e6c656e677468202d20315d3b200d0a66756e6374696f6e2077616974666f726f626a2829207b0d0a202020206c6574206f626a203d20646f63756d656e742e676574456c656d656e744279496428226578616d706c6522293b0d0a20202020696620286f626a29207b0d0a202020202020202063616c6c6261636b28293b0d0a202020207d20656c7365207b2020200d0a202020202020202073657454696d656f75742877616974666f726f626a2c2031303030293b0d0a202020207d2020200d0a7d0d0a77616974666f726f626a28293b",
+        "wait_msecs": 0
+      },
+      {
+        "sync": "6c6574206f416e63686f72203d20646f63756d656e742e717565727953656c6563746f722822615b687265663d272f6578616d706c65275d22293b0d0a6f416e63686f722e636c69636b28293b",
+        "wait_msecs": 2000
+      }
+    ],
+    "query_selector_clicks": [
+      {
+        "U": "U",
+        "selectors": ["button[id='b1']", "button[id='b2']"]
+      },
+      {
+        "U": "/test.*",
+        "selectors": ["button[id='b3']"]
+      }
+    ],
+    "dynamic_scroll": {
+      "scroll": true,
+      "num_scrolls": 50,
+      "wait_msecs": 1000
+    },
+    "walk_delay_mseconds": 1000,
+    "exclude_uris": [".*/archive/.*"],
+    "include_uris": [".*/archive/promotions/.*"],
+    "include_domains": {
+      "*.test.example.com": {
+        "crawl_delay": 500,
+        "login": null,
+        "robots": false
+      }
+    },
+    "exclude_domains": [
+      "*.invalid1.test.example.com",
+      "*.invalid2.test.example.com"
+    ]
+  },
+  "translation_rules": {
+    "no_translate": [
+      {
+        "U": "/advertise/",
+        "D": "test[.]example[.]com",
+        "T": "TABLE",
+        "I": "main-table",
+        "C": "[ /]main[ /]"
+      }
+    ]
+  }
+}

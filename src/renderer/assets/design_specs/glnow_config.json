@@ -1,0 +1,18 @@
+{
+	"enable_full_page": true,
+	"validate_domain": false,
+	"auto_trans": [
+		{
+			"url_patterns": [],
+			"source_selector_steps": [],
+			"target_selector_steps": []
+		}
+	],
+	"input_trans": [
+		{
+			"url_patterns": [],
+			"source_selector_steps": [],
+			"target_selector_steps": []
+		}
+	]
+}

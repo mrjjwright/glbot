@@ -1,0 +1,16 @@
+{
+  "extends": "@electron-toolkit/tsconfig/tsconfig.node.json",
+  "include": [
+    "src/main/**/*",
+    "src/preload/**/*",
+    "src/db-init.ts",
+    "types/*.d.ts"
+  ],
+  "compilerOptions": {
+    "composite": true,
+    "sourceMap": true,
+    "inlineSourceMap": false,
+    "baseUrl": ".",
+    "rootDir": "."
+  }
+}

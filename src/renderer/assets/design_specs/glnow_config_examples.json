@@ -1,0 +1,123 @@
+{
+	"enable_full_page": false,
+	"validate_domain": true,
+	"auto_trans": [
+		{
+			"url_patterns": [".*example.com/test/.*"],
+			"source_selector_steps": [
+				{
+					"selector" : "iframe[id='a_text_area_en']"
+				},
+				{
+					"attr" : "contentDocument"
+				},
+				{
+					"selector" : "span[id='a_span_en']"
+				},
+				{
+					"attr" : "firstChild"
+				},
+				{
+					"attr" : "nodeValue"
+				}
+			],
+			"target_selector_steps": [
+				{
+					"translation_key":"AAAA-BBBB-LANG-AAAA",
+					"target_language": "French (France)",
+					"selectors": [
+						{
+							"selector" : "textarea[id='a_text_area_fr']",
+							"dispatchEvents" : ["change", "mycustomevent"]
+						},
+						{
+							"attr" : "value"
+						}
+					]
+				},
+				{
+					"translation_key":"AAAA-BBBB-LANG-BBBB",
+					"target_language": "Spanish (Spain)",
+					"selectors": [
+						{
+							"selector" : "textarea[id='a_text_area_es']",
+							"dispatchEvents" : ["change", "mycustomevent"]
+						},
+						{
+							"attr" : "value"
+						}
+					]
+				},
+				{
+					"translation_key":"AAAA-BBBB-LANG-CCCC",
+					"target_language": "German (Germany)",
+					"selectors": [
+						{
+							"selector" : "textarea[id='a_text_area_de']",
+							"dispatchEvents" : ["change", "mycustomevent"]
+						},
+						{
+							"attr" : "value"
+						}
+					]
+				}
+			]
+		}
+	],
+	"input_trans": [
+		{
+			"url_patterns": [".*example.com/test/.*"],
+			"source_selector_steps": [
+				{
+					"selector" : "textarea[id='a_text_area_en']",
+					"event_listener" : true,
+					"listen_event_type": "blur | change | keydown | keypress | keyup"
+				},
+				{
+					"attr" : "value"
+				}
+			],
+			"target_selector_steps": [
+				{
+					"translation_key":"AAAA-BBBB-LANG-AAAA",
+					"target_language": "French (France)",
+					"selectors": [
+						{
+							"selector" : "textarea[id='a_text_area_fr']",
+							"dispatchEvents" : ["change", "mycustomevent"]
+						},
+						{
+							"attr" : "value"
+						}
+					]
+				},
+				{
+					"translation_key":"AAAA-BBBB-LANG-BBBB",
+					"target_language": "Spanish (Spain)",
+					"selectors": [
+						{
+							"selector" : "textarea[id='a_text_area_es']",
+							"dispatchEvents" : ["change", "mycustomevent"]
+						},
+						{
+							"attr" : "value"
+						}
+					]
+				},
+				{
+					"translation_key":"AAAA-BBBB-LANG-CCCC",
+					"target_language": "German (Germany)",
+					"selectors": [
+						{
+							"selector" : "textarea[id='a_text_area_de']",
+							"dispatchEvents" : ["change", "mycustomevent"]
+						},
+						{
+							"attr" : "value"
+						}
+					]
+				}
+			]
+		}
+	]
+}

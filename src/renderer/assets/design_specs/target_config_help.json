@@ -1,0 +1,23 @@
+{
+    "send_stats": "boolean: Whether OneLink JS should send statistics data after page translation.",
+    "a domain name help": "object: key is the domain name that these host rewrite rules apply to.",
+    "a domain name": {
+        "host_rewrites_help": "Array of objects: List of objects containing a 'from' and 'to' link rewrite rule.",
+        "host_rewrites": [
+            {
+                "from": "string: a regex pattern to match href links on the page.",
+                "to": "string: the string to replace any matching patterns."
+            }
+        ],
+        "no_host_rewrites": "Array of objects: List of objects containing DUTICX identifiers specified as regex patterns. These are overrides to the 'host_rewrites' rules."
+    },
+    "html_dir": "string: Sets the document 'dir' attribute. Valid values are 'rtl', 'ltr' and 'auto'.",
+    "html_lang": "string: Sets the document 'lang' attribute.",
+    "asset_rewrites_help": "Array of objects: List of objects containing a 'from' and 'to' rewrite rule for images. If a web site already has their own translated images, this setting can be used to re-write the links to those images. For example, the reference to https://example.com/EN-welcome.jpg will get re-written to https://example.com/ES-welcome.jpg.",
+    "asset_rewrites": [
+        {
+            "from": "string: a regex pattern to match links to images on the page.",
+            "to": "string: the string to replace any matching patterns."
+        }
+    ]
+}

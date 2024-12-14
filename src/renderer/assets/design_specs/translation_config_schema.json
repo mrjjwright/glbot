@@ -1,0 +1,80 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "version": 2,
+  "required": ["spider_rules", "translation_rules"],
+  "type": "object",
+  "properties": {
+    "spider_rules": {
+      "required": ["start_uris"],
+      "type": "object",
+      "properties": {
+        "start_uris": {
+          "type": "array",
+          "items": { "type": "string" },
+          "uniqueItems": true
+        },
+        "sitemap": { "type": ["string", "null"] },
+        "truncate_urls_at": {
+          "type": ["array", "null"],
+          "items": { "type": "string" }
+        },
+        "exclude_uris": {
+          "type": ["array", "null"],
+          "items": { "type": "string" }
+        },
+        "include_uris": {
+          "type": ["array", "null"],
+          "items": { "type": "string" }
+        },
+        "exclude_domains": {
+          "type": ["array", "null"],
+          "items": { "type": "string" }
+        },
+        "crawl_delay": {
+          "type": ["integer", "null"],
+          "minimum": 0,
+          "maximum": 100
+        },
+        "max_pending": {
+          "type": ["integer", "null"],
+          "minimum": 1,
+          "maximum": 10
+        }
+      },
+      "additionalProperties": false
+    },
+    "translation_rules": {
+      "type": "object",
+      "properties": {
+        "no_translate": {
+          "type": ["array", "null"],
+          "items": {
+            "type": "object",
+            "properties": {
+              "D": { "type": "string" },
+              "U": { "type": "string" },
+              "T": { "type": "string" },
+              "comment": { "type": "string" }
+            },
+            "additionalProperties": false
+          }
+        },
+        "translate": {
+          "type": ["array", "null"],
+          "items": {
+            "type": "object",
+            "properties": {
+              "D": { "type": "string" },
+              "U": { "type": "string" },
+              "T": { "type": "string" },
+              "comment": { "type": "string" }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

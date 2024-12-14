@@ -1,0 +1,195 @@
+{
+	"enable_full_page": {"type": [ "boolean", "null" ] },
+	"validate_domain": {"type": [ "boolean", "null" ] },
+	"type": "object",
+	"properties": {
+		"auto_trans": {
+			"type": [ "array", "null" ],
+			"items": {
+				"type": "object",
+				"required": [ "source_selector_steps", "target_selector_steps" ],
+				"properties": {
+					"url_patterns": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						},
+						"uniqueItems": true
+					},
+					"source_selector_steps": {
+						"type": [ "array", "null" ],
+						"items": {
+							"type": "object",
+							"oneOf" : [
+								{
+									"required": [ "selector" ],
+									"properties": {
+										"selector": {
+											"type": "string"
+										}
+									},
+									"additionalProperties": false
+								},
+								{
+									"required": [ "attr" ],
+									"properties": {
+										"attr": {
+											"type": "string"
+										}
+									},
+									"additionalProperties": false
+								}
+							]
+						}
+					},
+					"target_selector_steps": {
+						"type": [ "array", "null" ],
+						"items": {
+							"type": "object",
+							"required": [ "translation_key", "selectors" ],
+							"properties": {
+								"translation_key": {
+									"type": "string"
+								},
+								"target_language": {
+									"type": "string"
+								},
+								"selectors": {
+									"type": [ "array", "null" ],
+									"items": {
+										"type": "object",
+										"oneOf" : [
+											{
+												"required": [ "selector" ],
+												"properties": {
+													"selector": {
+														"type": "string"
+													},
+													"dispatchEvents": {
+														"type": "array",
+														"items": {
+															"type": "string"
+														},
+														"uniqueItems": true
+													}
+												},
+												"additionalProperties": false
+											},
+											{
+												"required": [ "attr" ],
+												"properties": {
+													"attr": {
+														"type": "string"
+													}
+												},
+												"additionalProperties": false
+											}
+										]
+									}
+								}
+							},
+							"additionalProperties": false
+						}
+					}
+				},
+				"additionalProperties": false
+			}
+		},
+		"input_trans": {
+			"type": [ "array", "null" ],
+			"items": {
+				"type": "object",
+				"required": [ "source_selector_steps", "target_selector_steps" ],
+				"properties": {
+					"url_patterns": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						},
+						"uniqueItems": true
+					},
+					"source_selector_steps": {
+						"type": [ "array", "null" ],
+						"items": {
+							"type": "object",
+							"oneOf" : [
+								{
+									"required": [ "selector" ],
+									"properties": {
+										"selector": {
+											"type": "string"
+										},
+										"event_listener": {"type": [ "boolean", "null" ] },
+										"listen_event_type": {
+											"type": "string"
+										}
+									},
+									"additionalProperties": false
+								},
+								{
+									"required": [ "attr" ],
+									"properties": {
+										"attr": {
+											"type": "string"
+										}
+									},
+									"additionalProperties": false
+								}
+							]
+						}
+					},
+					"target_selector_steps": {
+						"type": [ "array", "null" ],
+						"items": {
+							"type": "object",
+							"required": [ "translation_key", "selectors" ],
+							"properties": {
+								"translation_key": {
+									"type": "string"
+								},
+								"target_language": {
+									"type": "string"
+								},
+								"selectors": {
+									"type": [ "array", "null" ],
+									"items": {
+										"type": "object",
+										"oneOf" : [
+											{
+												"required": [ "selector" ],
+												"properties": {
+													"selector": {
+														"type": "string"
+													},
+													"dispatchEvents": {
+														"type": "array",
+														"items": {
+															"type": "string"
+														},
+														"uniqueItems": true
+													}
+												},
+												"additionalProperties": false
+											},
+											{
+												"required": [ "attr" ],
+												"properties": {
+													"attr": {
+														"type": "string"
+													}
+												},
+												"additionalProperties": false
+											}
+										]
+									}
+								}
+							},
+							"additionalProperties": false
+						}
+					}
+				},
+				"additionalProperties": false
+			}
+		}
+	}
+}

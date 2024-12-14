@@ -1,0 +1,27 @@
+{
+    "send_stats": true,
+    "a domain name": {
+        "host_rewrites": [
+            {
+                "from": "",
+                "to": ""
+            }
+        ],
+        "no_host_rewrites": [
+            {
+                "U": "U",
+                "T": "T",
+                "I": "I",
+                "C": "C"
+            }
+        ]
+    },
+    "html_dir": null,
+    "html_lang": null,
+    "asset_rewrites": [
+        {
+            "from": "",
+            "to": ""
+        }
+    ]
+}

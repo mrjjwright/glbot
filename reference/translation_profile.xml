@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<translation_profile_schema>
+    <note>Schema placeholder - to be populated with full translation profile schema</note>
+    <components>
+        <component name="spider_config">
+            <reference>See spider_config.xml for detailed schema</reference>
+        </component>
+        <!-- Other components to be defined -->
+    </components>
+</translation_profile_schema>

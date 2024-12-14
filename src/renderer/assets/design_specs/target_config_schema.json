@@ -1,0 +1,114 @@
+{
+	"type": "object",
+	"properties": {
+		"send_stats": {"type": [ "boolean", "null" ] },
+		"html_dir": {
+			"type": "string",
+			"pattern": "^(rtl|ltr|auto)$"
+		},
+		"html_lang": {
+			"type": "string"
+		},
+		"asset_rewrites": {
+			"type": [ "array", "null" ],
+			"items": {
+				"type": "object",
+				"properties": {
+					"from": {
+						"type": "string",
+						"required": true
+					},
+					"to": {
+						"type": "string",
+						"required": true
+					}
+				},
+				"additionalProperties": false
+			}
+		},
+		"monitor": {
+			"type": [ "array", "null" ],
+			"items": {
+				"type": "object",
+				"anyOf" : [ { "required": [ "url", "translated_text" ] } ],
+				"properties": {
+					"url": {
+						"type": "string"
+					},
+					"translated_text": {
+						"type": [ "array", "null" ],
+						"items": {
+							"type": "object",
+							"properties": {
+								"X": {
+									"type": "string",
+									"required": true
+								},
+								"string": {
+									"type": "string",
+									"required": true
+								}
+							},
+							"additionalProperties": false
+						}
+					},
+					"cookie": {
+						"type": "string"
+					},
+					"localstorage": {"type": [ "boolean", "null" ] }
+				},
+				"additionalProperties": false
+			},
+			"uniqueItems": true
+		}
+	},
+	"patternProperties": {
+		"^(?:(?!(send_stats|html_lang|html_dir|asset_rewrites|monitor)).)*$": {
+			"type": [ "object", "null" ],
+			"required": [ "host_rewrites" ],
+			"properties": {
+				"host_rewrites": {
+					"type": [ "array", "null" ],
+					"items": {
+						"type": "object",
+						"properties": {
+							"from": {
+								"type": "string",
+								"required": true
+							},
+							"to": {
+								"type": "string",
+								"required": true
+							}
+						},
+						"additionalProperties": false
+					},
+					"uniqueItems": true
+				},
+				"no_host_rewrites": {
+					"type": [ "array", "null" ],
+					"items": {
+						"type": "object",
+						"anyOf": [
+							{"required": ["D"]},
+							{"required": ["U"]},
+							{"required": ["T"]},
+							{"required": ["I"]},
+							{"required": ["C"]},
+							{"required": ["X"]}
+						],
+						"patternProperties": {
+							"^(D|U|T|I|C|X|comment)$": {
+								"type": "string"
+							}
+						},
+						"additionalProperties": false
+					},
+					"uniqueItems": true
+				}
+			},
+			"additionalProperties": false
+		}
+	},
+	"additionalProperties": false
+}

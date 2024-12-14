@@ -1,0 +1,41 @@
+{
+    "send_stats": true,
+    "example.com": {
+        "host_rewrites": [
+            {
+                "from": "/example[.]com/",
+                "to": "/es-example.com/"
+            },
+            {
+                "from": "/advertise[.]example[.]com/",
+                "to": "/es-advertise.example.com/"
+            }
+        ],
+        "no_host_rewrites": [
+            {
+                "U": "U",
+                "T": "T",
+                "I": "I",
+                "C": "[ /]language-toggle[ /]"
+            },
+            {
+                "U": "U",
+                "X": ".language-toggle"
+            },
+            {
+                "U": "/sales/",
+                "T": "/lang-div/",
+                "I": "language-section",
+                "C": "C"
+            }
+        ]
+    },
+    "html_dir": "rtl",
+    "html_lang": "ar",
+    "asset_rewrites": [
+        {
+            "from": "/EN-",
+            "to": "/ES-"
+        }
+    ]
+}

@@ -1,0 +1,9 @@
+node_modules
+www/js/
+dist
+/main/*
+/preload/*
+out
+.DS_Store
+*.log*
+out.txt

@@ -1,0 +1,20 @@
+{
+	"enable_full_page": "Default is true. If set to false, will not show the target language selection section when a project is chosen in dropdown.",
+	"validate_domain": "Default is false. If set to true, GLNOW will validate the domain of the current page against the Project's domain origin and the list of Additional Origins and only allow translations on verified domains for translation of higlighted text. Translations of a Full Page are controlled by the Project's 'Validate Referer' configuration setting.",
+	"auto_trans_help": "Array of objects. Configuration settings for GLNOW to integrate auto-translation of specific DOM Elements upon page load and/or on-demand with a 'Auto Translate NOW' menu selection. Each object defines the translations from a single Source field to multiple Target fields.",
+	"auto_trans": [
+		{
+			"url_patterns": "Array of strings. Each string is a regex for a URL to match for this rule. This is optional and will default to ALL URLs.",
+			"source_selector_steps": "Array of objects. These are a series of steps to get to an object in the DOM. Each object has either a 'selector' or 'attr' key for selecting an element or node in the DOM. Each object operates on the result of the previous object. The last object would usually be an attribute for a TEXTAREA or Text Node. The value for a 'selector' key is a string that is a css selector. The value for the 'attr' key is a string that is an attribute.",
+			"target_selector_steps": "Array of objects. Each object refers to a Target language. The keys are 'translation_key', 'target_language' and 'selectors'. The value for the 'selectors' is an Array of objects where each object acts like the 'source_selector_steps' above except they have an additional optional key 'dispatchEvents' whose value is an array of strings of events to fire on this selected object after a value is filled in."
+		}
+	],
+	"input_trans_help": "Array of objects. Configuration settings for GLNOW to integrate auto-translation of specific DOM Elements when a specific DOM Event occurs. Each object defines the translations from a single Source field to multiple Target fields.",
+	"input_trans": [
+		{
+			"url_patterns": "Array of strings. Each string is a regex for a URL to match for this rule. This is optional and will default to ALL URLs.",
+			"source_selector_steps": "Array of objects. These are a series of steps to get to an object in the DOM. Each object has either a 'selector' or 'attr' key for selecting an element or node in the DOM. Each object operates on the result of the previous object. The last object would usually be an attribute for a TEXTAREA. The value for a 'selector' key is a string that is a css selector. The value for the 'attr' key is a string that is an attribute. One of the objects needs to have 'event_listener' and 'listen_event_type' keys. The value for the 'event_listener' is true or false. The value for the 'listen_event_type' is the event type to listen for (usually one of 'blur', 'change', 'keydown', 'keypress' or 'keyup'). These keys specify which DOM object to listen for events on and what type of event to listen for. This is the event that will trigger the Translations.",
+			"target_selector_steps": "Array of objects. Each object refers to a Target language. The keys are 'translation_key', 'target_language' and 'selectors'. The value for the 'selectors' is an Array of objects where each object acts like the 'source_selector_steps' above except they do not have 'event_listener' and 'listen_event_type' keys. They do however have an additional optional key 'dispatchEvents' whose value is an array of strings of events to fire on this selected object after a value is filled in."
+		}
+	]
+}
