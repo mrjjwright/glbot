@@ -16,7 +16,7 @@ import Providers from 'src/renderer/components/Providers'
 
 function App() {
   return (
-    <DefaultLayout previewPixelSRC="/glweb.svg">
+    <DefaultLayout previewPixelSRC="/assets/glweb.svg">
       <DebugGrid />
       <ModalStack />
 
@@ -26,7 +26,7 @@ function App() {
         <Row>
           <GLWebLogo />
           <strong>
-            GLBot <Badge>from Transperfect</Badge>
+            glbot <Badge>from Transperfect</Badge>
           </strong>
         </Row>
         <Row>

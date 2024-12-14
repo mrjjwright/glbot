@@ -9,9 +9,6 @@ const config = {
   target: ['chrome128'],
   bundle: true,
   outdir: 'www/js',
-  loader: {
-    '.woff2': 'file'
-  },
   assetNames: '[name]-[hash]',
   minify: process.argv.includes('--minify'),
   sourcemap: true

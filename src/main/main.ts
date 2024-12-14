@@ -35,7 +35,7 @@ app.on('window-all-closed', () => {
 export function createWindow() {
   const win = new BrowserWindow({
     show: true,
-    title: 'GLBot',
+    title: 'glbot',
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       nodeIntegration: true,
