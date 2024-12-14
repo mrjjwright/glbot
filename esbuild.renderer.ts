@@ -23,7 +23,7 @@ async function startServer() {
   let { host, port } = await ctx.serve({
     servedir: 'www'
   })
-  console.log(`OneLink AI is running at http://${host}:${port}`)
+  console.log(`GLBot is running at http://${host}:${port}`)
 }
 
 if (process.argv.includes('--serve')) {
