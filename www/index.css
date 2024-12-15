@@ -1055,6 +1055,24 @@ a.Avatar_root:focus:before {
     src: url(assets/geist.woff2) format("woff2")
 }
 
+@font-face {
+    font-family: 'ServerMono';
+    src: url('assets/fonts/ServerMono-Regular.woff2') format('woff2'),
+         url('assets/fonts/ServerMono-Regular.woff') format('woff'),
+         url('assets/fonts/ServerMono-Regular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'ServerMono';
+    src: url('assets/fonts/ServerMono-Regular-Italic.woff2') format('woff2'),
+         url('assets/fonts/ServerMono-Regular-Italic.woff') format('woff'),
+         url('assets/fonts/ServerMono-Regular-Italic.otf') format('opentype');
+    font-weight: normal;
+    font-style: italic;
+}
+
 a,abbr,acronym,address,applet,article,aside,audio,b,big,blockquote,body,canvas,caption,center,cite,code,dd,del,details,dfn,div,dl,dt,em,embed,fieldset,figcaption,figure,footer,form,h1,h2,h3,h4,h5,h6,header,hgroup,html,i,iframe,img,ins,kbd,label,legend,li,mark,menu,nav,object,ol,output,p,pre,q,ruby,s,samp,section,small,span,strike,strong,sub,summary,sup,table,tbody,td,tfoot,th,thead,time,tr,tt,u,ul,var,video {
     border: 0;
     box-sizing: border-box;
@@ -1415,4 +1433,8 @@ body::-webkit-scrollbar-thumb,body::-webkit-scrollbar-thumb:hover,html::-webkit-
 
 .JSONHistory_history > div:last-child {
     border-bottom: none;
+}
+
+:root {
+    --font-family-mono: 'ServerMono', monospace;
 }
