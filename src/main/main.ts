@@ -43,6 +43,7 @@ export function createWindow() {
     }
   })
 
+  win.maximize()
   win.loadURL('http://localhost:8000/index.html')
   win.webContents.openDevTools()
 
