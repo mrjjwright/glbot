@@ -9,7 +9,7 @@ import ModalStack from 'src/renderer/components/ModalStack'
 import Chat from 'src/renderer/components/Chat'
 import Badge from 'src/renderer/components/Badge'
 import MatrixOpening from 'src/renderer/components/MatrixOpening'
-import ProfileJSONCard from 'src/renderer/components/ProfileJSONCard'
+import JSONCopyPaste from 'src/renderer/components/JSONCopyPaste'
 import DebugGrid from 'src/renderer/components/DebugGrid'
 import GLWebLogo from 'src/renderer/components/GLWebLogo'
 import Providers from 'src/renderer/components/Providers'
@@ -40,7 +40,7 @@ function App() {
       </Grid>
 
       <Grid>
-        <ProfileJSONCard />
+        <JSONCopyPaste />
 
         <Chat endpoint="/api/chat" />
       </Grid>

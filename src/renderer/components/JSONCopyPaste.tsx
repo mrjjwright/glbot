@@ -4,8 +4,8 @@ import Card from './Card'
 import JSONHistory from './JSONHistory'
 import { subscribe, publish } from 'src/renderer/event_bus'
 
-function ProfileActions() {
-  const PROFILE_ACTIONS = [
+function Actions() {
+  const actions = [
     {
       id: 1,
       hotkey: '→',
@@ -20,12 +20,12 @@ function ProfileActions() {
     }
   ]
 
-  return <ActionBar items={PROFILE_ACTIONS} />
+  return <ActionBar items={actions} />
 }
 
 const placeholder = 'Paste your JSON configuration here...'
 
-const ProfileJSONCard = () => {
+const JSONCopyPaste = () => {
   const [selectedJSON, setSelectedJSON] = React.useState<string>('')
 
   React.useEffect(() => {
@@ -37,13 +37,13 @@ const ProfileJSONCard = () => {
 
   return (
     <Card title={'Copy/Paste JSON'}>
-      <ProfileActions />
-      <div className="ProfileJSONCard_root">
-        <div className="ProfileJSONCard_sidebar">
+      <Actions />
+      <div className="JSONCopyPaste_root">
+        <div className="JSONCopyPaste_sidebar">
           <JSONHistory />
         </div>
         <textarea
-          className="ProfileJSONCard_textarea"
+          className="JSONCopyPaste_textarea"
           placeholder={placeholder}
           value={selectedJSON}
           onChange={(e) => {
@@ -63,4 +63,4 @@ const ProfileJSONCard = () => {
   )
 }
 
-export default ProfileJSONCard
+export default JSONCopyPaste
