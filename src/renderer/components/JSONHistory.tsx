@@ -1,6 +1,6 @@
 import * as React from 'react'
-
 import ActionListItem from './ActionListItem'
+import { subscribe, publish } from 'src/renderer/event_bus'
 
 export default function JSONHistory() {
   const [versions, setVersions] = React.useState<JSONVersion[]>([])
@@ -17,7 +17,7 @@ export default function JSONHistory() {
         if (loadedVersions.length > 0) {
           const latest = loadedVersions[loadedVersions.length - 1]
           setSelectedVersion(latest)
-          fireSelectionEvent(latest)
+          publish('JSONSelected', latest)
         }
       }
     }
@@ -34,12 +34,12 @@ export default function JSONHistory() {
 
   // Listen for new JSONs
   React.useEffect(() => {
-    const handleNewJSON = (e: JSONGeneratedEvent) => {
+    const unsubscribe = subscribe('JSONGenerated', (payload) => {
       const newVersion = {
-        timestamp: Date.now(),
-        config: e.detail.config,
-        explanation: e.detail.explanation
-      } satisfies JSONVersion
+        timestamp: payload.timestamp,
+        config: payload.config,
+        explanation: payload.explanation
+      }
 
       setVersions((prev) => {
         const newVersions = [...prev, newVersion]
@@ -48,23 +48,15 @@ export default function JSONHistory() {
       })
 
       setSelectedVersion(newVersion)
-      fireSelectionEvent(newVersion)
-    }
-
-    document.addEventListener('JSONGenerated', handleNewJSON)
-    return () => document.removeEventListener('JSONGenerated', handleNewJSON)
-  }, [])
-
-  const fireSelectionEvent = (version: JSONVersion) => {
-    const event = new CustomEvent('JSONSelected', {
-      detail: version
+      publish('JSONSelected', newVersion)
     })
-    document.dispatchEvent(event)
-  }
+
+    return unsubscribe
+  }, [])
 
   const handleVersionSelect = (version: JSONVersion) => {
     setSelectedVersion(version)
-    fireSelectionEvent(version)
+    publish('JSONSelected', version)
   }
 
   return (

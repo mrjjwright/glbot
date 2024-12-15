@@ -2,6 +2,7 @@ import * as React from 'react'
 import ActionBar from 'src/renderer/components/ActionBar'
 import Card from './Card'
 import JSONHistory from './JSONHistory'
+import { subscribe, publish } from 'src/renderer/event_bus'
 
 function ProfileActions() {
   const PROFILE_ACTIONS = [
@@ -28,12 +29,10 @@ const ProfileJSONCard = () => {
   const [selectedJSON, setSelectedJSON] = React.useState<string>('')
 
   React.useEffect(() => {
-    const handleJSONSelected = (e: CustomEvent<JSONVersion>) => {
-      setSelectedJSON(JSON.stringify(e.detail.config, null, 2))
-    }
-
-    document.addEventListener('JSONSelected', handleJSONSelected)
-    return () => document.removeEventListener('JSONSelected', handleJSONSelected)
+    const unsubscribe = subscribe('JSONSelected', (payload) => {
+      setSelectedJSON(JSON.stringify(payload.config, null, 2))
+    })
+    return unsubscribe
   }, [])
 
   return (
@@ -50,10 +49,10 @@ const ProfileJSONCard = () => {
           onChange={(e) => {
             try {
               const parsed = JSON.parse(e.target.value)
-              const event = new CustomEvent('JSONGenerated', {
-                detail: { config: parsed }
+              publish('JSONGenerated', {
+                timestamp: Date.now(),
+                config: parsed
               })
-              document.dispatchEvent(event)
             } catch (e) {
               // Invalid JSON - ignore
             }
