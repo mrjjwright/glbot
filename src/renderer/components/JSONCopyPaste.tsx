@@ -8,15 +8,6 @@ import { subscribe, publish } from 'src/renderer/event_bus'
 const placeholder = 'Paste your JSON configuration here...'
 
 const JSONCopyPaste = () => {
-  const [_, setUpdateCounter] = React.useState(0)
-  const [showSidebar, setShowSidebar] = React.useState(true)
-
-  React.useEffect(() => {
-    return subscribe('JSONSelectedUpdated', () => {
-      setUpdateCounter((c) => c + 1)
-    })
-  }, [])
-
   const selected = window.db
     .prepare(
       `
@@ -28,34 +19,50 @@ const JSONCopyPaste = () => {
     )
     .get()
 
-  const handleChange = (value: string) => {
-    try {
-      JSON.parse(value)
+  const [_, setUpdateCounter] = React.useState(0)
+  const historyCount = window.db
+    .prepare('SELECT COUNT(*) as count FROM JSONCopyPaste_history')
+    .get().count
 
-      const result = window.db
-        .prepare('INSERT INTO JSONCopyPaste_history (content) VALUES (?)')
-        .run(value)
+  const [showSidebar, setShowSidebar] = React.useState(historyCount > 0)
+  const [currentText, setCurrentText] = React.useState(selected?.content || '')
 
-      window.db
-        .prepare('UPDATE JSONCopyPaste_selected SET selected_index = ? WHERE id = 1')
-        .run(result.lastInsertRowid)
+  React.useEffect(() => {
+    return subscribe('JSONSelectedUpdated', () => {
+      setUpdateCounter((c) => c + 1)
+    })
+  }, [])
 
-      const historyItems = window.db
-        .prepare('SELECT id, content, created_at as createdAt FROM JSONCopyPaste_history')
-        .all()
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setCurrentText(e.target.value)
+  }
 
-      publish('JSONHistoryUpdated', historyItems)
-    } catch (e) {
-      // Invalid JSON - ignore
+  const handleSave = () => {
+    const result = window.db
+      .prepare('INSERT INTO JSONCopyPaste_history (content) VALUES (?)')
+      .run(currentText)
+
+    window.db
+      .prepare('UPDATE JSONCopyPaste_selected SET selected_index = ? WHERE id = 1')
+      .run(result.lastInsertRowid)
+
+    const historyItems = window.db
+      .prepare('SELECT id, content, created_at as createdAt FROM JSONCopyPaste_history')
+      .all()
+
+    if (historyItems.length === 1) {
+      setShowSidebar(true)
     }
+
+    publish('JSONHistoryUpdated', historyItems)
   }
 
   const actions = [
     {
       id: 1,
-      hotkey: '←',
-      body: showSidebar ? 'Hide History' : 'Show History',
-      onClick: () => setShowSidebar(!showSidebar)
+      hotkey: 'S',
+      body: 'Save',
+      onClick: handleSave
     },
     {
       id: 2,
@@ -91,8 +98,8 @@ const JSONCopyPaste = () => {
         <textarea
           className="JSONCopyPaste_textarea"
           placeholder={placeholder}
-          value={selected?.content || ''}
-          onChange={(e) => handleChange(e.target.value)}
+          value={currentText}
+          onChange={handleChange}
         />
       </div>
     </Card>

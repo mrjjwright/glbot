@@ -1,6 +1,4 @@
 out
-www
+www/*.js
 pnpm-lock.yaml
 LICENSE.md
-tsconfig.json
-tsconfig.*.json
