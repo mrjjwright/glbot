@@ -6,7 +6,7 @@ const config = {
   },
   tsconfig: 'tsconfig.web.json',
   platform: 'browser',
-  target: ['chrome128'],
+  target: ['chrome131'],
   bundle: true,
   outdir: 'www/js',
   assetNames: '[name]-[hash]',
