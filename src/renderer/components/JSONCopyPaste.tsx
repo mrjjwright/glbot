@@ -1,32 +1,15 @@
 import * as React from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import ActionBar from 'src/renderer/components/ActionBar'
 import Card from './Card'
 import JSONHistory from './JSONHistory'
 import { subscribe, publish } from 'src/renderer/event_bus'
 
-function Actions() {
-  const actions = [
-    {
-      id: 1,
-      hotkey: '→',
-      body: 'Reset',
-      onClick: () => false
-    },
-    {
-      id: 2,
-      hotkey: '→',
-      body: 'Default',
-      onClick: () => false
-    }
-  ]
-
-  return <ActionBar items={actions} />
-}
-
 const placeholder = 'Paste your JSON configuration here...'
 
 const JSONCopyPaste = () => {
   const [_, setUpdateCounter] = React.useState(0)
+  const [showSidebar, setShowSidebar] = React.useState(true)
 
   React.useEffect(() => {
     return subscribe('JSONSelectedUpdated', () => {
@@ -67,13 +50,44 @@ const JSONCopyPaste = () => {
     }
   }
 
+  const actions = [
+    {
+      id: 1,
+      hotkey: '←',
+      body: showSidebar ? 'Hide History' : 'Show History',
+      onClick: () => setShowSidebar(!showSidebar)
+    },
+    {
+      id: 2,
+      hotkey: '→',
+      body: 'Reset',
+      onClick: () => false
+    },
+    {
+      id: 3,
+      hotkey: '→',
+      body: 'Default',
+      onClick: () => false
+    }
+  ]
+
   return (
     <Card title={'Copy/Paste JSON'}>
-      <Actions />
+      <ActionBar items={actions} />
       <div className="JSONCopyPaste_root">
-        <div className="JSONCopyPaste_sidebar">
-          <JSONHistory />
-        </div>
+        <AnimatePresence>
+          {showSidebar && (
+            <motion.div
+              className="JSONCopyPaste_sidebar"
+              initial={{ width: 0, opacity: 0 }}
+              animate={{ width: 250, opacity: 1 }}
+              exit={{ width: 0, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <JSONHistory />
+            </motion.div>
+          )}
+        </AnimatePresence>
         <textarea
           className="JSONCopyPaste_textarea"
           placeholder={placeholder}
