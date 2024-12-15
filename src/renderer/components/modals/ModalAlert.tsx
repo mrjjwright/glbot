@@ -6,7 +6,7 @@ import * as Utilities from 'src/renderer/common/utilities'
 import { useModals } from 'src/renderer/components/page/ModalContext'
 
 import Button from 'src/renderer/components/Button'
-import Card from 'src/renderer/components/Card'
+import Panel from 'src/renderer/components/Panel'
 
 interface ModalAlertProps {
   buttonText?: string | any
@@ -39,12 +39,12 @@ function ModalAlert({ message, buttonText, children, onClose, onEscape }: ModalA
 
   return (
     <div className={styles.root}>
-      <Card title={message}>
+      <Panel title={message}>
         {children}
         <Button onClick={handleClose}>
           {Utilities.isEmpty(buttonText) ? 'Close' : buttonText}
         </Button>
-      </Card>
+      </Panel>
     </div>
   )
 }

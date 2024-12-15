@@ -56,7 +56,7 @@
   min-height: var(--line);
   text-transform: uppercase;
   transition: var(--transition-base);
-  background: var(--color-border-muted);
+  background: var(--color-surface-raised);
   padding: 0 var(--space);
 }
 
@@ -66,17 +66,17 @@
   color: var(--color-text-muted);
 }
 
-.Card_card {
+.Panel_panel {
   position: relative;
   display: block;
   padding: 0 var(--space) var(--line-half) var(--space);
 }
 
-.Card_children {
+.Panel_children {
   box-shadow:
-    inset 1px 0 0 0 var(--theme-text),
-    inset -1px 0 0 0 var(--theme-text),
-    0 1px 0 0 var(--theme-text);
+    inset 1px 0 0 0 var(--color-surface-raised),
+    inset -1px 0 0 0 var(--color-surface-raised),
+    0 1px 0 0 var(--color-surface-raised);
   display: block;
   padding: calc(var(--line) * 0.5) var(--space-2x) var(--line) var(--space-2x) 2ch;
   overflow-x: auto;
@@ -84,51 +84,51 @@
   scrollbar-width: none;
 }
 
-.Card_children::-webkit-scrollbar {
+.Panel_children::-webkit-scrollbar {
   display: none;
 }
 
-.Card_action {
+.Panel_action {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
 }
 
-.Card_left {
+.Panel_left {
   min-width: 10%;
   width: 100%;
   box-shadow:
-    inset 1px 0 0 0 var(--theme-text),
-    inset 0 1px 0 0 var(--theme-text);
+    inset 1px 0 0 0 var(--color-surface-raised),
+    inset 0 1px 0 0 var(--color-surface-raised);
   padding: var(--line-half) var(--space-2x) 0px var(--space);
 }
 
-.Card_leftCorner {
+.Panel_leftCorner {
   flex-shrink: 0;
   box-shadow:
-    inset 1px 0 0 0 var(--theme-text),
-    inset 0 1px 0 0 var(--theme-text);
+    inset 1px 0 0 0 var(--color-surface-raised),
+    inset 0 1px 0 0 var(--color-surface-raised);
   padding: var(--line-half) var(--space) 0px var(--space);
 }
 
-.Card_right {
+.Panel_right {
   min-width: 10%;
   width: 100%;
   box-shadow:
-    inset -1px 0 0 0 var(--theme-text),
-    inset 0 1px 0 0 var(--theme-text);
+    inset -1px 0 0 0 var(--color-surface-raised),
+    inset 0 1px 0 0 var(--color-surface-raised);
   padding: var(--line-half) var(--space-2x) 0px var(--space);
 }
 
-.Card_rightCorner {
+.Panel_rightCorner {
   flex-shrink: 0;
   box-shadow:
-    inset -1px 0 0 0 var(--theme-text),
-    inset 0 1px 0 0 var(--theme-text);
+    inset -1px 0 0 0 var(--color-surface-raised),
+    inset 0 1px 0 0 var(--color-surface-raised);
   padding: var(--line-half) var(--space) 0px var(--space);
 }
 
-.Card_title {
+.Panel_title {
   flex-shrink: 0;
   padding: 0 var(--space);
   font-size: 16px;

@@ -1,4 +1,4 @@
-import Card from 'src/renderer/components/Card'
+import Panel from 'src/renderer/components/Panel'
 import Text from 'src/renderer/components/Text'
 import BlockLoader from 'src/renderer/components/BlockLoader'
 import Button from 'src/renderer/components/Button'
@@ -133,7 +133,7 @@ export default function Chat({ endpoint = '/api/chat' }: ChatProps) {
     'e.g I need to exclude a header and footer from translation only on some pages'
 
   return (
-    <Card title="CHAT">
+    <Panel title="CHAT">
       <ActionBar items={COMMON_ACTIONS} />
 
       <div ref={chatContainerRef} className="Chat_chatContainer">
@@ -206,6 +206,6 @@ export default function Chat({ endpoint = '/api/chat' }: ChatProps) {
           <Text color="error">Error: {error.message}</Text>
         </div>
       )}
-    </Card>
+    </Panel>
   )
 }

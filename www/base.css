@@ -124,7 +124,7 @@ body {
 /* thems */
 .theme-light {
   --color-surface: var(--color-white);
-  --color-surface-raised: var(--color-gray-10);
+  --color-surface-raised: var(--color-gray-20);
   --color-surface-overlay: var(--color-black-100-1);
   --color-text: var(--color-black-100);
   --color-text-muted: var(--color-gray-60);
@@ -135,9 +135,6 @@ body {
   --color-error: var(--color-red-60);
   --color-warning: var(--color-gold-30);
   --color-info: var(--color-blue-60);
-  --color-border: var(--color-gray-30);
-  --color-border-muted: var(--color-gray-20);
-  --color-border-strong: var(--color-gray-50);
   --color-state-hover: var(--color-black-100-1);
   --color-state-focus: var(--color-blue-60-2);
   --color-state-active: var(--color-black-100-2);
@@ -145,7 +142,7 @@ body {
 
 .theme-dark {
   --color-surface: var(--color-black-100);
-  --color-surface-raised: var(--color-gray-90);
+  --color-surface-raised: var(--color-gray-70);
   --color-surface-overlay: var(--color-white-1);
   --color-text: var(--color-white);
   --color-text-muted: var(--color-gray-30);
@@ -156,9 +153,6 @@ body {
   --color-error: var(--color-red-60);
   --color-warning: var(--color-gold-30);
   --color-info: var(--color-blue-40);
-  --color-border: var(--color-gray-90);
-  --color-border-muted: var(--color-gray-80);
-  --color-border-strong: var(--color-gray-70);
   --color-state-hover: var(--color-white-1);
   --color-state-focus: var(--color-daybreak-40-2);
   --color-state-active: var(--color-white-2);
@@ -177,9 +171,6 @@ body {
   --color-error: var(--color-red-60);
   --color-warning: var(--color-gold-30);
   --color-info: var(--color-blue-40);
-  --color-border: var(--color-blue-70);
-  --color-border-muted: var(--color-blue-60-2);
-  --color-border-strong: var(--color-blue-50);
   --color-state-hover: var(--color-blue-20-1);
   --color-state-focus: var(--color-blue-60-2);
   --color-state-active: var(--color-blue-20-2);

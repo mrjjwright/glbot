@@ -61,7 +61,7 @@ function App() {
           <GLWebLogo />
         </Row>
         <Row>
-          <Text className="text-subdued">cleaner interactions, collaborate more</Text>
+          <Text className="text-subdued">interact less, collaborate more</Text>
         </Row>
       </Grid>
       <Grid>

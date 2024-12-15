@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import ActionBar from 'src/renderer/components/ActionBar'
-import Card from './Card'
+import Panel from './Panel'
 import JSONHistory from './JSONHistory'
 import { subscribe, publish } from 'src/renderer/event_bus'
 
@@ -79,7 +79,7 @@ const ControlPanel = () => {
   ]
 
   return (
-    <Card title={'Control'}>
+    <Panel title={'Control'}>
       <ActionBar items={actions} />
       <div className="ControlPanel_root">
         <AnimatePresence>
@@ -102,7 +102,7 @@ const ControlPanel = () => {
           onChange={handleChange}
         />
       </div>
-    </Card>
+    </Panel>
   )
 }
 
