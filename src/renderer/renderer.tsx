@@ -14,6 +14,11 @@ import DebugGrid from 'src/renderer/components/DebugGrid'
 import GLWebLogo from 'src/renderer/components/GLWebLogo'
 import Providers from 'src/renderer/components/Providers'
 
+// Live reload in development
+if (process.env.NODE_ENV !== 'production') {
+  new EventSource('/esbuild').addEventListener('change', () => location.reload())
+}
+
 function App() {
   return (
     <DefaultLayout previewPixelSRC="/assets/glweb.svg">

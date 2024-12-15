@@ -35,7 +35,12 @@ const config = {
         })
       }
     }
-  ]
+  ],
+  define: {
+    'process.env.NODE_ENV': JSON.stringify(
+      process.argv.includes('--minify') ? 'production' : 'development'
+    )
+  }
 } satisfies esbuild.BuildOptions
 
 async function build() {
@@ -44,6 +49,7 @@ async function build() {
 
 async function startServer() {
   const ctx = await esbuild.context(config)
+  await ctx.watch()
   let { host, port } = await ctx.serve({
     servedir: 'www'
   })
