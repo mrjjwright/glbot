@@ -19,6 +19,33 @@ if (process.env.NODE_ENV !== 'production') {
   new EventSource('/esbuild').addEventListener('change', () => location.reload())
 }
 
+// Initialize tables
+const db = window.db
+
+db.exec(`
+  CREATE TABLE IF NOT EXISTS JSONCopyPaste_selected (
+    id INTEGER PRIMARY KEY,
+    selected_index INTEGER
+  )`)
+
+db.exec(`
+  CREATE TABLE IF NOT EXISTS JSONCopyPaste_history (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    content TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  )`)
+
+// Insert initial selected index if not existss
+const initSelected = db.prepare(`
+  INSERT OR IGNORE INTO JSONCopyPaste_selected (id, selected_index) 
+  VALUES (1, NULL)`)
+initSelected.run()
+
+const selectedState = db
+  .prepare('SELECT selected_index FROM JSONCopyPaste_selected WHERE id = 1')
+  .get()
+console.log('Initial selected state:', selectedState)
+
 function App() {
   return (
     <DefaultLayout previewPixelSRC="/assets/glweb.svg">

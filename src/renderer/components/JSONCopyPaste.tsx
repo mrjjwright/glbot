@@ -26,14 +26,46 @@ function Actions() {
 const placeholder = 'Paste your JSON configuration here...'
 
 const JSONCopyPaste = () => {
-  const [selectedJSON, setSelectedJSON] = React.useState<string>('')
+  const [_, setUpdateCounter] = React.useState(0)
 
   React.useEffect(() => {
-    const unsubscribe = subscribe('JSONSelected', (payload) => {
-      setSelectedJSON(JSON.stringify(payload.config, null, 2))
+    return subscribe('JSONSelectedUpdated', () => {
+      setUpdateCounter((c) => c + 1)
     })
-    return unsubscribe
   }, [])
+
+  const selected = window.db
+    .prepare(
+      `
+      SELECT h.content 
+      FROM JSONCopyPaste_history h
+      JOIN JSONCopyPaste_selected s ON h.id = s.selected_index
+      WHERE s.id = 1
+    `
+    )
+    .get()
+
+  const handleChange = (value: string) => {
+    try {
+      JSON.parse(value)
+
+      const result = window.db
+        .prepare('INSERT INTO JSONCopyPaste_history (content) VALUES (?)')
+        .run(value)
+
+      window.db
+        .prepare('UPDATE JSONCopyPaste_selected SET selected_index = ? WHERE id = 1')
+        .run(result.lastInsertRowid)
+
+      const historyItems = window.db
+        .prepare('SELECT id, content, created_at as createdAt FROM JSONCopyPaste_history')
+        .all()
+
+      publish('JSONHistoryUpdated', historyItems)
+    } catch (e) {
+      // Invalid JSON - ignore
+    }
+  }
 
   return (
     <Card title={'Copy/Paste JSON'}>
@@ -45,18 +77,8 @@ const JSONCopyPaste = () => {
         <textarea
           className="JSONCopyPaste_textarea"
           placeholder={placeholder}
-          value={selectedJSON}
-          onChange={(e) => {
-            try {
-              const parsed = JSON.parse(e.target.value)
-              publish('JSONGenerated', {
-                timestamp: Date.now(),
-                config: parsed
-              })
-            } catch (e) {
-              // Invalid JSON - ignore
-            }
-          }}
+          value={selected?.content || ''}
+          onChange={(e) => handleChange(e.target.value)}
         />
       </div>
     </Card>

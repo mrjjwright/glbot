@@ -4,10 +4,26 @@ interface JSONVersion {
   explanation?: string
 }
 
-interface JSONGeneratedEvent extends CustomEvent<JSONVersion> {
-  type: 'JSONGenerated'
+interface JSONSelectedUpdated extends CustomEvent<{ selectedIndex: number | null }> {
+  type: 'JSONSelectedUpdated'
 }
 
-interface JSONSelectedEvent extends CustomEvent<JSONVersion> {
-  type: 'JSONSelected'
+interface JSONHistoryUpdated
+  extends CustomEvent<
+    {
+      id: number
+      content: string
+      createdAt: string
+    }[]
+  > {
+  type: 'JSONHistoryUpdated'
+}
+
+type EventsDefinition = {
+  JSONSelectedUpdated: { selectedIndex: number | null }
+  JSONHistoryUpdated: {
+    id: number
+    content: string
+    createdAt: string
+  }[]
 }

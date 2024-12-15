@@ -3,86 +3,40 @@ import ActionListItem from './ActionListItem'
 import { subscribe, publish } from 'src/renderer/event_bus'
 
 export default function JSONHistory() {
-  const [versions, setVersions] = React.useState<JSONVersion[]>([])
-  const [selectedVersion, setSelectedVersion] = React.useState<JSONVersion>()
+  const [_, setUpdateCounter] = React.useState(0)
 
-  // Load initial history
   React.useEffect(() => {
-    const loadHistory = () => {
-      const stored = sessionStorage.getItem('json-history')
-      if (stored) {
-        const loadedVersions = JSON.parse(stored)
-        setVersions(loadedVersions)
-        // Select latest version
-        if (loadedVersions.length > 0) {
-          const latest = loadedVersions[loadedVersions.length - 1]
-          setSelectedVersion(latest)
-          publish('JSONSelected', latest)
-          return
-        }
-      }
-
-      const blank = {
-        timestamp: Date.now(),
-        config: {},
-        explanation: ''
-      }
-      console.log('blank', blank)
-      setSelectedVersion(blank)
-      setTimeout(() => {
-        publish('JSONSelected', blank)
-      }, 100)
-    }
-
-    loadHistory()
-    // Also listen for storage events from other tabs
-    window.addEventListener('storage', loadHistory)
-    return () => window.removeEventListener('storage', loadHistory)
-  }, [])
-
-  const persistVersions = (newVersions: JSONVersion[]) => {
-    sessionStorage.setItem('json-history', JSON.stringify(newVersions))
-  }
-
-  // Listen for new JSONs
-  React.useEffect(() => {
-    const unsubscribe = subscribe('JSONGenerated', (payload) => {
-      const newVersion = {
-        timestamp: payload.timestamp,
-        config: payload.config,
-        explanation: payload.explanation
-      }
-
-      setVersions((prev) => {
-        const newVersions = [...prev, newVersion]
-        persistVersions(newVersions)
-        return newVersions
-      })
-
-      setSelectedVersion(newVersion)
-      publish('JSONSelected', newVersion)
+    return subscribe('JSONHistoryUpdated', () => {
+      setUpdateCounter((c) => c + 1)
     })
-
-    return unsubscribe
   }, [])
 
-  const handleVersionSelect = (version: JSONVersion) => {
-    setSelectedVersion(version)
-    publish('JSONSelected', version)
+  const selectedIndex = window.db
+    .prepare('SELECT selected_index FROM JSONCopyPaste_selected WHERE id = 1')
+    .get().selected_index
+
+  const historyItems = window.db
+    .prepare('SELECT id, content, created_at FROM JSONCopyPaste_history ORDER BY id ASC')
+    .all()
+
+  const handleVersionSelect = (index: number) => {
+    window.db
+      .prepare('UPDATE JSONCopyPaste_selected SET selected_index = ? WHERE id = 1')
+      .run(index)
+
+    publish('JSONSelectedUpdated', { selectedIndex: index })
   }
 
   return (
     <div className="JSONHistory_history">
-      {versions.map((version, index) => (
+      {historyItems.map((item, index) => (
         <ActionListItem
-          key={version.timestamp}
-          onClick={() => handleVersionSelect(version)}
+          key={item.id}
+          onClick={() => handleVersionSelect(item.id)}
           icon="→"
           style={{
             background:
-              version.timestamp === selectedVersion?.timestamp
-                ? 'var(--theme-focused-foreground)'
-                : 'transparent'
+              item.id === selectedIndex ? 'var(--theme-focused-foreground)' : 'transparent'
           }}
         >
           v{index + 1}
