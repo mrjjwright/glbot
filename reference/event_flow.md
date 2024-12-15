@@ -14,7 +14,7 @@
 - Fires `JSONSelected` events
 - Owns all storage logic
 
-### Profile JSON Card (JSONCopyPaste.tsx)
+### Profile JSON Card (ControlPanel.tsx)
 
 - Display-only component
 - Listens for `JSONSelected` events

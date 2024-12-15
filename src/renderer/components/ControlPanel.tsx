@@ -7,13 +7,13 @@ import { subscribe, publish } from 'src/renderer/event_bus'
 
 const placeholder = 'Paste your JSON configuration here...'
 
-const JSONCopyPaste = () => {
+const ControlPanel = () => {
   const selected = window.db
     .prepare(
       `
       SELECT h.content 
-      FROM JSONCopyPaste_history h
-      JOIN JSONCopyPaste_selected s ON h.id = s.selected_index
+      FROM ControlPanel_history h
+      JOIN ControlPanel_selected s ON h.id = s.selected_index
       WHERE s.id = 1
     `
     )
@@ -21,7 +21,7 @@ const JSONCopyPaste = () => {
 
   const [_, setUpdateCounter] = React.useState(0)
   const historyCount = window.db
-    .prepare('SELECT COUNT(*) as count FROM JSONCopyPaste_history')
+    .prepare('SELECT COUNT(*) as count FROM ControlPanel_history')
     .get().count
 
   const [showSidebar, setShowSidebar] = React.useState(historyCount > 0)
@@ -39,15 +39,15 @@ const JSONCopyPaste = () => {
 
   const handleSave = () => {
     const result = window.db
-      .prepare('INSERT INTO JSONCopyPaste_history (content) VALUES (?)')
+      .prepare('INSERT INTO ControlPanel_history (content) VALUES (?)')
       .run(currentText)
 
     window.db
-      .prepare('UPDATE JSONCopyPaste_selected SET selected_index = ? WHERE id = 1')
+      .prepare('UPDATE ControlPanel_selected SET selected_index = ? WHERE id = 1')
       .run(result.lastInsertRowid)
 
     const historyItems = window.db
-      .prepare('SELECT id, content, created_at as createdAt FROM JSONCopyPaste_history')
+      .prepare('SELECT id, content, created_at as createdAt FROM ControlPanel_history')
       .all()
 
     if (historyItems.length === 1) {
@@ -81,11 +81,11 @@ const JSONCopyPaste = () => {
   return (
     <Card title={'Control'}>
       <ActionBar items={actions} />
-      <div className="JSONCopyPaste_root">
+      <div className="ControlPanel_root">
         <AnimatePresence>
           {showSidebar && (
             <motion.div
-              className="JSONCopyPaste_sidebar"
+              className="ControlPanel_sidebar"
               initial={{ width: 0, opacity: 0 }}
               animate={{ width: 250, opacity: 1 }}
               exit={{ width: 0, opacity: 0 }}
@@ -96,7 +96,7 @@ const JSONCopyPaste = () => {
           )}
         </AnimatePresence>
         <textarea
-          className="JSONCopyPaste_textarea"
+          className="ControlPanel_textarea"
           placeholder={placeholder}
           value={currentText}
           onChange={handleChange}
@@ -106,4 +106,4 @@ const JSONCopyPaste = () => {
   )
 }
 
-export default JSONCopyPaste
+export default ControlPanel

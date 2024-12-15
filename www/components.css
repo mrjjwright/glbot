@@ -65,3 +65,72 @@
   overflow-wrap: break-word;
   color: var(--color-text-muted);
 }
+
+.Card_card {
+  position: relative;
+  display: block;
+  padding: 0 var(--space) var(--line-half) var(--space);
+}
+
+.Card_children {
+  box-shadow:
+    inset 1px 0 0 0 var(--theme-text),
+    inset -1px 0 0 0 var(--theme-text),
+    0 1px 0 0 var(--theme-text);
+  display: block;
+  padding: calc(var(--line) * 0.5) var(--space-2x) var(--line) var(--space-2x) 2ch;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+}
+
+.Card_children::-webkit-scrollbar {
+  display: none;
+}
+
+.Card_action {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.Card_left {
+  min-width: 10%;
+  width: 100%;
+  box-shadow:
+    inset 1px 0 0 0 var(--theme-text),
+    inset 0 1px 0 0 var(--theme-text);
+  padding: var(--line-half) var(--space-2x) 0px var(--space);
+}
+
+.Card_leftCorner {
+  flex-shrink: 0;
+  box-shadow:
+    inset 1px 0 0 0 var(--theme-text),
+    inset 0 1px 0 0 var(--theme-text);
+  padding: var(--line-half) var(--space) 0px var(--space);
+}
+
+.Card_right {
+  min-width: 10%;
+  width: 100%;
+  box-shadow:
+    inset -1px 0 0 0 var(--theme-text),
+    inset 0 1px 0 0 var(--theme-text);
+  padding: var(--line-half) var(--space-2x) 0px var(--space);
+}
+
+.Card_rightCorner {
+  flex-shrink: 0;
+  box-shadow:
+    inset -1px 0 0 0 var(--theme-text),
+    inset 0 1px 0 0 var(--theme-text);
+  padding: var(--line-half) var(--space) 0px var(--space);
+}
+
+.Card_title {
+  flex-shrink: 0;
+  padding: 0 var(--space);
+  font-size: 16px;
+  font-weight: 400;
+}

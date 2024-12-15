@@ -9,7 +9,7 @@ import ModalStack from 'src/renderer/components/ModalStack'
 import Chat from 'src/renderer/components/Chat'
 import Badge from 'src/renderer/components/Badge'
 import MatrixOpening from 'src/renderer/components/MatrixOpening'
-import JSONCopyPaste from 'src/renderer/components/JSONCopyPaste'
+import ControlPanel from 'src/renderer/components/ControlPanel'
 import DebugGrid from 'src/renderer/components/DebugGrid'
 import GLWebLogo from 'src/renderer/components/GLWebLogo'
 import Providers from 'src/renderer/components/Providers'
@@ -24,13 +24,13 @@ if (process.env.NODE_ENV !== 'production') {
 const db = window.db
 
 db.exec(`
-  CREATE TABLE IF NOT EXISTS JSONCopyPaste_selected (
+  CREATE TABLE IF NOT EXISTS ControlPanel_selected (
     id INTEGER PRIMARY KEY,
     selected_index INTEGER
   )`)
 
 db.exec(`
-  CREATE TABLE IF NOT EXISTS JSONCopyPaste_history (
+  CREATE TABLE IF NOT EXISTS ControlPanel_history (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     content TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -38,12 +38,12 @@ db.exec(`
 
 // Insert initial selected index if not existss
 const initSelected = db.prepare(`
-  INSERT OR IGNORE INTO JSONCopyPaste_selected (id, selected_index) 
+  INSERT OR IGNORE INTO ControlPanel_selected (id, selected_index) 
   VALUES (1, NULL)`)
 initSelected.run()
 
 const selectedState = db
-  .prepare('SELECT selected_index FROM JSONCopyPaste_selected WHERE id = 1')
+  .prepare('SELECT selected_index FROM ControlPanel_selected WHERE id = 1')
   .get()
 console.log('Initial selected state:', selectedState)
 
@@ -61,7 +61,12 @@ function App() {
           <GLWebLogo />
         </Row>
         <Row>
-          <Text className="text-subdued">AI-powered Transperfect assistants</Text>
+          <Text className="text-subdued">cleaner interactions, collaborate more</Text>
+        </Row>
+      </Grid>
+      <Grid>
+        <Row>
+          <ControlPanel />
         </Row>
       </Grid>
     </DefaultLayout>

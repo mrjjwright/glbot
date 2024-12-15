@@ -379,77 +379,6 @@ a.Avatar_root:focus:before {
   box-shadow: inset 0 0 0 1px var(--theme-focused-foreground);
 }
 
-.Card_card {
-  position: relative;
-  display: block;
-  padding: 0 1ch calc(8px * var(--theme-line-height-base)) 1ch;
-}
-
-.Card_children {
-  box-shadow:
-    inset 1px 0 0 0 var(--theme-text),
-    inset -1px 0 0 0 var(--theme-text),
-    0 1px 0 0 var(--theme-text);
-  display: block;
-  padding: calc(8px * var(--theme-line-height-base)) 2ch calc(16px * var(--theme-line-height-base))
-    2ch;
-  overflow-x: auto;
-  overflow-y: hidden;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-
-  scrollbar-width: none;
-}
-
-.Card_action {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-}
-
-.Card_left {
-  min-width: 10%;
-  width: 100%;
-  box-shadow:
-    inset 1px 0 0 0 var(--theme-text),
-    inset 0 1px 0 0 var(--theme-text);
-  padding: calc(8px * var(--theme-line-height-base)) 2ch 0px 1ch;
-}
-
-.Card_leftCorner {
-  flex-shrink: 0;
-  box-shadow:
-    inset 1px 0 0 0 var(--theme-text),
-    inset 0 1px 0 0 var(--theme-text);
-  padding: calc(8px * var(--theme-line-height-base)) 1ch 0px 1ch;
-}
-
-.Card_right {
-  min-width: 10%;
-  width: 100%;
-  box-shadow:
-    inset -1px 0 0 0 var(--theme-text),
-    inset 0 1px 0 0 var(--theme-text);
-  padding: calc(8px * var(--theme-line-height-base)) 2ch 0px 1ch;
-}
-
-.Card_rightCorner {
-  flex-shrink: 0;
-  box-shadow:
-    inset -1px 0 0 0 var(--theme-text),
-    inset 0 1px 0 0 var(--theme-text);
-  padding: calc(8px * var(--theme-line-height-base)) 1ch 0px 1ch;
-}
-
-.Card_title {
-  flex-shrink: 0;
-  padding: 0 1ch;
-  font-size: 16px;
-  font-weight: 400;
-}
-
 .CardDouble_card {
   position: relative;
   display: block;
@@ -1540,7 +1469,7 @@ html::-webkit-scrollbar-thumb:hover {
   bottom: 0;
 }
 
-@keyframes JSONCopyPaste_fadeIn {
+@keyframes ControlPanel_fadeIn {
   from {
     opacity: 0;
     transform: translateY(88px);
@@ -1551,8 +1480,8 @@ html::-webkit-scrollbar-thumb:hover {
   }
 }
 
-.JSONCopyPaste_root {
-  animation: JSONCopyPaste_fadeIn 0.3s ease-out;
+.ControlPanel_root {
+  animation: ControlPanel_fadeIn 0.3s ease-out;
   display: flex;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -1561,18 +1490,18 @@ html::-webkit-scrollbar-thumb:hover {
   margin: 2ch 0;
 }
 
-.JSONCopyPaste_layout {
+.ControlPanel_layout {
   display: flex;
   margin-top: var(--cell-height);
 }
 
-.JSONCopyPaste_textarea {
+.ControlPanel_textarea {
   flex: 1;
   min-width: 0;
   width: 100%;
 }
 
-.JSONCopyPaste_sidebar {
+.ControlPanel_sidebar {
   width: 8ch;
   border-right: 1px solid var(--theme-color-gray-20-7);
 }

@@ -12,17 +12,15 @@ export default function JSONHistory() {
   }, [])
 
   const selectedIndex = window.db
-    .prepare('SELECT selected_index FROM JSONCopyPaste_selected WHERE id = 1')
+    .prepare('SELECT selected_index FROM ControlPanel_selected WHERE id = 1')
     .get().selected_index
 
   const historyItems = window.db
-    .prepare('SELECT id, content, created_at FROM JSONCopyPaste_history ORDER BY id ASC')
+    .prepare('SELECT id, content, created_at FROM ControlPanel_history ORDER BY id ASC')
     .all()
 
   const handleVersionSelect = (index: number) => {
-    window.db
-      .prepare('UPDATE JSONCopyPaste_selected SET selected_index = ? WHERE id = 1')
-      .run(index)
+    window.db.prepare('UPDATE ControlPanel_selected SET selected_index = ? WHERE id = 1').run(index)
 
     publish('JSONSelectedUpdated', { selectedIndex: index })
   }
