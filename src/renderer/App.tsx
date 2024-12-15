@@ -50,38 +50,20 @@ console.log('Initial selected state:', selectedState)
 function App() {
   return (
     <DefaultLayout previewPixelSRC="/assets/glweb.svg">
-      <DebugGrid />
-      <ModalStack />
-
-      <MatrixOpening />
-
       <Grid>
         <Row>
           <strong>
             glbot <Badge>Hello Transperfect</Badge>
           </strong>
-          <i style={{ opacity: 0.7 }}>
+          <i className="text-subdued">
             via<span>&nbsp;</span>
           </i>
           <GLWebLogo />
         </Row>
         <Row>
-          <Text style={{ opacity: 0.7 }}>AI-powered Transperfect assistants</Text>
+          <Text className="text-subdued">AI-powered Transperfect assistants</Text>
         </Row>
       </Grid>
-
-      <Grid style={{ display: 'flex' }}>
-        <div style={{ flexShrink: 5, width: '30%' }}>
-          <JSONCopyPaste />
-        </div>
-
-        <div style={{ display: 'flex', flexWrap: 'wrap', flex: 1 }}>
-          <DataTable
-            data={Array.from({ length: 15 }, () => Array.from({ length: 5 }, () => 'ss'))}
-          />
-        </div>
-      </Grid>
-      <Chat endpoint="/api/chat" />
     </DefaultLayout>
   )
 }

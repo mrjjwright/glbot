@@ -1,0 +1,67 @@
+/*
+ NAMING CONVENTION
+   ComponentName_element
+   
+   Example:
+   .Button_root
+   .Button_icon
+
+   all modifications are handled with inline styling or props
+*/
+
+.DefaultLayout_body {
+  max-width: var(--width-max);
+}
+
+.DefaultLayout_pixel {
+  height: 1px;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 1px;
+}
+
+.GLWebLogo_root {
+  width: calc(5 * var(--space));
+  height: calc(var(--line));
+  object-fit: contain;
+}
+
+.Grid_root {
+  display: block;
+  padding: var(--line-half) var(--space-2x);
+}
+
+.Row_row {
+  display: block;
+  outline: 0;
+  border: 0;
+  transition: var(--transition);
+}
+
+.Row_row:focus {
+  background: var(--color-state-focus);
+}
+
+.Badge_root {
+  display: inline-block;
+  vertical-align: top;
+  text-align: center;
+  font-weight: 400;
+  margin: 0;
+  outline: 0;
+  border: 0;
+  font-family: var(--font-family-mono);
+  font-size: 10px;
+  min-height: var(--line);
+  text-transform: uppercase;
+  transition: var(--transition-base);
+  background: var(--color-border-muted);
+  padding: 0 var(--space);
+}
+
+.Text_text {
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  color: var(--color-text-muted);
+}
