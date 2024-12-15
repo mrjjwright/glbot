@@ -12,7 +12,12 @@ const config = {
   outdir: '.',
   external: ['electron'],
   minify: process.argv.includes('--minify'),
-  sourcemap: true
+  sourcemap: true,
+  define: {
+    'process.env.NODE_ENV': JSON.stringify(
+      process.argv.includes('--minify') ? 'production' : 'development'
+    )
+  }
 } satisfies esbuild.BuildOptions
 
 async function watch() {
@@ -27,7 +32,8 @@ async function build() {
 }
 
 // Process command line and run
-if (process.argv.includes('--watch')) {
+if (!process.argv.includes('--minify')) {
+  build()
   watch()
 } else {
   build()

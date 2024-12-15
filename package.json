@@ -17,12 +17,15 @@
     "build:unpack": "npm run build && electron-builder --dir",
     "build:win": "npm run build && electron-builder --win",
     "build:mac": "npm run build && electron-builder --mac",
-    "build:linux": "npm run build && electron-builder --linux"
+    "build:linux": "npm run build && electron-builder --linux",
+    "cp-sqlite-binary": "cp node_modules/better-sqlite3/build/Release/* build/",
+    "rebuild": "electron-rebuild -f -w better-sqlite3",
+    "postinstall": "npm run cp-sqlite-binary"
   },
   "dependencies": {
     "@ai-sdk/google": "^1.0.10",
     "@types/react": "^19.0.1",
-    "ai": "^4.0.16",
+    "ai": "^4.0.18",
     "better-sqlite3": "^11.7.0",
     "electron-updater": "^6.3.9",
     "esbuild": "^0.24.0",
@@ -31,16 +34,16 @@
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "@electron-toolkit/preload": "^1.0.1",
+    "@electron-toolkit/preload": "^3.0.1",
     "@electron-toolkit/tsconfig": "^1.0.1",
-    "@electron-toolkit/utils": "^1.0.1",
+    "@electron-toolkit/utils": "^3.0.0",
     "@electron/rebuild": "^3.7.1",
     "@types/better-sqlite3": "^7.6.12",
     "@types/node": "^22.10.2",
     "electron": "^33.3.0",
     "electron-builder": "^25.1.8",
     "electron-rebuild": "^3.2.9",
-    "eslint": "^9.16.0",
+    "eslint": "^9.17.0",
     "prettier": "^3.4.2",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2"

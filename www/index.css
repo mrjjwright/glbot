@@ -1060,7 +1060,7 @@ a.Avatar_root:focus:before {
 
 @font-face {
     font-family: Geist-Mono-Regular;
-    src: url(assets/geist.woff2) format("woff2")
+    src: url(assets/fonts/geist.woff2) format("woff2")
 }
 
 @font-face {

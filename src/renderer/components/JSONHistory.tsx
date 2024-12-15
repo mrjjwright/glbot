@@ -18,8 +18,20 @@ export default function JSONHistory() {
           const latest = loadedVersions[loadedVersions.length - 1]
           setSelectedVersion(latest)
           publish('JSONSelected', latest)
+          return
         }
       }
+
+      const blank = {
+        timestamp: Date.now(),
+        config: {},
+        explanation: ''
+      }
+      console.log('blank', blank)
+      setSelectedVersion(blank)
+      setTimeout(() => {
+        publish('JSONSelected', blank)
+      }, 100)
     }
 
     loadHistory()
