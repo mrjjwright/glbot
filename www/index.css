@@ -167,7 +167,7 @@
 a.Avatar_root {
   display: inline-block;
   width: 4ch;
-  height: calc(var(--theme-line-height-base) * 2rem);
+  height: calc(16px * var(--theme-line-height-base) * 2);
   vertical-align: bottom;
   flex-shrink: 0;
   position: relative;
@@ -391,7 +391,7 @@ a.Avatar_root:focus:before {
     inset -1px 0 0 0 var(--theme-text),
     0 1px 0 0 var(--theme-text);
   display: block;
-  padding: calc(var(--theme-line-height-base) * 1rem) 2ch calc(var(--theme-line-height-base) * 1rem)
+  padding: calc(8px * var(--theme-line-height-base)) 2ch calc(16px * var(--theme-line-height-base))
     2ch;
   overflow-x: auto;
   overflow-y: hidden;
@@ -415,7 +415,7 @@ a.Avatar_root:focus:before {
   box-shadow:
     inset 1px 0 0 0 var(--theme-text),
     inset 0 1px 0 0 var(--theme-text);
-  padding: calc(var(--theme-line-height-base) * 1rem) 2ch 0 1ch;
+  padding: calc(8px * var(--theme-line-height-base)) 2ch 0px 1ch;
 }
 
 .Card_leftCorner {
@@ -458,14 +458,14 @@ a.Avatar_root:focus:before {
 
 .CardDouble_children {
   border-left-style: solid;
-  border-left: 0.2rem double var(--theme-text);
+  border-left: 3px double var(--theme-text);
   border-bottom-style: solid;
-  border-bottom: 0.2rem double var(--theme-text);
+  border-bottom: 3px double var(--theme-text);
   border-right-style: solid;
-  border-right: 0.2rem double var(--theme-text);
+  border-right: 3px double var(--theme-text);
   display: block;
-  padding: calc(var(--theme-line-height-base) * 1rem) 2ch calc(var(--theme-line-height-base) * 1rem)
-    2ch;
+  padding: calc(8px * var(--theme-line-height-base)) calc(2ch - 3px)
+    calc(16px * var(--theme-line-height-base) - 3px) calc(2ch - 3px);
   overflow-x: auto;
   overflow-y: hidden;
   scrollbar-width: none;
@@ -484,7 +484,7 @@ a.Avatar_root:focus:before {
 .CardDouble_left {
   min-width: 10%;
   width: 100%;
-  padding: calc(var(--theme-line-height-base) * 1rem) 2ch 0 1ch;
+  padding: calc(8px * var(--theme-line-height-base) - 2px) 2ch 0 1ch;
 }
 
 .CardDouble_leftCorner,
@@ -1437,7 +1437,7 @@ html {
   color: var(--theme-text);
   font-family: var(--font-family-mono);
   line-height: calc(var(--theme-line-height-base) * 1rem);
-  font-size: 1rem;
+  font-size: 16px;
   font-optical-sizing: auto;
   font-weight: 400;
   font-feature-settings: tabular-nums lining-nums;
@@ -1447,7 +1447,7 @@ html {
 body::-webkit-scrollbar,
 html::-webkit-scrollbar {
   background: transparent;
-  height: calc(var(--theme-line-height-base) * 1rem);
+  height: 20px;
   width: 1ch;
 }
 
@@ -1466,9 +1466,9 @@ html::-webkit-scrollbar-thumb:hover {
 .Chat_chatContainer {
   display: flex;
   flex-direction: column;
-  gap: calc(var(--theme-line-height-base) * 1rem);
-  margin-bottom: calc(var(--theme-line-height-base) * 1rem);
-  max-height: calc(calc(var(--theme-line-height-base) * 1rem) * 16);
+  gap: 1.25rem;
+  margin-bottom: 1.25rem;
+  max-height: calc(1.25rem * 16);
   overflow-y: auto;
 }
 
@@ -1476,7 +1476,7 @@ html::-webkit-scrollbar-thumb:hover {
   display: flex;
   align-items: flex-start;
   gap: 2ch;
-  padding: calc(var(--theme-line-height-base) * 1rem) 0;
+  padding: 1.25rem 0;
 }
 
 .Chat_message.Chat_user {
@@ -1494,7 +1494,7 @@ html::-webkit-scrollbar-thumb:hover {
 .Chat_form {
   display: flex;
   flex-direction: column;
-  gap: calc(var(--theme-line-height-base) * 1rem);
+  gap: 1.25rem;
 }
 
 .Chat_textarea {
@@ -1504,18 +1504,18 @@ html::-webkit-scrollbar-thumb:hover {
 .Chat_buttonGroup {
   display: flex;
   gap: 2ch;
-  margin-top: calc(var(--theme-line-height-base) * 1rem);
+  margin-top: 1.25rem;
 }
 
 .Chat_loadingContainer {
   display: flex;
   align-items: center;
   gap: 2ch;
-  padding: calc(var(--theme-line-height-base) * 1rem) 2ch;
+  padding: 1.25rem 2ch;
 }
 
 .Chat_errorContainer {
-  padding: calc(var(--theme-line-height-base) * 1rem) 2ch;
+  padding: 1.25rem 2ch;
   background: var(--theme-background-error);
   border-radius: var(--theme-border-radius);
 }
@@ -1589,13 +1589,11 @@ html::-webkit-scrollbar-thumb:hover {
 }
 
 textarea {
-  min-height: calc(var(--theme-line-height-base) * 3rem);
-  padding: calc(var(--theme-line-height-base) * 1rem) 1ch;
+  min-height: calc(1.25rem * 3);
+  padding: 1.25rem 2ch;
   font-family: var(--font-family-mono);
   resize: vertical;
   outline: none;
-  scrollbar-width: thin;
-  scrollbar-color: var(--theme-color-gray-20-7) var(--color-gray-40-2);
 }
 
 textarea:focus {
@@ -1619,4 +1617,9 @@ textarea::-webkit-scrollbar-track {
 textarea::-webkit-scrollbar-thumb {
   background: var(--theme-color-gray-20-7);
   border-radius: 4px;
+}
+
+textarea {
+  scrollbar-width: thin;
+  scrollbar-color: var(--theme-color-gray-20-7) var(--color-gray-40-2);
 }
