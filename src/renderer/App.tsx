@@ -13,6 +13,7 @@ import JSONCopyPaste from 'src/renderer/components/JSONCopyPaste'
 import DebugGrid from 'src/renderer/components/DebugGrid'
 import GLWebLogo from 'src/renderer/components/GLWebLogo'
 import Providers from 'src/renderer/components/Providers'
+import DataTable from 'src/renderer/components/DataTable'
 
 // Live reload in development
 if (process.env.NODE_ENV !== 'production') {
@@ -56,21 +57,31 @@ function App() {
 
       <Grid>
         <Row>
-          <GLWebLogo />
           <strong>
-            glbot <Badge>from Transperfect</Badge>
+            glbot <Badge>Hello Transperfect</Badge>
           </strong>
+          <i style={{ opacity: 0.7 }}>
+            via<span>&nbsp;</span>
+          </i>
+          <GLWebLogo />
         </Row>
         <Row>
-          <Text>AI-powered Transperfect assistants</Text>
+          <Text style={{ opacity: 0.7 }}>AI-powered Transperfect assistants</Text>
         </Row>
       </Grid>
 
-      <Grid>
-        <JSONCopyPaste />
+      <Grid style={{ display: 'flex' }}>
+        <div style={{ flexShrink: 5, width: '30%' }}>
+          <JSONCopyPaste />
+        </div>
 
-        <Chat endpoint="/api/chat" />
+        <div style={{ display: 'flex', flexWrap: 'wrap', flex: 1 }}>
+          <DataTable
+            data={Array.from({ length: 15 }, () => Array.from({ length: 5 }, () => 'ss'))}
+          />
+        </div>
       </Grid>
+      <Chat endpoint="/api/chat" />
     </DefaultLayout>
   )
 }

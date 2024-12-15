@@ -79,7 +79,7 @@ const JSONCopyPaste = () => {
   ]
 
   return (
-    <Card title={'Copy/Paste JSON'}>
+    <Card title={'Control'}>
       <ActionBar items={actions} />
       <div className="JSONCopyPaste_root">
         <AnimatePresence>

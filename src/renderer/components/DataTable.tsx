@@ -1,5 +1,3 @@
-import styles from './DataTable.module.scss'
-
 import * as React from 'react'
 
 interface TableProps {
@@ -33,14 +31,14 @@ const DataTable: React.FC<TableProps> = ({ data }) => {
   const targetColorData: RGBAColor = { r: 255, g: 255, b: 255, a: ALPHA }
 
   return (
-    <table className={styles.root} ref={tableRef}>
-      <tbody className={styles.body}>
+    <table className={'DataTable_root'} ref={tableRef}>
+      <tbody className={'DataTable_body'}>
         {data.map((row, rowIndex) => (
-          <tr key={rowIndex} className={styles.row} tabIndex={0} onClick={() => alert('testing')}>
+          <tr key={rowIndex} className={'DataTable_row'} tabIndex={0} onClick={() => null}>
             {row.map((cellContent, colIndex) => {
               let backgroundColor: string
 
-              if (rowIndex === 0) {
+              if (false /*rowIndex === 0*/) {
                 const lightnessFactor = row.length > 1 ? colIndex / (row.length - 1) : 0
                 const newColor = interpolateColor(
                   BASE_FOREGROUND_RGBA,
@@ -62,7 +60,7 @@ const DataTable: React.FC<TableProps> = ({ data }) => {
               }
 
               return (
-                <td key={colIndex} className={styles.column} style={{ backgroundColor }}>
+                <td key={colIndex} className={'DataTable_column'} style={{ backgroundColor }}>
                   {cellContent}
                 </td>
               )

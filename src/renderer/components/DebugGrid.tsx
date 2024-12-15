@@ -33,7 +33,7 @@ const DebugGrid: React.FC = () => {
       debugGrid.style.display = isVisible ? 'block' : 'none'
     }
 
-    //    toggleDebugGrid()
+    toggleDebugGrid()
 
     const handleDebugGridToggle = () => toggleDebugGrid()
 

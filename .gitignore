@@ -8,3 +8,7 @@ out
 *.log*
 out.txt
 build/
+.env.local
+.env.development
+.env.production
+.env.test

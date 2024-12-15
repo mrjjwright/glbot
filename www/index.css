@@ -1427,7 +1427,7 @@ html {
   --color-white-2: hsla(0, 0%, 100%, 0.2);
   --color-white-4: hsla(0, 0%, 100%, 0.4);
   --font-family: -apple-system, BlinkMacSystemFont, helvetica neue, helvetica, sans-serif;
-  --font-family-mono: 'Geist-Mono-Regular', Consolas, monaco, monospace;
+  --font-family-mono: monaco, monospace;
   --font-family-serif: Georgia, Times New Roman, serif;
   --theme-text: var(--color-black-100);
   --theme-line-height-base: 1.25;
