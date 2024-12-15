@@ -2,7 +2,7 @@ import * as esbuild from 'esbuild'
 
 const config = {
   entryPoints: {
-    index: 'src/renderer/renderer.tsx'
+    index: 'src/renderer/App.tsx'
   },
   tsconfig: 'tsconfig.web.json',
   platform: 'browser',

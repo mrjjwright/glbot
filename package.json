@@ -11,8 +11,8 @@
     "typecheck:node": "tsc --noEmit -p tsconfig.node.json --composite false",
     "typecheck:web": "tsc --noEmit -p tsconfig.web.json --composite false",
     "typecheck": "npm run typecheck:node && npm run typecheck:web",
-    "dev": "tsx esbuild.renderer.ts --watch --serve",
-    "build": "tsx esbuild.renderer.ts",
+    "dev": "tsx esbuild.app.ts --watch --serve",
+    "build": "tsx esbuild.app.ts",
     "start": "electron main/index.js",
     "build:unpack": "npm run build && electron-builder --dir",
     "build:win": "npm run build && electron-builder --win",
@@ -20,7 +20,7 @@
     "build:linux": "npm run build && electron-builder --linux",
     "cp-sqlite-binary": "cp node_modules/better-sqlite3/build/Release/* build/",
     "rebuild": "electron-rebuild -f -w better-sqlite3",
-    "postinstall": "npm run cp-sqlite-binary"
+    "postinstall": "electron-builder install-app-deps && npm run cp-sqlite-binary"
   },
   "dependencies": {
     "@ai-sdk/google": "^1.0.10",
