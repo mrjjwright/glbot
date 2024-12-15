@@ -1434,7 +1434,3 @@ body::-webkit-scrollbar-thumb,body::-webkit-scrollbar-thumb:hover,html::-webkit-
 .JSONHistory_history > div:last-child {
     border-bottom: none;
 }
-
-:root {
-    --font-family-mono: 'ServerMono', monospace;
-}
