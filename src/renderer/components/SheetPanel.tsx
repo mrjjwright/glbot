@@ -1,14 +1,10 @@
-import DatePicker from './DatePicker'
 import Panel from './Panel'
+import Spreadsheet from './Spreadsheet'
 
 const SheetPanel = () => {
   return (
     <Panel title="Sheet">
-      <div className="SheetPanel_root">
-        <div className="SheetPanel_sidebar">
-          <DatePicker />
-        </div>
-      </div>
+      <Spreadsheet />
     </Panel>
   )
 }
