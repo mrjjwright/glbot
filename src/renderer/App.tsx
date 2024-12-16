@@ -14,7 +14,7 @@ import DebugGrid from 'src/renderer/components/DebugGrid'
 import GLWebLogo from 'src/renderer/components/GLWebLogo'
 import Providers from 'src/renderer/components/Providers'
 import DataTable from 'src/renderer/components/DataTable'
-
+import SheetPanel from 'src/renderer/components/SheetPanel'
 // Live reload in development
 if (process.env.NODE_ENV !== 'production') {
   new EventSource('/esbuild').addEventListener('change', () => location.reload())
@@ -67,6 +67,11 @@ function App() {
       <Grid>
         <Row>
           <ControlPanel />
+        </Row>
+      </Grid>
+      <Grid>
+        <Row>
+          <SheetPanel />
         </Row>
       </Grid>
     </DefaultLayout>

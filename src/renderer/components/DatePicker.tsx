@@ -1,5 +1,3 @@
-import styles from './DatePicker.module.scss'
-
 import * as React from 'react'
 
 interface DatePickerProps {
@@ -38,7 +36,7 @@ const DatePicker: React.FC<DatePickerProps> = ({ year, month }) => {
   const cells: React.ReactNode[] = []
 
   for (let i = 0; i < startingWeekday; i++) {
-    cells.push(<div key={`empty-start-${i}`} className={styles.dayCell} />)
+    cells.push(<div key={`empty-start-${i}`} className={'DatePicker_cell'} />)
   }
 
   for (let day = 1; day <= daysInMonth; day++) {
@@ -46,7 +44,7 @@ const DatePicker: React.FC<DatePickerProps> = ({ year, month }) => {
     cells.push(
       <div
         key={day}
-        className={styles.cell}
+        className={'DatePicker_cell'}
         tabIndex={0}
         aria-label={`${currentYear}-${String(currentMonth).padStart(2, '0')}-${presentationDay}`}
       >
@@ -56,7 +54,7 @@ const DatePicker: React.FC<DatePickerProps> = ({ year, month }) => {
   }
 
   while (cells.length < MAX_CELLS) {
-    cells.push(<div key={`empty-end-${cells.length}`} className={styles.dayCell} />)
+    cells.push(<div key={`empty-end-${cells.length}`} className={'DatePicker_cell'} />)
   }
 
   const onSwitchPreviousMonth = () => {
@@ -82,36 +80,36 @@ const DatePicker: React.FC<DatePickerProps> = ({ year, month }) => {
   }
 
   return (
-    <div className={styles.root}>
-      <div className={styles.controls}>
+    <div className={'DatePicker_root'}>
+      <div className={'DatePicker_controls'}>
         <button
           type="button"
-          className={styles.button}
+          className={'DatePicker_button'}
           onClick={onSwitchPreviousMonth}
           aria-label="Previous month"
         >
           ▲
         </button>
-        <div className={styles.date}>
+        <div className={'DatePicker_date'}>
           {currentYear} {MONTH_NAMES[currentMonth - 1].toUpperCase()}
         </div>
         <button
           type="button"
-          className={styles.button}
+          className={'DatePicker_button'}
           onClick={onSwitchNextMonth}
           aria-label="Next month"
         >
           ▼
         </button>
       </div>
-      <div className={styles.header}>
+      <div className={'DatePicker_header'}>
         {WEEKDAYS.map((day) => (
-          <div key={day} className={styles.cell}>
+          <div key={day} className={'DatePicker_cell'}>
             {day}
           </div>
         ))}
       </div>
-      <div className={styles.days}>{cells}</div>
+      <div className={'DatePicker_days'}>{cells}</div>
     </div>
   )
 }
