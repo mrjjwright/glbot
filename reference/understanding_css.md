@@ -324,4 +324,280 @@ position: relative;
 position: sticky;
 ```
 
+#### Selectors & Combinators
+
+Basic selectors:
+```css
+/* Tag name */
+div { }
+
+/* Class */
+.button { }
+
+/* ID */
+#header { }
+
+/* Multiple selectors */
+h1, h2, .title { }
+```
+
+Combinators:
+```css
+/* Descendant - any child/grandchild */
+.parent .child { }
+
+/* Direct child only */
+.parent > .child { }
+
+/* Adjacent sibling - right next to */
+.element + .sibling { }
+
+/* All siblings - any after */
+.element ~ .siblings { }
+```
+
+Attribute selectors:
+```css
+/* Has attribute */
+[disabled] { }
+
+/* Exact match */
+[type="checkbox"] { }
+
+/* Starts with */
+[href^="https"] { }
+
+/* Ends with */
+[src$=".png"] { }
+
+/* Contains */
+[class*="btn"] { }
+```
+
+#### Pseudo-Classes & Elements
+
+States:
+```css
+/* Mouse */
+:hover  /* hovering */
+:active /* clicking */
+
+/* Forms */
+:focus  /* selected input */
+:checked /* checked checkbox */
+:disabled /* disabled input */
+
+/* Content */
+:first-child
+:last-child
+:nth-child(2)
+:nth-child(odd)
+:empty
+```
+
+Generated content:
+```css
+/* Add content before/after */
+.button::before {
+  content: "→";
+}
+
+/* Style first letter/line */
+p::first-letter { }
+p::first-line { }
+
+/* Selection highlight */
+::selection {
+  background: yellow;
+}
+```
+
+#### Positioning & Layout Patterns
+
+Basic positioning:
+```css
+/* Relative to normal position */
+.element {
+  position: relative;
+  top: 10px;
+  left: 20px;
+}
+
+/* Absolute to nearest positioned parent */
+.element {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+/* Fixed to viewport */
+.element {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+}
+```
+
+Common centering patterns:
+```css
+/* Horizontal center for block elements */
+.center-block {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Absolute center */
+.center-absolute {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Flexbox center */
+.center-flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+```
+
+#### Flexbox
+
+Container properties:
+```css
+.flex-container {
+  display: flex;
+  
+  /* Main axis */
+  justify-content: space-between;
+  /* start | center | end | space-around */
+  
+  /* Cross axis */
+  align-items: center;
+  /* start | center | end | stretch */
+  
+  /* Single or multi-line */
+  flex-wrap: wrap;
+  
+  /* Direction */
+  flex-direction: row;
+  /* column | row-reverse | column-reverse */
+}
+```
+
+Item properties:
+```css
+.flex-item {
+  /* Growth factor */
+  flex-grow: 1;
+  
+  /* Shrink factor */
+  flex-shrink: 0;
+  
+  /* Base size */
+  flex-basis: 200px;
+  
+  /* Shorthand */
+  flex: 1 0 200px;
+}
+```
+
+#### CSS Grid
+
+Container basics:
+```css
+.grid {
+  display: grid;
+  
+  /* Fixed columns */
+  grid-template-columns: 200px 1fr 200px;
+  
+  /* Responsive columns */
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  
+  /* Named areas */
+  grid-template-areas: 
+    "header header"
+    "sidebar content"
+    "footer footer";
+    
+  /* Spacing */
+  gap: 20px;
+  /* row-gap | column-gap */
+}
+```
+
+Item placement:
+```css
+.item {
+  /* By line numbers */
+  grid-column: 1 / 3;
+  grid-row: 2 / 4;
+  
+  /* By area name */
+  grid-area: header;
+  
+  /* Span multiple */
+  grid-column: span 2;
+}
+```
+
+#### Media Queries
+
+Basic responsive design:
+```css
+/* Mobile first */
+.element {
+  width: 100%;
+}
+
+/* Tablet */
+@media (min-width: 768px) {
+  .element {
+    width: 50%;
+  }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+  .element {
+    width: 33.33%;
+  }
+}
+```
+
+Common breakpoints:
+```css
+/* Small phones */
+@media (max-width: 320px) { }
+
+/* Phones */
+@media (max-width: 480px) { }
+
+/* Tablets */
+@media (max-width: 768px) { }
+
+/* Laptops */
+@media (max-width: 1024px) { }
+
+/* Large screens */
+@media (max-width: 1200px) { }
+```
+
+Feature queries:
+```css
+/* Check for feature support */
+@supports (display: grid) {
+  .grid {
+    display: grid;
+  }
+}
+
+/* Check for multiple features */
+@supports (display: grid) and (gap: 20px) {
+  /* Grid with gap */
+}
+```
+
 
