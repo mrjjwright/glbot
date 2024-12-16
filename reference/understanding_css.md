@@ -76,6 +76,7 @@ Think of it like this:
 
 Here's the bare minimum to understand CSS transitions:
 
+
 ```css
 .element {
   /* Property you want to animate */
@@ -95,6 +96,7 @@ That's it. Transitions are just:
 - The property to animate
 - How long it takes
 - How it moves (ease/linear/etc)
+
  
 You can do multiple properties:
 
@@ -116,6 +118,122 @@ Common timing functions:
 - `ease-out` - Starts fast, gradually slows to stop.  Feels like: car braking.
 - `ease-in-out` - Gentle acceleration and deceleration.  Feels like: elevator starting/stopping
 
+A bit deeper into transitions:
+
+Transitions are triggered when their target property CHANGES. Here's exactly when:
+
+1. Class changes
+```css
+.button { opacity: 0; }
+/* Triggers when .visible is added/removed */
+.button.visible { opacity: 1; } 
+```
+
+1. State changes
+```css
+.button { opacity: 1; }
+/* Triggers on mouse enter/leave */
+.button:hover { opacity: 0.8; } 
+```
+
+1. Inline style changes
+```js
+element.style.opacity = '0'; // Triggers when changed via JS
+```
+
+1. Media query changes
+```css
+.button { opacity: 1; }
+@media (max-width: 768px) {
+  /* Triggers when viewport crosses breakpoint */
+  .button { opacity: 0.8; } 
+}
+```
+
+Transitions do NOT trigger:
+- Initial page load/element mount
+- When element is added to DOM
+- Display: none ↔️ block changes
+- Properties that can't be interpolated (like display)
+
+Pro tip: To trigger on mount, trick is:
+```css
+.button {
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+/* Add this class immediately after mount */
+.button.mounted {
+  opacity: 1;
+}
+```
+
+#### Transitions with CSS Variables
+
+CSS variables can be animated through their properties (not directly). Here's how:
+
+1. State changes:
+```css
+.Button {
+  --bg: blue;
+  background: var(--bg);
+  transition: background 0.2s;
+}
+
+.Button:hover {
+  --bg: darkblue;
+}
+```
+
+2. Media queries:
+```css
+:root {
+  --size: 100px;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --size: 200px;
+  }
+}
+
+.Box {
+  width: var(--size);
+  transition: width 0.2s;
+}
+```
+
+3. Parent class changes:
+```css
+.theme-light {
+  --color: black;
+}
+
+.theme-dark {
+  --color: white;
+}
+
+.Text {
+  color: var(--color);
+  transition: color 0.2s;
+}
+```
+
+4. Prefers color scheme:
+```css
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #000;
+  }
+}
+
+.Element {
+  background: var(--bg);
+  transition: background 0.2s;
+}
+```
+
+Note: You can only transition the properties that use the variables, not the variables themselves.
 
 #### How To Calculate Specificity
 

@@ -185,14 +185,14 @@
   background: var(--theme-focused-foreground);
 }
 
-.ActionButton_root:hover .content {
+.ActionButton_root:hover .ActionButton_content {
   box-shadow: inset 0 0 0 2px var(--theme-focused-foreground);
 }
 
-.ActionButton_root:focus .hotkey {
+.ActionButton_root:focus .ActionButton_hotkey {
   background: var(--theme-focused-foreground);
 }
 
-.ActionButton_root:focus .content {
+.ActionButton_root:focus .ActionButton_content {
   box-shadow: inset 0 0 0 2px var(--theme-focused-foreground);
 }
