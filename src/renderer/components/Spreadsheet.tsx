@@ -20,7 +20,7 @@ const SHEETS = [
   { id: 3, name: 'Sheet 3' }
 ]
 
-const MAX_CELLS = 50
+const MAX_CELLS = NUM_COLUMNS * 5
 
 const Spreadsheet: React.FC<SpreadsheetProps> = ({ activeSheet }) => {
   const [currentSheet, setSheet] = React.useState(activeSheet || 1)
