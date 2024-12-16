@@ -414,27 +414,49 @@ p::first-line { }
 
 #### Positioning & Layout Patterns
 
-Basic positioning:
+Default positioning:
 ```css
-/* Relative to normal position */
+/* Static - the default */
+position: static;
+```
+
+Every element starts with `position: static`:
+- Elements flow naturally in the document
+- Top/right/bottom/left properties do nothing
+- Can't be a positioning parent for absolute children
+- Ignores z-index
+
+Other position values:
+```css
+/* Relative - offset from natural position */
 .element {
   position: relative;
-  top: 10px;
-  left: 20px;
+  top: 10px;    /* Shifts DOWN 10px from natural position */
+  left: 20px;   /* Shifts RIGHT 20px from natural position */
+  /* Still takes up original space in document flow */
 }
 
-/* Absolute to nearest positioned parent */
+/* Absolute - removed from flow, positioned to nearest non-static parent */
 .element {
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 0;      /* Distance from parent's top edge */
+  right: 0;    /* Distance from parent's right edge */
+  /* No longer takes up space in document flow */
 }
 
-/* Fixed to viewport */
+/* Fixed - removed from flow, positioned to viewport */
 .element {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
+  bottom: 20px;  /* Distance from viewport bottom */
+  right: 20px;   /* Distance from viewport right */
+  /* Stays put even when scrolling */
+}
+
+/* Sticky - hybrid of relative and fixed */
+.element {
+  position: sticky;
+  top: 0;
+  /* Acts like relative until scroll point, then fixes */
 }
 ```
 
