@@ -231,4 +231,97 @@ const updateSpacing = (value) => {
 }
 ```
 
+#### CSS Layout Model
+
+By default, elements are either:
+
+```css
+/* Takes up full width, stack vertically */
+display: block;
+
+/* Flows like text, sits inline with content */
+display: inline;
+
+/* Hybrid - flows inline but can have width/height */
+display: inline-block;
+```
+
+Text and inline elements wrap naturally like words:
+
+```text
+This is some text with <span>inline</span> elements that
+wrap naturally at the end of lines just like normal
+words would do in a paragraph.
+
+vs
+
+[ Block elements ]
+[ Always start    ]
+[ On new lines    ]
+```
+
+Inline behavior:
+```html
+<p>
+  Some text with 
+  <span>inline elements</span> 
+  <a>that sit</a> 
+  <strong>right in the text</strong>
+  without breaking to new lines
+</p>
+```
+
+Block behavior:
+```html
+<p>This starts a new line</p>
+<div>This forces a new line</div>
+<h1>This also forces a new line</h1>
+```
+
+#### Text Editors vs CSS Flow
+
+Text Editor (Monaco):
+```text
+Every character has the same width
+| M | o | n | a | c | o |
+And lines are strictly managed
+```
+
+Browser Text Flow:
+```text
+Characters have different widths:
+|W|i|d|t|h|s| |v|a|r|y|
+"WWW" is wider than "iii"
+
+Text and elements reflow automatically:
+This is a long sentence that will
+automatically wrap to the next
+line when it reaches the edge.
+
+<span>Inline elements</span> and
+text mix freely and reflow together
+when the window resizes.
+```
+
+Key Differences:
+- Text editors: Monospace grid, every character same width
+- Browsers: Variable width, fluid layout, automatic reflow
+- Text editors: Manual line breaks
+- Browsers: Automatic wrapping based on container width
+
+Breaking out of normal flow:
+```css
+/* Element is removed from document flow */
+position: absolute;
+
+/* Fixed to viewport */
+position: fixed;
+
+/* Like absolute but relative to parent */
+position: relative;
+
+/* Stays in flow but moves with scroll */
+position: sticky;
+```
+
 
