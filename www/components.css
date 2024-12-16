@@ -6,7 +6,9 @@
    .Button_root
    .Button_icon
 
-   all modifications are handled with inline styling or props
+ anything that could be put in here, 
+ in regards to component styling, 
+  should be put in here
 */
 
 .DefaultLayout_body {
