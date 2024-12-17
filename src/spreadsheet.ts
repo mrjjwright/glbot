@@ -40,33 +40,30 @@ export function load<T>(onLoad: () => T) {
   }
 }
 
+
 export function saveCell(params: CellFromFile) {
   const { fs, path } = window.glbot
-
   const { sheetId, absolutePath, location } = params
   const { row, col } = location
 
-  // Create directory structure if it doesn't exist
-  const sheetDir = path.join(process.cwd(), `sheet_${sheetId}`)
-  const rowDir = path.join(sheetDir, `row_${row}`)
+  const sheetDir = path.join(process.cwd(), `${sheetId}_sheet`)
+  const rowDir = path.join(sheetDir, `${row}_row`)
   fs.mkdirSync(sheetDir, { recursive: true })
   fs.mkdirSync(rowDir, { recursive: true })
 
-  // Copy file to destination
-  const destPath = path.join(rowDir, `cell${col}`)
+  const ext = path.extname(absolutePath)
+  const destPath = path.join(rowDir, `${col}_cell${ext}`)
   fs.copyFileSync(absolutePath, destPath)
 }
 
-export function getSheetTrees(rootDir: string): SheetTree[] {
+export function getSheetTrees(sheetPaths: string[]): SheetTree[] {
   const { path } = window.glbot
-  const sheetPaths = getRelativePathsContainingString(rootDir, 'sheet_')
-
   const sheets = new Map<string, SheetTree>()
 
   for (const p of sheetPaths) {
     const normalizedPath = path.normalize(p)
     const parts = normalizedPath.split(path.sep)
-    const sheetMatch = parts[0].match(/^sheet_(\d+)$/)
+    const sheetMatch = parts[0].match(/^(\d+)_sheet$/)
     if (!sheetMatch) continue
 
     const sheetId = sheetMatch[1]
@@ -75,12 +72,12 @@ export function getSheetTrees(rootDir: string): SheetTree[] {
       sheet = {
         sheetId,
         rows: new Map()
-      }
+      } satisfies SheetTree
       sheets.set(sheetId, sheet)
     }
 
     if (parts.length < 2) continue
-    const rowMatch = parts[1].match(/^row_(\d+)$/)
+    const rowMatch = parts[1].match(/^(\d+)_row$/)
     if (!rowMatch) continue
 
     const rowId = parseInt(rowMatch[1])
@@ -89,16 +86,16 @@ export function getSheetTrees(rootDir: string): SheetTree[] {
       row = {
         rowId,
         cells: new Map()
-      }
+      } satisfies RowTree
       sheet.rows.set(rowId, row)
     }
 
     if (parts.length < 3) continue
-    const cellMatch = parts[2].match(/^cell_(\d+)$/)
+    const cellMatch = parts[2].match(/^(\d+)_cell/)
     if (!cellMatch) continue
 
     const colNumber = parseInt(cellMatch[1])
-    row.cells.set(colNumber, true)
+    row.cells.set(colNumber, normalizedPath)
   }
 
   return Array.from(sheets.values())

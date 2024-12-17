@@ -1,7 +1,7 @@
 
 type RowTree = {
   rowId: number
-  cells: Map<number, boolean>
+  cells: Map<number, string>
 }
 
 type SheetTree = {

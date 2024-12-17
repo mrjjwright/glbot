@@ -17,9 +17,9 @@ const NUM_COLUMNS = 7
 const COLUMNS = generateColumns(NUM_COLUMNS)
 
 const SHEETS = [
+  { id: 0, name: 'Sheet 0' },
   { id: 1, name: 'Sheet 1' },
-  { id: 2, name: 'Sheet 2' },
-  { id: 3, name: 'Sheet 3' }
+  { id: 2, name: 'Sheet 2' }
 ]
 
 const CellPicker: React.FC<CellPickerProps> = ({ activeSheet, sheetTree }) => {

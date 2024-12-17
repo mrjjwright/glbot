@@ -6,8 +6,8 @@ import Row from 'src/renderer/components/Row'
 import Badge from 'src/renderer/components/Badge'
 import GLWebLogo from 'src/renderer/components/GLWebLogo'
 import Providers from 'src/renderer/components/Providers'
-import { computed, effect } from 'alien-signals'
-import { getSheetTrees, load } from 'src/spreadsheet'
+import { computed, effect, signal } from 'alien-signals'
+import { getRelativePathsContainingString, getSheetTrees, load } from 'src/spreadsheet'
 import { useEffect, useRef, useState } from 'react'
 import Panel from './components/Panel'
 import CellPicker from './components/CellPicker'
@@ -18,14 +18,25 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 function App() {
+
+  const fs = window.glbot.fs
+  const path = window.glbot.path
+
+  const rootSheetPath = path.join(process.cwd(), 'www')
+  
   const [state, setState] = useState(0)
   const sheetTrees = useRef(
     load(() => {
-      const trees = getSheetTrees(process.cwd())
+      const sheetPaths = getRelativePathsContainingString(rootSheetPath, '_sheet')
+      const trees = getSheetTrees(sheetPaths)
       console.log('Sheet trees:', trees)
       return trees
     })
   )
+
+  // Add signal for manual cell selection
+  const _selectedCell = useRef(signal<{ path: string; extension: string } | null>(null))
+
   const selectedSheetTree = useRef(
     computed(() => {
       const sheetTreesVal = sheetTrees.current.value.get()
@@ -33,6 +44,31 @@ function App() {
     })
   )
   const effectRef = useRef<ReturnType<typeof effect>>(null!)
+
+  const selectedCell = useRef(
+    computed(() => {
+      // First check if there's a manually selected cell
+      const manualSelection = _selectedCell.current.get()
+      if (manualSelection) return manualSelection
+
+      // Otherwise fall back to first available cell
+      const tree = selectedSheetTree.current.get()
+      if (!tree) return null
+
+      // Find first cell in first row that has cells
+      for (const [_, row] of tree.rows) {
+        if (row.cells.size > 0) {
+          const colId = Array.from(row.cells.keys())[0] // Get first column
+          const cellPath = row.cells.get(colId)!
+          return {
+            path: cellPath,
+            extension: path.extname(cellPath).toLowerCase()
+          }
+        }
+      }
+      return null
+    })
+  )
 
   useEffect(() => {
     effectRef.current = effect(() => {
@@ -66,9 +102,35 @@ function App() {
         </Row>
       </Grid>
       <Grid>
-        <Row>
+        <Row style={{ display: 'flex', gap: '1rem' }}>
           <Panel title="Sheet">
             <CellPicker activeSheet={0} sheetTree={sheetTree} />
+          </Panel>
+          <Panel title="Cell Content">
+            {(() => {
+              const cell = selectedCell.current.get()
+              if (!cell) return <Text>No cell selected</Text>
+
+              switch (cell.extension) {
+                case '.png':
+                case '.jpg':
+                case '.jpeg':
+                case '.gif':
+                  return <img src={`http://localhost:8000/${cell.path}`} style={{ maxWidth: '100%' }} />
+                case '.txt':
+                case '.md':
+                  try {
+                    const content = fs.readFileSync(cell.path, 'utf-8')
+                    return <pre>{content}</pre>
+                  } catch (err) {
+                    return <Text>Error reading file: {String(err)}</Text>
+                  }
+                default:
+                  return cell.extension 
+                    ? <Text>Unsupported file type: {cell.extension}</Text>
+                    : <Text>File has no extension</Text>
+              }
+            })()}
           </Panel>
         </Row>
       </Grid>
