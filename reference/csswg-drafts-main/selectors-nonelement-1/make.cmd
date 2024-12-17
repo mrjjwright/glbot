@@ -1,1 +1,0 @@
-@curl https://api.csswg.org/bikeshed/ -F file=@Overview.bs > Overview.html

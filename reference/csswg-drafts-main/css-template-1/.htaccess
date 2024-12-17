@@ -1,5 +1,0 @@
-AddType text/html;charset=utf-8 .html
-
-RewriteEngine on
-RewriteBase /
-RewriteRule default.css http://dev.w3.org/csswg/default.css [R=302,L]
