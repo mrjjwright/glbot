@@ -6,7 +6,6 @@ import Row from 'src/renderer/components/Row'
 import Badge from 'src/renderer/components/Badge'
 import GLWebLogo from 'src/renderer/components/GLWebLogo'
 import Providers from 'src/renderer/components/Providers'
-import SheetPanel from 'src/renderer/components/SheetPanel'
 import { computed, effect } from 'alien-signals'
 import { getSheetTrees, load } from 'src/spreadsheet'
 import { useEffect, useRef, useState } from 'react'
@@ -49,8 +48,6 @@ function App() {
   }, [])
 
   const sheetTree = selectedSheetTree.current.get()
-
-  debugger
 
   return (
     <DefaultLayout previewPixelSRC="/assets/glweb.svg">
