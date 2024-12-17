@@ -34,7 +34,7 @@ async function build() {
 // Process command line and run
 if (!process.argv.includes('--minify')) {
   build()
-  watch()
+  // watch()
 } else {
   build()
     .then(() => process.exit(0))
