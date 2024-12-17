@@ -1,3 +1,32 @@
+#### Specification
+
+```
+CSS Core Specification/
+├── Visual Formatting Model/
+│   ├── Box Model/
+│   │   ├── Physical Properties
+│   │   ├── Logical Properties
+│   │   └── Box Sizing
+│   ├── Layout Models/
+│   │   ├── Normal Flow
+│   │   ├── Flexbox
+│   │   └── Grid
+│   └── Positioning/
+│       ├── Static
+│       ├── Relative
+│       ├── Absolute
+│       ├── Fixed
+│       └── Sticky
+├── Visual Effects/
+│   ├── Colors
+│   ├── Backgrounds
+│   └── Transforms
+└── Typography/
+    ├── Fonts
+    ├── Text Properties
+    └── Writing Modes
+```
+    
 #### Box Model
 
 Every element is a box with 4 layers (inside to out):
