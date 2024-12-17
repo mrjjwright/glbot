@@ -1,12 +1,11 @@
 {
   "extends": "@electron-toolkit/tsconfig/tsconfig.web.json",
   "include": [
-    "src/renderer/**/*",
     "types/*.d.ts",
+    "src/renderer/**/*",
     "src/spreadsheet.ts"
   ],
   "compilerOptions": {
-    "composite": true,
     "jsx": "react-jsx",
     "baseUrl": ".",
     "rootDir": "."

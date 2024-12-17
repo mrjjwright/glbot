@@ -52,7 +52,7 @@ async function startServer() {
   let { host, port } = await ctx.serve({
     servedir: 'www'
   })
-  console.log(`GLBot is running at http://${host}:${port}`)
+  console.log(`glbot is running at http://${host}:${port}`)
 }
 
 if (process.argv.includes('--serve')) {

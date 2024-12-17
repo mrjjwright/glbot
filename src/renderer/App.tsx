@@ -7,48 +7,37 @@ import Badge from 'src/renderer/components/Badge'
 import GLWebLogo from 'src/renderer/components/GLWebLogo'
 import Providers from 'src/renderer/components/Providers'
 import SheetPanel from 'src/renderer/components/SheetPanel'
-import { signal, effect, computed } from 'alien-signals'
-import { getRelativePathsContainingString } from 'src/spreadsheet'
-import { useEffect, useState } from 'react'
+import { effect } from 'alien-signals'
+import { getSheetTrees, load } from 'src/spreadsheet'
+import { useEffect, useRef, useState } from 'react'
 
 // Live reload in development
 if (process.env.NODE_ENV !== 'production') {
   new EventSource('/esbuild').addEventListener('change', () => location.reload())
 }
 
-function loadModel() {
-  const load = signal(false)
-  const sheetPaths = computed(() => {
-    const { path } = window.glbot
-
-    if (load.get()) {
-      return getRelativePathsContainingString(path.join(process.cwd()), 'sheet_')
-    }
-    return []
-  })
-
-  effect(() => {
-    console.log(sheetPaths.get())
-  })
-
-  return {
-    load,
-    sheetPaths
-  }
-}
-
 function App() {
   const [state, setState] = useState(0)
-  const model = loadModel()
+  const sheetTrees = useRef(
+    load(() => {
+      const trees = getSheetTrees(process.cwd())
+      console.log('Sheet trees:', trees)
+      return trees
+    })
+  )
+  const effectRef = useRef<ReturnType<typeof effect>>(null!)
 
   useEffect(() => {
-    model.load.set(true)
-
-    effect(() => {
-      if (model.sheetPaths.get().length > 0) {
+    effectRef.current = effect(() => {
+      const trees = sheetTrees.current.value.get()
+      if (trees && trees.length > 0) {
         setState(state + 1)
       }
     })
+
+    sheetTrees.current.load.set(true)
+
+    return () => effectRef.current.stop()
   }, [])
 
   return (
