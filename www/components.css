@@ -270,3 +270,16 @@
   background: var(--theme-focused-foreground);
   color: var(--theme-background);
 }
+
+.App_grid1 {
+  display: flex;
+  margin:  var(--line) var(--space-2x)
+}
+
+.App_grid1:first-child {
+  margin-top: var(--space);
+}
+
+.App_grid1 > * {
+  flex:1;
+}
