@@ -1,5 +1,7 @@
 import { initDb } from 'src/db-init'
 import { simpleGit, SimpleGit } from 'simple-git'
+import * as fs from 'fs'
+import * as path from 'path'
 
 console.log('db loaded', document)
 
@@ -18,11 +20,8 @@ async function main() {
         console.log(`git.${method} ${stage} stage ${progress}% complete`)
       }
     })
-
-    if (process.env.NODE_ENV === 'development') {
-      window.db = db
-      window.git = git // Make git available in dev tools
-    }
+    window.glbot = { fs, path, db, git }
+    console.log('glbot', window.glbot)
   } catch (error) {
     console.error('Failed to initialize:', error)
     throw error

@@ -1,4 +1,12 @@
-interface Window {
-  db: Database
-  git: SimpleGit
+import { PlatformPath } from 'path'
+
+declare global {
+  interface Window {
+    glbot: {
+      db: Database
+      git: SimpleGit
+      fs: any
+      path: PlatformPath
+    }
+  }
 }

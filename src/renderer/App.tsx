@@ -19,7 +19,7 @@ if (process.env.NODE_ENV !== 'production') {
 function loadModel() {
   const load = signal(false)
   const sheetPaths = computed(() => {
-    const path = require('path')
+    const { path } = window.glbot
 
     if (load.get()) {
       return getRelativePathsContainingString(path.join(process.cwd()), 'sheet_')
