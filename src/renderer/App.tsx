@@ -7,9 +7,11 @@ import Badge from 'src/renderer/components/Badge'
 import GLWebLogo from 'src/renderer/components/GLWebLogo'
 import Providers from 'src/renderer/components/Providers'
 import SheetPanel from 'src/renderer/components/SheetPanel'
-import { effect } from 'alien-signals'
+import { computed, effect } from 'alien-signals'
 import { getSheetTrees, load } from 'src/spreadsheet'
 import { useEffect, useRef, useState } from 'react'
+import Panel from './components/Panel'
+import CellPicker from './components/CellPicker'
 
 // Live reload in development
 if (process.env.NODE_ENV !== 'production') {
@@ -23,6 +25,12 @@ function App() {
       const trees = getSheetTrees(process.cwd())
       console.log('Sheet trees:', trees)
       return trees
+    })
+  )
+  const selectedSheetTree = useRef(
+    computed(() => {
+      const sheetTreesVal = sheetTrees.current.value.get()
+      return sheetTreesVal && sheetTreesVal.length ? sheetTreesVal[0] : undefined
     })
   )
   const effectRef = useRef<ReturnType<typeof effect>>(null!)
@@ -39,6 +47,10 @@ function App() {
 
     return () => effectRef.current.stop()
   }, [])
+
+  const sheetTree = selectedSheetTree.current.get()
+
+  debugger
 
   return (
     <DefaultLayout previewPixelSRC="/assets/glweb.svg">
@@ -58,7 +70,9 @@ function App() {
       </Grid>
       <Grid>
         <Row>
-          <SheetPanel />
+          <Panel title="Sheet">
+            <CellPicker activeSheet={0} sheetTree={sheetTree} />
+          </Panel>
         </Row>
       </Grid>
     </DefaultLayout>

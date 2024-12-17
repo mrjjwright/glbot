@@ -2,7 +2,9 @@ import * as React from 'react'
 
 interface CellPickerProps {
   activeSheet?: number
+  sheetTree?: SheetTree
 }
+
 const generateColumns = (numColumns: number): string[] => {
   const columns: string[] = []
   for (let i = 0; i < numColumns; i++) {
@@ -20,18 +22,25 @@ const SHEETS = [
   { id: 3, name: 'Sheet 3' }
 ]
 
-const MAX_CELLS = NUM_COLUMNS * 5
-
-const CellPicker: React.FC<CellPickerProps> = ({ activeSheet }) => {
+const CellPicker: React.FC<CellPickerProps> = ({ activeSheet, sheetTree }) => {
   const [currentSheet, setSheet] = React.useState(activeSheet || 1)
   const cells: React.ReactNode[] = []
 
-  for (let i = 0; i < MAX_CELLS; i++) {
-    cells.push(
-      <div key={i} className={'CellPicker_cell'} tabIndex={0} aria-label={`Cell-${i}`}>
-        {'test'}
-      </div>
-    )
+  for (let row = 0; row < 5; row++) {
+    for (let col = 0; col < NUM_COLUMNS; col++) {
+      const rowTree = sheetTree?.rows.get(row)
+      const isActive = rowTree?.cells.get(col) || false
+      cells.push(
+        <div
+          key={`${row}-${col}`}
+          className={`CellPicker_cell${isActive ? ' CellPicker_cell--active' : ''}`}
+          tabIndex={0}
+          aria-label={`${COLUMNS[col]}${row + 1}`}
+        >
+          {isActive ? '•' : ''}
+        </div>
+      )
+    }
   }
 
   const onSwitchPreviousSheet = () => {

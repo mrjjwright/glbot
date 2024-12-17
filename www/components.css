@@ -260,3 +260,13 @@
 .CellPicker_cell:focus {
   background: var(--theme-focused-foreground);
 }
+
+.CellPicker_cell--active {
+  background: var(--theme-focused-background);
+  color: var(--theme-focused-foreground);
+}
+
+.CellPicker_cell--active:focus {
+  background: var(--theme-focused-foreground);
+  color: var(--theme-background);
+}

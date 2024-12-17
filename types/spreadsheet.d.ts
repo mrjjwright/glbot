@@ -1,12 +1,12 @@
 
 type RowTree = {
-  rowId: string
+  rowId: number
   cells: Map<number, boolean>
 }
 
 type SheetTree = {
   sheetId: string
-  rows: Map<string, RowTree>
+  rows: Map<row, RowTree>
 }
 
 type CellLocation = {

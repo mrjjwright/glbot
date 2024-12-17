@@ -83,7 +83,7 @@ export function getSheetTrees(rootDir: string): SheetTree[] {
     const rowMatch = parts[1].match(/^row_(\d+)$/)
     if (!rowMatch) continue
 
-    const rowId = rowMatch[1]
+    const rowId = parseInt(rowMatch[1])
     let row = sheet.rows.get(rowId)
     if (!row) {
       row = {
@@ -94,7 +94,7 @@ export function getSheetTrees(rootDir: string): SheetTree[] {
     }
 
     if (parts.length < 3) continue
-    const cellMatch = parts[2].match(/^cell(\d+)$/)
+    const cellMatch = parts[2].match(/^cell_(\d+)$/)
     if (!cellMatch) continue
 
     const colNumber = parseInt(cellMatch[1])

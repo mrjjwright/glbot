@@ -8,6 +8,7 @@ A minimalist AI-powered tool for working with Transperfect services locally and 
 - Modify profiles through chat or preset actions
 - Download updated profile configurations
 - Monospace interface optimized for configuration viewing
+- Visual spreadsheet cell mapping with git integration
 
 ## Technical Stack
 
