@@ -1,10 +1,10 @@
 import Panel from './Panel'
-import Spreadsheet from './Spreadsheet'
+import CellPicker from './CellPicker'
 
 const SheetPanel = () => {
   return (
     <Panel title="Sheet">
-      <Spreadsheet />
+      <CellPicker />
     </Panel>
   )
 }
