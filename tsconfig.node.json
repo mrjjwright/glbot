@@ -4,7 +4,8 @@
     "src/main/**/*",
     "src/preload/**/*",
     "src/db-init.ts",
-    "types/*.d.ts"
+    "types/*.d.ts",
+    "src/spreadsheet.ts"
   ],
   "compilerOptions": {
     "composite": true,

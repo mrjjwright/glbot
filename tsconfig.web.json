@@ -3,6 +3,7 @@
   "include": [
     "src/renderer/**/*",
     "types/*.d.ts",
+    "src/spreadsheet.ts"
   ],
   "compilerOptions": {
     "composite": true,

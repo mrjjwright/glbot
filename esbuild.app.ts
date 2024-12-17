@@ -5,8 +5,8 @@ const config = {
     index: 'src/renderer/App.tsx'
   },
   tsconfig: 'tsconfig.web.json',
-  platform: 'browser',
-  target: ['chrome131'],
+  platform: 'node',
+  target: ['chrome131', 'node20'],
   bundle: true,
   outdir: 'www/js',
   assetNames: '[name]-[hash]',

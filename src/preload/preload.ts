@@ -19,13 +19,7 @@ async function main() {
       }
     })
 
-    const api = {
-      db,
-      git // Expose git instance to renderer
-    }
-
     if (process.env.NODE_ENV === 'development') {
-      window.electron = api
       window.db = db
       window.git = git // Make git available in dev tools
     }

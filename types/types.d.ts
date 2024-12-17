@@ -1,16 +1,16 @@
 /// <reference types="vite/client" />
 
-declare module "*.txt" {
+declare module '*.txt' {
   const content: string
   export default content
 }
 
-declare module "*.md" {
+declare module '*.md' {
   const content: string
   export default content
 }
 
-declare module "*.xml" {
+declare module '*.xml' {
   const content: string
   export default content
 }
@@ -45,9 +45,4 @@ interface Statement {
 interface RunResult {
   changes: number
   lastInsertRowid: number | bigint
-}
-
-interface Window {
-  electron: ElectronAPI
-  db: Database
 }

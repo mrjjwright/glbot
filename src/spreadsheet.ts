@@ -1,18 +1,8 @@
-import * as fs from 'fs'
-import * as path from 'path'
-
-import { simpleGit } from 'simple-git'
-
-interface Cell {}
-
-interface Sheet {
-  name: Cell
-  signals: Map<string, Cell>
-  // add more ihere if needed
-}
-
-function getRelativePathsContainingString(dir: string, searchString: string): string[] {
+export function getRelativePathsContainingString(dir: string, searchString: string): string[] {
   let results: string[] = []
+
+  const fs = require('fs')
+  const path = require('path')
 
   function recursiveSearch(currentDir: string) {
     const files = fs.readdirSync(currentDir)
