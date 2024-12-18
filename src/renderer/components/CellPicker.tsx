@@ -16,6 +16,7 @@ const generateColumns = (numColumns: number): string[] => {
 }
 
 const NUM_COLUMNS = 7
+const NUM_ROWS = 20
 const COLUMNS = generateColumns(NUM_COLUMNS)
 
 const SHEETS = [
@@ -28,7 +29,7 @@ const CellPicker: React.FC<CellPickerProps> = ({ activeSheet, sheetTree, selecte
   const [currentSheet, setSheet] = React.useState(activeSheet || 1)
   const cells: React.ReactNode[] = []
 
-  for (let row = 0; row < 5; row++) {
+  for (let row = 0; row < NUM_ROWS; row++) {
     for (let col = 0; col < NUM_COLUMNS; col++) {
       const hasContent = sheetTree?.rows.get(row)?.cells.get(col) !== undefined
       const isSelected = row === selectedCell.row && col === selectedCell.col
