@@ -6,6 +6,7 @@ interface CellPickerProps {
   sheetTree: SheetTree
   selectedCell: CellLocation
   onCellClick: (cell: CellLocationWithPath) => void;
+  onFileDrop?: (file: File, location: CellLocation) => void;
 }
 
 const generateColumns = (numColumns: number): string[] => {
@@ -26,22 +27,59 @@ const SHEETS = [
   { id: 2, name: 'Sheet 2' }
 ]
 
-const CellPicker: React.FC<CellPickerProps> = ({ activeSheet, sheetTree, selectedCell, onCellClick }) => {
-  const [currentSheet, setSheet] = React.useState(activeSheet || 1)
+const CellPicker: React.FC<CellPickerProps> = ({ 
+  activeSheet, 
+  sheetTree, 
+  selectedCell, 
+  onCellClick,
+  onFileDrop 
+}) => {
+  const [currentSheet, setSheet] = React.useState(activeSheet)
+  const [dragState, setDragState] = React.useState<DragState>({
+    isDragging: false,
+    canDrop: false
+  });
   const cells: React.ReactNode[] = []
 
   for (let row = 0; row < NUM_ROWS; row++) {
     for (let col = 0; col < NUM_COLUMNS; col++) {
       const cell = sheetTree?.rows.get(row)?.cells.get(col)
       const isSelected = row === selectedCell.row && col === selectedCell.col
+      const isDragTarget = dragState.cellLocation?.row === row && dragState.cellLocation?.col === col
+
       cells.push(
         <div
           key={`${row}-${col}`}
           onClick={() => cell ? onCellClick(cell): null}
           className={classes('CellPicker_cell', {
             'CellPicker_cell--active': !!cell,
-            'CellPicker_cell--selected': isSelected
+            'CellPicker_cell--selected': isSelected,
+            'CellPicker_cell--dragOver': isDragTarget && dragState.canDrop
           })}
+          onDragOver={(e: React.DragEvent<HTMLDivElement>) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const items = Array.from(e.dataTransfer.items);
+            const canDrop = items.some(item => item.kind === 'file');
+            setDragState({ 
+              isDragging: true, 
+              canDrop,
+              cellLocation: { row, col },
+              dragEvent: e
+            });
+          }}
+          onDragLeave={() => {
+            setDragState({ isDragging: false, canDrop: false });
+          }}
+          onDrop={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const files = Array.from(e.dataTransfer.files);
+            if (files.length > 0 && onFileDrop) {
+              onFileDrop(files[0], { row, col });
+            }
+            setDragState({ isDragging: false, canDrop: false });
+          }}
           tabIndex={0}
           aria-label={`${COLUMNS[col]}${row + 1}`}
         >
@@ -53,14 +91,14 @@ const CellPicker: React.FC<CellPickerProps> = ({ activeSheet, sheetTree, selecte
 
   const onSwitchPreviousSheet = () => {
     const newSheet = currentSheet - 1
-    if (newSheet >= 1) {
+    if (newSheet >= 0) {
       setSheet(newSheet)
     }
   }
 
   const onSwitchNextSheet = () => {
     const newSheet = currentSheet + 1
-    if (newSheet <= 3) {
+    if (newSheet < SHEETS.length) {
       setSheet(newSheet)
     }
   }
@@ -79,7 +117,7 @@ const CellPicker: React.FC<CellPickerProps> = ({ activeSheet, sheetTree, selecte
         >
           ◄
         </button>
-        <div className={'CellPicker_sheet'}>{SHEETS[currentSheet - 1].name}</div>
+        <div className={'CellPicker_sheet'}>{SHEETS[currentSheet].name}</div>
         <button
           type="button"
           className={'CellPicker_button'}

@@ -272,6 +272,11 @@
   height: var(--line);
 }
 
+.CellPicker_cell--dragOver {
+  background-color: rgba(0, 255, 0, 0.2);
+  border: 2px dashed #4CAF50;
+}
+
 .CellPicker_cell:focus {
   background: var(--theme-focused-foreground);
 }

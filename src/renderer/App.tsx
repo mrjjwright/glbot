@@ -7,7 +7,7 @@ import Badge from 'src/renderer/components/Badge'
 import GLWebLogo from 'src/renderer/components/GLWebLogo'
 import Providers from 'src/renderer/components/Providers'
 import { computed, effect, signal } from 'alien-signals'
-import { getRelativePathsContainingString, getSheetTrees, load, saveCell } from 'src/spreadsheet'
+import { getRelativePathsContainingString, getSheetTrees, load, saveCellFromBuffer } from 'src/spreadsheet'
 import { useEffect, useRef, useState } from 'react'
 import Panel from './components/Panel'
 import CellPicker from './components/CellPicker'
@@ -57,21 +57,6 @@ function Model() {
     return sheetTreesVal && sheetTreesVal.length ? sheetTreesVal[0] : undefined
   })
 
-  const chosenFile = signal<string | null>(null)
-
-  effect(() => {
-    const file = chosenFile.get()
-    const cell = selectedCell.get()
-
-    if (file && cell) {
-      saveCell({
-        sheetId: '0',
-        absolutePath: file,
-        location: cell.location
-      })
-      sheetTrees.load.set(sheetTrees.load.get() + 1)
-    }
-  })
 
   return {
     state,
@@ -79,29 +64,25 @@ function Model() {
     _selectedCell,
     selectedCell,
     selectedSheetTree,
-    chosenFile
   }
 }
 
 function App() {
   const path = window.glbot.path
-
   const [state, setState] = useState(0)
   const model = useRef(Model())
-  const effectRef = useRef<ReturnType<typeof effect>>(null!)
+
   const rootSheetPath = path.join(process.cwd(), 'www')
 
   useEffect(() => {
-    effectRef.current = effect(() => {
+    const subscription = effect(() => {
       model.current.sheetTrees.value.get()
       model.current.selectedCell.get()
-      console.log('State:', state)
-      setState((s) => s + 1)
+      setState(s => s + 1)
     })
 
     model.current.sheetTrees.load.set(model.current.sheetTrees.load.get() + 1)
-
-    return () => effectRef.current.stop()
+    return () => subscription.stop()
   }, [])
 
   const sheetTree = model.current.selectedSheetTree.get()
@@ -114,6 +95,21 @@ function App() {
     //   model.current.chosenFile.set(result.filePaths[0])
     // }
   }
+
+  const handleFileDrop = async (file: File, cellLocation: CellLocation) => {
+    const buffer = await file.arrayBuffer();
+    
+    saveCellFromBuffer({
+      sheetId: '0',
+      buffer,
+      fileName: file.name,
+      cellLocation: cellLocation,
+    });
+
+    // Reload sheet trees
+    model.current.sheetTrees.load.set(model.current.sheetTrees.load.get() + 1);
+  };
+
   console.log('selectedCell', selectedCell, state)
 
   return (
@@ -140,6 +136,7 @@ function App() {
               sheetTree={sheetTree!}
               selectedCell={selectedCell!.location}
               onCellClick={handleCellClick}
+              onFileDrop={handleFileDrop}
             />
           </Panel>
         )}

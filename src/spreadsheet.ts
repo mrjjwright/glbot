@@ -40,12 +40,36 @@ export function load<T>(onLoad: () => T) {
   }
 }
 
+export function saveCellFromBuffer(params: {
+  sheetId: string
+  buffer: ArrayBuffer
+  fileName: string
+  cellLocation: CellLocation
+}) {
+  const { fs, path } = window.glbot
+  const { sheetId, buffer, fileName, cellLocation } = params
+  const { row, col } = cellLocation
+
+  const rootPath = path.join(process.cwd(), 'www')
+  const sheetDir = path.join(rootPath, `${sheetId}_sheet`)
+  const rowDir = path.join(sheetDir, `${row}_row`)
+
+  fs.mkdirSync(rootPath, { recursive: true })
+  fs.mkdirSync(sheetDir, { recursive: true })
+  fs.mkdirSync(rowDir, { recursive: true })
+
+  const ext = path.extname(fileName)
+  const destPath = path.join(rowDir, `${col}_cell${ext}`)
+  fs.writeFileSync(destPath, Buffer.from(buffer))
+}
+
 export function saveCell(params: CellFromFile) {
   const { fs, path } = window.glbot
   const { sheetId, absolutePath, location } = params
   const { row, col } = location
 
-  const sheetDir = path.join(process.cwd(), `${sheetId}_sheet`)
+  const rootPath = path.join(process.cwd(), 'www')
+  const sheetDir = path.join(rootPath, `${sheetId}_sheet`)
   const rowDir = path.join(sheetDir, `${row}_row`)
   fs.mkdirSync(sheetDir, { recursive: true })
   fs.mkdirSync(rowDir, { recursive: true })
