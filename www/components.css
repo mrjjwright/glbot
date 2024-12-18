@@ -202,10 +202,12 @@
 }
 
 .CellPicker_root {
+  font-size: 8px;
   display: flex;
   flex-direction: column;
   user-select: none;
-  width: 100%;
+  --width: calc(var(--grid-columns) * var(--space) * 10);
+  width: var(--width);
   max-height: 100%;
 }
 
@@ -226,7 +228,7 @@
   line-height: calc(var(--theme-line-height-base) * 1em);
   margin: 0;
   outline: 0;
-  padding: 0 1ch 0 1ch;
+  padding: 0 var(--space-2x) 0 ;
 }
 
 .CellPicker_button:focus {
@@ -263,10 +265,11 @@
 }
 
 .CellPicker_cell {
+  font-size: 8px;
   outline: none;
   border: 1px solid var(--theme-border-subdued);
   text-align: center;
-  width: calc(7 * var(--space));
+  width: calc(10 * var(--space));
   height: var(--line);
 }
 
