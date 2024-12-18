@@ -201,10 +201,11 @@
 }
 
 .CellPicker_root {
+  font-size: 12px;
   display: flex;
   flex-direction: column;
   user-select: none;
-  --cell-width-chars: 5;
+  --cell-width-chars:10;
   --cell-width: calc(var(--cell-width-chars) * var(--space));
   width: calc(var(--grid-columns) * var(--space) * var(--cell-width-chars));
   max-height: 100%;

@@ -17,8 +17,8 @@ const generateColumns = (numColumns: number): string[] => {
   return columns
 }
 
-const NUM_COLUMNS = 7
-const NUM_ROWS = 20
+const NUM_COLUMNS = 8
+const NUM_ROWS = 4
 const COLUMNS = generateColumns(NUM_COLUMNS)
 
 const SHEETS = [
