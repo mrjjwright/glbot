@@ -18,7 +18,7 @@ const generateColumns = (numColumns: number): string[] => {
 }
 
 const NUM_COLUMNS = 8
-const NUM_ROWS = 4
+const NUM_ROWS = 10
 const COLUMNS = generateColumns(NUM_COLUMNS)
 
 const SHEETS = [
@@ -83,7 +83,7 @@ const CellPicker: React.FC<CellPickerProps> = ({
           tabIndex={0}
           aria-label={`${COLUMNS[col]}${row + 1}`}
         >
-          {cell ? '•' : '123456789'}
+          {cell ? '•' : ''}
         </div>
       )
     }
