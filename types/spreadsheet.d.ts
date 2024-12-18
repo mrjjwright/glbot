@@ -1,4 +1,3 @@
-
 type RowTree = {
   rowId: number
   cells: Map<number, string>
@@ -12,6 +11,12 @@ type SheetTree = {
 type CellLocation = {
   row: number
   col: number
+}
+
+type CellLocationWithPath = {
+  location: CellLocation
+  path: string
+  extension: string
 }
 
 type CellFromFile = {

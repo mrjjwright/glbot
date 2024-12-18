@@ -1,8 +1,10 @@
 import * as React from 'react'
+import { classes } from '../utils/classes'
 
 interface CellPickerProps {
-  activeSheet?: number
-  sheetTree?: SheetTree
+  activeSheet: number
+  sheetTree: SheetTree
+  selectedCell: CellLocation
 }
 
 const generateColumns = (numColumns: number): string[] => {
@@ -22,18 +24,22 @@ const SHEETS = [
   { id: 2, name: 'Sheet 2' }
 ]
 
-const CellPicker: React.FC<CellPickerProps> = ({ activeSheet, sheetTree }) => {
+const CellPicker: React.FC<CellPickerProps> = ({ activeSheet, sheetTree, selectedCell }) => {
   const [currentSheet, setSheet] = React.useState(activeSheet || 1)
   const cells: React.ReactNode[] = []
 
   for (let row = 0; row < 5; row++) {
     for (let col = 0; col < NUM_COLUMNS; col++) {
       const rowTree = sheetTree?.rows.get(row)
-      const isActive = rowTree?.cells.get(col) || false
+      const isActive = !!rowTree?.cells.get(col) || false
+      const isSelected = row === selectedCell.row && col === selectedCell.col
       cells.push(
         <div
           key={`${row}-${col}`}
-          className={`CellPicker_cell${isActive ? ' CellPicker_cell--active' : ''}`}
+          className={classes('CellPicker_cell', {
+            'CellPicker_cell--active': isActive,
+            'CellPicker_cell--selected': isSelected
+          })}
           tabIndex={0}
           aria-label={`${COLUMNS[col]}${row + 1}`}
         >

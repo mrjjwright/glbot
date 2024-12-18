@@ -30,9 +30,9 @@ function Model() {
     return trees
   })
 
-  const _selectedCell = signal<{ path: string; extension: string } | null>(null)
+  const _selectedCell = signal<CellLocationWithPath | null>(null)
 
-  const selectedCell = computed(() => {
+  const selectedCell = computed<CellLocationWithPath | null>(() => {
     // First check if there's a manually selected cell
     const manualSelection = _selectedCell.get()
     if (manualSelection) return manualSelection
@@ -47,9 +47,10 @@ function Model() {
         const colId = Array.from(row.cells.keys())[0] // Get first column
         const cellPath = row.cells.get(colId)!
         return {
+          location: { row: row.rowId, col: colId },
           path: cellPath,
           extension: path.extname(cellPath).toLowerCase()
-        }
+        } satisfies CellLocationWithPath
       }
     }
     return null
@@ -89,6 +90,7 @@ function App() {
   }, [])
 
   const sheetTree = model.current.selectedSheetTree.get()
+  const selectedCell = model.current.selectedCell.get()
 
   return (
     <DefaultLayout previewPixelSRC="/assets/glweb.svg">
@@ -107,9 +109,15 @@ function App() {
         </Row>
       </Grid>
       <Grid className="App_grid1">
-        <Panel title="Sheet">
-          <CellPicker activeSheet={0} sheetTree={sheetTree} />
-        </Panel>
+        {sheetTree && selectedCell && (
+          <Panel title="Sheet">
+            <CellPicker
+              activeSheet={0}
+              sheetTree={sheetTree!}
+              selectedCell={selectedCell!.location}
+            />
+          </Panel>
+        )}
         <Panel title="Cell Content">
           {(() => {
             const cell = model.current.selectedCell.get()

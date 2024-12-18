@@ -266,9 +266,8 @@
   color: var(--theme-focused-foreground);
 }
 
-.CellPicker_cell--active:focus {
-  background: var(--theme-focused-foreground);
-  color: var(--theme-background);
+.CellPicker_cell--selected {
+  border: 1px solid var(--theme-focused-foreground); 
 }
 
 .App_grid1 {
