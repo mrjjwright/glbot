@@ -82,7 +82,7 @@
 
   overflow-x: auto;
   overflow-y: hidden;
-
+  height: 100%;
   scrollbar-width: none;
 }
 
@@ -253,8 +253,9 @@
 .CellPicker_cell {
   outline: none;
   border: 1px solid var(--theme-border-subdued);
-  padding: 0 var(--space) 0 var(--space);
   text-align: center;
+  width: calc(3 * var(--space));
+  height: var(--line);
 }
 
 .CellPicker_cell:focus {

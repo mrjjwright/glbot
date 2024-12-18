@@ -30,20 +30,19 @@ const CellPicker: React.FC<CellPickerProps> = ({ activeSheet, sheetTree, selecte
 
   for (let row = 0; row < 5; row++) {
     for (let col = 0; col < NUM_COLUMNS; col++) {
-      const rowTree = sheetTree?.rows.get(row)
-      const isActive = !!rowTree?.cells.get(col) || false
+      const hasContent = sheetTree?.rows.get(row)?.cells.get(col) !== undefined
       const isSelected = row === selectedCell.row && col === selectedCell.col
       cells.push(
         <div
           key={`${row}-${col}`}
           className={classes('CellPicker_cell', {
-            'CellPicker_cell--active': isActive,
+            'CellPicker_cell--active': hasContent,
             'CellPicker_cell--selected': isSelected
           })}
           tabIndex={0}
           aria-label={`${COLUMNS[col]}${row + 1}`}
         >
-          {isActive ? '•' : ''}
+          {hasContent ? '•' : ''}
         </div>
       )
     }
