@@ -7,11 +7,17 @@ import Badge from 'src/renderer/components/Badge'
 import GLWebLogo from 'src/renderer/components/GLWebLogo'
 import Providers from 'src/renderer/components/Providers'
 import { computed, effect, signal } from 'alien-signals'
-import { getRelativePathsContainingString, getSheetTrees, load, saveCellFromBuffer } from 'src/spreadsheet'
+import {
+  getRelativePathsContainingString,
+  getSheetTrees,
+  load,
+  saveCellFromBuffer
+} from 'src/spreadsheet'
 import { useEffect, useRef, useState } from 'react'
 import Panel from './components/Panel'
 import CellPicker from './components/CellPicker'
 import CellContent from './components/CellContent'
+import DebugGrid from './components/DebugGrid'
 
 // Live reload in development
 if (process.env.NODE_ENV !== 'production') {
@@ -57,13 +63,12 @@ function Model() {
     return sheetTreesVal && sheetTreesVal.length ? sheetTreesVal[0] : undefined
   })
 
-
   return {
     state,
     sheetTrees,
     _selectedCell,
     selectedCell,
-    selectedSheetTree,
+    selectedSheetTree
   }
 }
 
@@ -78,7 +83,7 @@ function App() {
     const subscription = effect(() => {
       model.current.sheetTrees.value.get()
       model.current.selectedCell.get()
-      setState(s => s + 1)
+      setState((s) => s + 1)
     })
 
     model.current.sheetTrees.load.set(model.current.sheetTrees.load.get() + 1)
@@ -97,23 +102,24 @@ function App() {
   }
 
   const handleFileDrop = async (file: File, cellLocation: CellLocation) => {
-    const buffer = await file.arrayBuffer();
-    
+    const buffer = await file.arrayBuffer()
+
     saveCellFromBuffer({
       sheetId: '0',
       buffer,
       fileName: file.name,
-      cellLocation: cellLocation,
-    });
+      cellLocation: cellLocation
+    })
 
     // Reload sheet trees
-    model.current.sheetTrees.load.set(model.current.sheetTrees.load.get() + 1);
-  };
+    model.current.sheetTrees.load.set(model.current.sheetTrees.load.get() + 1)
+  }
 
   console.log('selectedCell', selectedCell, state)
 
   return (
     <DefaultLayout previewPixelSRC="/assets/glweb.svg">
+      <DebugGrid />
       <Grid>
         <Row>
           <strong>
@@ -128,28 +134,30 @@ function App() {
           <Text className="text-subdued">interact less, collaborate more</Text>
         </Row>
       </Grid>
-      <Grid className="App_grid1">
-        {sheetTree && selectedCell && (
-          <Panel title="Sheet">
-            <CellPicker
-              activeSheet={0}
-              sheetTree={sheetTree!}
-              selectedCell={selectedCell!.location}
-              onCellClick={handleCellClick}
-              onFileDrop={handleFileDrop}
-            />
+      <div className="App_part1">
+        <Grid>
+          {sheetTree && selectedCell && (
+            <Panel title="Sheet">
+              <CellPicker
+                activeSheet={0}
+                sheetTree={sheetTree!}
+                selectedCell={selectedCell!.location}
+                onCellClick={handleCellClick}
+                onFileDrop={handleFileDrop}
+              />
+            </Panel>
+          )}
+          <Panel title={'Cell Content'}>
+            <div className="App_cellContent">
+              {selectedCell ? (
+                <CellContent cell={selectedCell} rootSheetPath={rootSheetPath} />
+              ) : (
+                <Text>No cell selected</Text>
+              )}
+            </div>
           </Panel>
-        )}
-        <Panel title={'Cell Content'}>
-          <div className="App_cellContent">
-            {selectedCell ? (
-              <CellContent cell={selectedCell} rootSheetPath={rootSheetPath} />
-            ) : (
-              <Text>No cell selected</Text>
-            )}
-          </div>
-        </Panel>
-      </Grid>
+        </Grid>
+      </div>
     </DefaultLayout>
   )
 }

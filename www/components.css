@@ -128,9 +128,7 @@
 }
 
 .Panel_title {
-
-  flex: 0 1 fit-content; 
-  min-width: 25%; 
+  flex: 0 1 fit-content;
 
   padding: 0 var(--space) 0 var(--space);
   font-size: 16px;
@@ -227,7 +225,7 @@
   line-height: calc(var(--theme-line-height-base) * 1em);
   margin: 0;
   outline: 0;
-  padding: 0 var(--space-2x) 0 ;
+  padding: 0 var(--space-2x) 0;
 }
 
 .CellPicker_button:focus {
@@ -274,7 +272,7 @@
 
 .CellPicker_cell--dragOver {
   background-color: rgba(0, 255, 0, 0.2);
-  border: 2px dashed #4CAF50;
+  border: 2px dashed #4caf50;
 }
 
 .CellPicker_cell:focus {
@@ -287,20 +285,20 @@
 }
 
 .CellPicker_cell--selected {
-  border: 1px solid var(--theme-focused-foreground); 
+  border: 1px solid var(--theme-focused-foreground);
 }
 
-.App_grid1 {
-  margin:  var(--line) var(--space-2x);
+.App_part1 {
   height: 40%;
 }
 
-.App_grid1:first-child {
-  margin-top: var(--space);
+.App_part1 .Grid_root {
+  height: 100%;
 }
 
-.App_grid1 > * {
-  display:inline-block;
+
+.App_part1 .Grid_root > * {
+  display: inline-block;
   vertical-align: top;
   width: 50%;
   height: 100%;
@@ -312,7 +310,6 @@
   max-height: 100%;
   overflow: auto;
 }
-
 
 .App_cellContent img {
   max-width: 100%;

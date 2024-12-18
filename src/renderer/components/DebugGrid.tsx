@@ -20,7 +20,7 @@ const DebugGrid: React.FC = () => {
         repeating-linear-gradient(var(--theme-border) 0 1px, transparent 1px 100%),
         repeating-linear-gradient(90deg, var(--theme-border) 0 1px, transparent 1px 100%)
       `,
-      backgroundSize: '1ch 1.25rem',
+      backgroundSize: 'var(--space) var(--line)',
       pointerEvents: 'none',
       display: 'none'
     })
