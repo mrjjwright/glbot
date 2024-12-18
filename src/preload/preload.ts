@@ -2,6 +2,7 @@ import { initDb } from 'src/db-init'
 import { simpleGit, SimpleGit } from 'simple-git'
 import * as fs from 'fs'
 import * as path from 'path'
+import { dialog } from 'electron'
 
 console.log('db loaded', document)
 
@@ -20,7 +21,13 @@ async function main() {
         console.log(`git.${method} ${stage} stage ${progress}% complete`)
       }
     })
-    window.glbot = { fs, path, db, git }
+    window.glbot = {
+      fs,
+      path,
+      db,
+      git,
+      dialog
+    }
     console.log('glbot', window.glbot)
   } catch (error) {
     console.error('Failed to initialize:', error)

@@ -7,10 +7,11 @@ import Badge from 'src/renderer/components/Badge'
 import GLWebLogo from 'src/renderer/components/GLWebLogo'
 import Providers from 'src/renderer/components/Providers'
 import { computed, effect, signal } from 'alien-signals'
-import { getRelativePathsContainingString, getSheetTrees, load } from 'src/spreadsheet'
+import { getRelativePathsContainingString, getSheetTrees, load, saveCell } from 'src/spreadsheet'
 import { useEffect, useRef, useState } from 'react'
 import Panel from './components/Panel'
 import CellPicker from './components/CellPicker'
+import CellContent from './components/CellContent'
 
 // Live reload in development
 if (process.env.NODE_ENV !== 'production') {
@@ -45,12 +46,7 @@ function Model() {
     for (const [_, row] of tree.rows) {
       if (row.cells.size > 0) {
         const colId = Array.from(row.cells.keys())[0] // Get first column
-        const cellPath = row.cells.get(colId)!
-        return {
-          location: { row: row.rowId, col: colId },
-          path: cellPath,
-          extension: path.extname(cellPath).toLowerCase()
-        } satisfies CellLocationWithPath
+        return row.cells.get(colId)!
       }
     }
     return null
@@ -61,36 +57,64 @@ function Model() {
     return sheetTreesVal && sheetTreesVal.length ? sheetTreesVal[0] : undefined
   })
 
+  const chosenFile = signal<string | null>(null)
+
+  effect(() => {
+    const file = chosenFile.get()
+    const cell = selectedCell.get()
+
+    if (file && cell) {
+      saveCell({
+        sheetId: '0',
+        absolutePath: file,
+        location: cell.location
+      })
+      sheetTrees.load.set(sheetTrees.load.get() + 1)
+    }
+  })
+
   return {
     state,
     sheetTrees,
+    _selectedCell,
     selectedCell,
-    selectedSheetTree
+    selectedSheetTree,
+    chosenFile
   }
 }
 
 function App() {
-  const fs = window.glbot.fs
+  const path = window.glbot.path
 
   const [state, setState] = useState(0)
   const model = useRef(Model())
   const effectRef = useRef<ReturnType<typeof effect>>(null!)
+  const rootSheetPath = path.join(process.cwd(), 'www')
 
   useEffect(() => {
     effectRef.current = effect(() => {
-      const trees = model.current.sheetTrees.value.get()
-      if (trees && trees.length > 0) {
-        setState(state + 1)
-      }
+      model.current.sheetTrees.value.get()
+      model.current.selectedCell.get()
+      console.log('State:', state)
+      setState((s) => s + 1)
     })
 
-    model.current.sheetTrees.load.set(true)
+    model.current.sheetTrees.load.set(model.current.sheetTrees.load.get() + 1)
 
     return () => effectRef.current.stop()
   }, [])
 
   const sheetTree = model.current.selectedSheetTree.get()
   const selectedCell = model.current.selectedCell.get()
+
+  const handleCellClick = async (cell: CellLocationWithPath) => {
+    model.current._selectedCell.set(cell)
+    // const result = await window.glbot.dialog.showOpenDialog()
+    // if (!result.canceled && result.filePaths.length > 0) {
+    //   model.current.chosenFile.set(result.filePaths[0])
+    // }
+  }
+  console.log('selectedCell', selectedCell, state)
 
   return (
     <DefaultLayout previewPixelSRC="/assets/glweb.svg">
@@ -115,38 +139,18 @@ function App() {
               activeSheet={0}
               sheetTree={sheetTree!}
               selectedCell={selectedCell!.location}
+              onCellClick={handleCellClick}
             />
           </Panel>
         )}
-        <Panel title="Cell Content">
-          {(() => {
-            const cell = model.current.selectedCell.get()
-            if (!cell) return <Text>No cell selected</Text>
-
-            switch (cell.extension) {
-              case '.png':
-              case '.jpg':
-              case '.jpeg':
-              case '.gif':
-                return (
-                  <img src={`http://localhost:8000/${cell.path}`} style={{ maxWidth: '100%' }} />
-                )
-              case '.txt':
-              case '.md':
-                try {
-                  const content = fs.readFileSync(cell.path, 'utf-8')
-                  return <pre>{content}</pre>
-                } catch (err) {
-                  return <Text>Error reading file: {String(err)}</Text>
-                }
-              default:
-                return cell.extension ? (
-                  <Text>Unsupported file type: {cell.extension}</Text>
-                ) : (
-                  <Text>File has no extension</Text>
-                )
-            }
-          })()}
+        <Panel title={'Cell Content'}>
+          <div className="App_cellContent">
+            {selectedCell ? (
+              <CellContent cell={selectedCell} rootSheetPath={rootSheetPath} />
+            ) : (
+              <Text>No cell selected</Text>
+            )}
+          </div>
         </Panel>
       </Grid>
     </DefaultLayout>

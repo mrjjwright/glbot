@@ -5,6 +5,7 @@ interface CellPickerProps {
   activeSheet: number
   sheetTree: SheetTree
   selectedCell: CellLocation
+  onCellClick: (cell: CellLocationWithPath) => void;
 }
 
 const generateColumns = (numColumns: number): string[] => {
@@ -25,25 +26,26 @@ const SHEETS = [
   { id: 2, name: 'Sheet 2' }
 ]
 
-const CellPicker: React.FC<CellPickerProps> = ({ activeSheet, sheetTree, selectedCell }) => {
+const CellPicker: React.FC<CellPickerProps> = ({ activeSheet, sheetTree, selectedCell, onCellClick }) => {
   const [currentSheet, setSheet] = React.useState(activeSheet || 1)
   const cells: React.ReactNode[] = []
 
   for (let row = 0; row < NUM_ROWS; row++) {
     for (let col = 0; col < NUM_COLUMNS; col++) {
-      const hasContent = sheetTree?.rows.get(row)?.cells.get(col) !== undefined
+      const cell = sheetTree?.rows.get(row)?.cells.get(col)
       const isSelected = row === selectedCell.row && col === selectedCell.col
       cells.push(
         <div
           key={`${row}-${col}`}
+          onClick={() => cell ? onCellClick(cell): null}
           className={classes('CellPicker_cell', {
-            'CellPicker_cell--active': hasContent,
+            'CellPicker_cell--active': !!cell,
             'CellPicker_cell--selected': isSelected
           })}
           tabIndex={0}
           aria-label={`${COLUMNS[col]}${row + 1}`}
         >
-          {hasContent ? '•' : ''}
+          {cell ? '•' : ''}
         </div>
       )
     }

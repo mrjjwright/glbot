@@ -7,6 +7,7 @@ declare global {
       git: SimpleGit
       fs: any
       path: PlatformPath
+      dialog: Electron.Dialog
     }
   }
 }

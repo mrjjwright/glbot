@@ -26,7 +26,7 @@ export function getRelativePathsContainingString(dir: string, searchString: stri
 }
 
 export function load<T>(onLoad: () => T) {
-  const load = signal(false)
+  const load = signal(0)
   const value = computed(() => {
     if (load.get()) {
       return onLoad()
@@ -39,7 +39,6 @@ export function load<T>(onLoad: () => T) {
     value
   }
 }
-
 
 export function saveCell(params: CellFromFile) {
   const { fs, path } = window.glbot
@@ -95,7 +94,11 @@ export function getSheetTrees(sheetPaths: string[]): SheetTree[] {
     if (!cellMatch) continue
 
     const colNumber = parseInt(cellMatch[1])
-    row.cells.set(colNumber, normalizedPath)
+    row.cells.set(colNumber, {
+      path: normalizedPath,
+      location: { row: rowId, col: colNumber },
+      extension: path.extname(normalizedPath)
+    })
   }
 
   return Array.from(sheets.values())

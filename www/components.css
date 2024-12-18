@@ -13,6 +13,7 @@
 
 .DefaultLayout_body {
   max-width: var(--width-max);
+  height: 100dvh;
 }
 
 .DefaultLayout_pixel {
@@ -79,11 +80,8 @@
     0 1px 0 0 var(--theme-text);
   display: block;
   padding: var(--line-half) var(--space-2x) var(--line) var(--space-2x);
-
-  overflow-x: auto;
-  overflow-y: hidden;
   height: 100%;
-  scrollbar-width: none;
+  max-height: 100%;
 }
 
 .Panel_children::-webkit-scrollbar {
@@ -93,12 +91,12 @@
 .Panel_action {
   display: flex;
   align-items: flex-end;
-  justify-content: space-between;
+  min-width: 0;
+  width: 100%;
 }
 
 .Panel_left {
-  min-width: 10%;
-  width: 100%;
+  flex: 1;
   box-shadow:
     inset 1px 0 0 0 var(--theme-text),
     inset 0 1px 0 0 var(--theme-text);
@@ -114,8 +112,7 @@
 }
 
 .Panel_right {
-  min-width: 10%;
-  width: 100%;
+  flex: 1;
   box-shadow:
     inset -1px 0 0 0 var(--theme-text),
     inset 0 1px 0 0 var(--theme-text);
@@ -131,10 +128,17 @@
 }
 
 .Panel_title {
-  flex-shrink: 0;
+
+  flex: 0 1 25%; /* don't grow, can shrink, basis 300px */
+  min-width: 25%; /* prevent too much shrinking */
+
   padding: 0 var(--space) 0 var(--space);
   font-size: 16px;
   font-weight: 400;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .ActionBar_root {
@@ -198,9 +202,11 @@
 }
 
 .CellPicker_root {
-  display: inline-block;
+  display: flex;
+  flex-direction: column;
   user-select: none;
   width: 100%;
+  max-height: 100%;
 }
 
 .CellPicker_controls {
@@ -244,8 +250,12 @@
 }
 
 .CellPicker_grid {
+  flex: 1;
+  height: auto;
   background: var(--theme-border-subdued);
   display: grid;
+  overflow-x: clip;
+  overflow-y: auto;
   grid-template-columns: repeat(var(--grid-columns), minmax(20px, 1fr));
   grid-template-rows: repeat(5, min-content);
   align-items: start;
@@ -274,8 +284,8 @@
 }
 
 .App_grid1 {
-  display: flex;
-  margin:  var(--line) var(--space-2x)
+  margin:  var(--line) var(--space-2x);
+  height: 40%;
 }
 
 .App_grid1:first-child {
@@ -283,5 +293,21 @@
 }
 
 .App_grid1 > * {
-  flex:1;
+  display:inline-block;
+  vertical-align: top;
+  width: 50%;
+  height: 100%;
+}
+
+.App_cellContent {
+  display: flex;
+  flex-direction: column;
+  max-height: 100%;
+  overflow: auto;
+}
+
+
+.App_cellContent img {
+  max-width: 100%;
+  display: block;
 }
