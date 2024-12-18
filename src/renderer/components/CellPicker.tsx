@@ -83,7 +83,7 @@ const CellPicker: React.FC<CellPickerProps> = ({
           tabIndex={0}
           aria-label={`${COLUMNS[col]}${row + 1}`}
         >
-          {cell ? '•' : ''}
+          {cell ? '•' : '123456789'}
         </div>
       )
     }

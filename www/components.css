@@ -32,7 +32,7 @@
 
 .Grid_root {
   display: block;
-  padding: var(--line-half) var(--space-2x);
+  padding: var(--line) var(--space-2x);
 }
 
 .Row_row {
@@ -40,6 +40,7 @@
   outline: 0;
   border: 0;
   transition: var(--transition);
+  height: var(--line);
 }
 
 .Row_row:focus {
@@ -70,7 +71,7 @@
 .Panel_panel {
   position: relative;
   display: block;
-  padding: 0 var(--space) var(--line-half) var(--space);
+  padding: 0 var(--space) var(--line) var(--space);
 }
 
 .Panel_children {
@@ -79,7 +80,7 @@
     inset -1px 0 0 0 var(--theme-text),
     0 1px 0 0 var(--theme-text);
   display: block;
-  padding: var(--line-half) var(--space-2x) var(--line) var(--space-2x);
+  padding: var(--line) var(--space-2x);
   height: 100%;
   max-height: 100%;
 }
@@ -200,11 +201,12 @@
 }
 
 .CellPicker_root {
-  font-size: 8px;
   display: flex;
   flex-direction: column;
   user-select: none;
-  width: calc(var(--grid-columns) * var(--space) * 10);
+  --cell-width-chars: 5;
+  --cell-width: calc(var(--cell-width-chars) * var(--space));
+  width: calc(var(--grid-columns) * var(--space) * var(--cell-width-chars));
   max-height: 100%;
 }
 
@@ -262,12 +264,14 @@
 }
 
 .CellPicker_cell {
-  font-size: 8px;
   outline: none;
   border: 1px solid var(--theme-border-subdued);
   text-align: center;
-  width: calc(10 * var(--space));
+  width: var(--cell-width);
   height: var(--line);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .CellPicker_cell--dragOver {
