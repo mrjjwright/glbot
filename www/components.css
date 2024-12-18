@@ -293,6 +293,11 @@
   border: 1px solid var(--theme-focused-foreground);
 }
 
+.App_subdued {
+  opacity: 0.5;
+}
+
+
 .App_part1 {
   height: 40%;
 }
@@ -308,6 +313,7 @@
   width: 50%;
   height: 100%;
 }
+
 
 .App_cellContent {
   display: flex;

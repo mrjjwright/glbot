@@ -180,7 +180,3 @@ body.theme-dark {
   --theme-focused-foreground-subdued: var(--color-daybreak-10-5);
 }
 
-.text-subdued {
-  font-size: calc(var(--line) * 0.5);
-  opacity: 0.5;
-}

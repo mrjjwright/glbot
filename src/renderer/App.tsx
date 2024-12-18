@@ -125,13 +125,13 @@ function App() {
           <strong>
             glbot <Badge>Hello Transperfect</Badge>
           </strong>
-          <i className="text-subdued">
+          <i className="App_subdued">
             via<span>&nbsp;</span>
           </i>
           <GLWebLogo />
         </Row>
         <Row>
-          <Text className="text-subdued">interact less, collaborate more</Text>
+          <Text className="App_subdued">interact less, collaborate more</Text>
         </Row>
       </Grid>
       <div className="App_part1">
