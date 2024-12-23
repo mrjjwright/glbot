@@ -221,7 +221,6 @@ body {
 }
 
 .subdued {
-  font-size: 10px;
   opacity: 0.5;
 }
 
@@ -234,8 +233,6 @@ body {
   outline: 0;
   border: 0;
   font-family: var(--font-family-mono);
-  font-size: 10px;
-  min-height: var(--line);
   text-transform: uppercase;
   transition: 200ms ease all;
   background: var(--theme-border);
