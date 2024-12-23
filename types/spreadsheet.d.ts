@@ -1,28 +1,24 @@
-type CellLocation = {
-  row: number
-  col: number
+interface CellRange {
+  startRow: number
+  startCol: number
+  endRow: number
+  endCol: number
 }
 
-type CellLocationWithPath = {
-  location: CellLocation
-  path: string
-  extension: string
+interface CellData {
+  (range: CellRange): any[]
 }
 
-type RowTree = {
-  rowId: number
-  cells: Map<number, CellLocationWithPath>
+interface Line {
+  ranges: CellRange[]
+  data: CellData
 }
 
-type SheetTree = {
-  sheetId: string
-  rows: Map<number, RowTree>
-}
+type ObjectFit = 'fill' | 'contain' | 'cover' | 'none' | 'scale-down'
 
-type CellFromFile = {
-  sheetId: string
-  absolutePath: string
-  location: CellLocation
+interface UIImage {
+  src: string
+  objectFit: ObjectFit
 }
 
 type DragState = {

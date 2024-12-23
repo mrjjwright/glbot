@@ -1,36 +1,23 @@
-/*
- NAMING CONVENTION
-   ComponentName_element
-   
-   Example:
-   .Button_root
-   .Button_icon
-
- anything that could be put in here, 
- in regards to component styling, 
-  should be put in here
-*/
-
-.DefaultLayout_body {
+.App {
   max-width: var(--width-max);
   height: 100dvh;
 }
 
-.DefaultLayout_pixel {
-  height: 1px;
-  left: 0;
-  position: absolute;
-  top: 0;
-  width: 1px;
-}
-
-.GLWebLogo_root {
+.GLWebLogo {
   width: calc(5 * var(--space));
   height: calc(var(--line));
   object-fit: contain;
 }
 
-.Grid_root {
+.CellRange {
+  display: flex;
+  flex-direction: column;
+  user-select: none;
+  width: calc(var(--grid-columns) * var(--space) * var(--cell-width-chars));
+  max-height: 100%;
+}
+
+/* .Grid_root {
   display: block;
   padding: var(--line) var(--space-2x);
 }
@@ -200,38 +187,19 @@
   box-shadow: inset 0 0 0 2px var(--theme-focused-foreground);
 }
 
-.CellPicker_root {
-  font-size: 12px;
-  display: flex;
-  flex-direction: column;
-  user-select: none;
-  --cell-width-chars:10;
-  --cell-width: calc(var(--cell-width-chars) * var(--space));
-  width: calc(var(--grid-columns) * var(--space) * var(--cell-width-chars));
-  max-height: 100%;
-}
 
-.CellPicker_controls {
-  align-items: center;
-  background: var(--theme-border);
-  display: flex;
-  justify-content: space-between;
-}
-
-.CellPicker_button {
-  align-self: stretch;
+.CellButton {
   background: none;
   border: none;
   color: var(--theme-text);
   cursor: pointer;
   display: inline-block;
-  line-height: calc(var(--theme-line-height-base) * 1em);
   margin: 0;
   outline: 0;
   padding: 0 var(--space-2x) 0;
 }
 
-.CellPicker_button:focus {
+.CellButton:focus {
   background: var(--theme-focused-foreground);
   outline: 0;
 }
@@ -261,7 +229,6 @@
   grid-template-columns: repeat(var(--grid-columns), minmax(20px, 1fr));
   grid-template-rows: repeat(5, min-content);
   align-items: start;
-  min-height: calc(var(--theme-line-height-base) * 5em);
 }
 
 .CellPicker_cell {
@@ -325,4 +292,4 @@
 .App_cellContent img {
   max-width: 100%;
   display: block;
-}
+} */
