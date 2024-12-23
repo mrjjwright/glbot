@@ -58,15 +58,12 @@ function Model() {
       app.appendChild(el({ classes: ['line'] }))
       app.appendChild(el({ classes: ['line'] }))
 
-      const tableGradient = createTableGradient({
-        baseColor: DEFAULT_COLORS.grayScale.foreground,
-        targetColor: DEFAULT_COLORS.grayScale.target
-      })
+      const tableGradient = createTableGradient(DEFAULT_COLORS.grayScale)
 
       app.appendChild(
         el({
           classes: ['key-value', 'title'],
-          text: 'GLWeb Translation Profile Prompt'
+          text: 'GLWeb Translation Profile'
         })
       )
       app.appendChild(
@@ -81,6 +78,13 @@ function Model() {
           classes: ['value'],
           text: 'Value',
           style: `background-color: ${tableGradient.getHeaderColor(1, 2)}`
+        })
+      )
+      app.appendChild(
+        el({
+          classes: ['key'],
+          text: 'intro prompt',
+          style: `background-color: ${tableGradient.getCellColor(0, 0, 4, 2)}`
         })
       )
     }
