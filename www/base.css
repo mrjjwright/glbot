@@ -207,8 +207,17 @@ body {
   object-fit: contain;
 }
 
-.Line {
+.start-line {
   grid-column-start: 1;
+}
+
+.span-line {
+  grid-column-end: span var(--page-num-columns);
+}
+
+.line {
+  grid-column-start: 1;
+  grid-column-end: span var(--page-num-columns);
 }
 
 .subdued {

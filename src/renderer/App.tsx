@@ -11,15 +11,32 @@ function GLWebLogo() {
 
 function Intro() {
   return `
-      <div class="Line" style="font-weight:bold">glbot</div>
-      <div style="grid-column-start: 2; grid-column-end: span 10;">
+      <div class="start-line" style="font-weight:bold">glbot</div>
+      <div class="span-line" style="grid-column-start: 2;">
         <span class="Badge">Hello Transperfect</span> 
         <i class="subdued"> via<span>&nbsp;</span> </i>
         ${GLWebLogo()}
       </div>
-      <div class="Line subdued" style="grid-column-end: span 10;">interact less, collaborate more,interact less, collaborate more</div>
+      <div class="line subdued">interact less, collaborate more,interact less, collaborate more</div>
     </div>
   `
+}
+
+interface ElementOptions {
+  tag?: string
+  text?: string
+  classes?: string[]
+}
+
+function el(options: ElementOptions = {}) {
+  const el = document.createElement(options.tag ?? 'div')
+  if (options.text) {
+    el.textContent = options.text
+  }
+  for (let c of options.classes ?? []) {
+    el.classList.add(c)
+  }
+  return el
 }
 
 function Model() {
@@ -33,6 +50,9 @@ function Model() {
   effect(() => {
     if (documentLoaded.get()) {
       app.innerHTML = Intro()
+      app.appendChild(el({ classes: ['line'] }))
+      app.appendChild(el({ classes: ['line'] }))
+      app.appendChild(el({ classes: ['line'], text: 'GLWeb Translation Profile Prompt' }))
     }
   })
 }
