@@ -4,24 +4,31 @@ import DefaultLayout from 'src/renderer/components/page/DefaultLayout'
 import Text from 'src/renderer/components/Text'
 import Row from 'src/renderer/components/Row'
 import Badge from 'src/renderer/components/Badge'
-import GLWebLogo from 'src/renderer/components/GLWebLogo'
 import Providers from 'src/renderer/components/Providers'
-import { computed, effect, signal } from 'alien-signals'
+import { computed, effect, Signal, signal } from 'alien-signals'
 import {
   getRelativePathsContainingString,
   getSheetTrees,
   load,
   saveCellFromBuffer
 } from 'src/spreadsheet'
+
 import { useEffect, useRef, useState } from 'react'
 import Panel from './components/Panel'
 import CellPicker from './components/CellPicker'
 import CellContent from './components/CellContent'
 import DebugGrid from './components/DebugGrid'
+import GLWebLogo from './components/GLWebLogo'
 
 // Live reload in development
 if (process.env.NODE_ENV !== 'production') {
   new EventSource('/esbuild').addEventListener('change', () => location.reload())
+}
+
+type Step = {
+  input: Signal
+  output: Signal
+  error: Signal
 }
 
 function Model() {

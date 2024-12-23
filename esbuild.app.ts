@@ -15,7 +15,7 @@ const config = {
     {
       name: 'react',
       setup(build) {
-        build.onResolve({ filter: /^react$/ }, (args) => {
+        build.onResolve({ filter: /^react$/ }, () => {
           return {
             path: './node_modules/react/cjs/react.development.js',
             external: true
@@ -26,7 +26,7 @@ const config = {
     {
       name: 'react-dom',
       setup(build) {
-        build.onResolve({ filter: /^react-dom$/ }, (args) => {
+        build.onResolve({ filter: /^react-dom$/ }, () => {
           return {
             path: './node_modules/react-dom/cjs/react-dom.development.js',
             external: true
@@ -52,7 +52,7 @@ async function startServer() {
   let { host, port } = await ctx.serve({
     servedir: 'www'
   })
-  console.log(`glbot is running at http://${host}:${port}`)
+  console.log(`glbot is running at https://${host}:${port}`)
 }
 
 if (process.argv.includes('--serve')) {

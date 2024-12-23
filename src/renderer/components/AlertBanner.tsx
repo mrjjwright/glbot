@@ -1,6 +1,3 @@
-import styles from './AlertBanner.module.scss'
-
-import * as React from 'react'
 
 interface AlertBannerProps extends React.HTMLAttributes<HTMLDivElement> {
   type?: 'SUCCESS' | 'ERROR'
@@ -25,7 +22,7 @@ const AlertBanner: React.FC<AlertBannerProps> = ({ type, style: propStyle, ...re
     }
   }
 
-  return <div className={styles.root} {...rest} style={style} />
+  return <div className={"Alert_root"} {...rest} style={style} />
 }
 
 export default AlertBanner

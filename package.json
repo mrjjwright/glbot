@@ -23,10 +23,10 @@
     "postinstall": "electron-builder install-app-deps && npm run cp-sqlite-binary"
   },
   "dependencies": {
-    "@ai-sdk/google": "^1.0.10",
-    "@types/react": "^19.0.1",
-    "ai": "^4.0.18",
-    "alien-signals": "^0.4.4",
+    "@ai-sdk/google": "^1.0.12",
+    "@types/react": "^19.0.2",
+    "ai": "^4.0.22",
+    "alien-signals": "^0.4.8",
     "better-sqlite3": "^11.7.0",
     "electron-updater": "^6.3.9",
     "esbuild": "^0.24.0",
