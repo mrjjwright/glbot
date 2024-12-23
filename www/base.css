@@ -220,6 +220,27 @@ body {
   grid-column-end: span var(--page-num-columns);
 }
 
+.key {
+  grid-column-start: 1;
+  grid-column-end: span 4;
+}
+
+.value {
+  grid-column-start: 5;
+  grid-column-end: 6;
+}
+
+.key-value {
+  grid-column-start: 1;
+  grid-column-end: span 5;
+}
+
+.title {
+  text-align: center;
+  text-transform: uppercase;
+  background: var(--theme-border);
+}
+
 .subdued {
   opacity: 0.5;
 }

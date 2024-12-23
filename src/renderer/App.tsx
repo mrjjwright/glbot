@@ -1,4 +1,5 @@
 import { effect, signal } from 'alien-signals'
+import { createTableGradient, DEFAULT_COLORS } from './interpolate'
 
 // Live reload in development
 if (process.env.NODE_ENV !== 'production') {
@@ -26,6 +27,7 @@ interface ElementOptions {
   tag?: string
   text?: string
   classes?: string[]
+  style?: string
 }
 
 function el(options: ElementOptions = {}) {
@@ -35,6 +37,9 @@ function el(options: ElementOptions = {}) {
   }
   for (let c of options.classes ?? []) {
     el.classList.add(c)
+  }
+  if (options.style) {
+    el.setAttribute('style', options.style)
   }
   return el
 }
@@ -52,7 +57,32 @@ function Model() {
       app.innerHTML = Intro()
       app.appendChild(el({ classes: ['line'] }))
       app.appendChild(el({ classes: ['line'] }))
-      app.appendChild(el({ classes: ['line'], text: 'GLWeb Translation Profile Prompt' }))
+
+      const tableGradient = createTableGradient({
+        baseColor: DEFAULT_COLORS.grayScale.foreground,
+        targetColor: DEFAULT_COLORS.grayScale.target
+      })
+
+      app.appendChild(
+        el({
+          classes: ['key-value', 'title'],
+          text: 'GLWeb Translation Profile Prompt'
+        })
+      )
+      app.appendChild(
+        el({
+          classes: ['key'],
+          text: 'Key',
+          style: `background-color: ${tableGradient.getHeaderColor(0, 2)}`
+        })
+      )
+      app.appendChild(
+        el({
+          classes: ['value'],
+          text: 'Value',
+          style: `background-color: ${tableGradient.getHeaderColor(1, 2)}`
+        })
+      )
     }
   })
 }
