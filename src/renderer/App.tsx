@@ -124,7 +124,7 @@ function Model() {
       el({
         classes: ['key'],
         children: [keyIcon],
-        style: `background-color: ${bgColor}; color: red; text-align: center; `
+        style: `background-color: ${bgColor};  text-align: center; `
       })
     )
 
