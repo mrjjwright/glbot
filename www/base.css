@@ -110,8 +110,7 @@ body,
 .glbot * {
   font-family: var(--font-family-mono);
   line-height: var(--line);
-  background: var(--theme-background);
-  color: var(--theme-text);
+  color: var(--theme-text); /* This is where currentColor inherits from */
 }
 
 /* thems */
@@ -223,11 +222,13 @@ body {
 .key {
   grid-column-start: 1;
   grid-column-end: span 4;
+  text-align: left;
 }
 
 .value {
   grid-column-start: 5;
   grid-column-end: 6;
+  text-align: center;
 }
 
 .key-value {
@@ -236,7 +237,7 @@ body {
 }
 
 .title {
-  text-align: center;
+  text-align: left;
   text-transform: uppercase;
   background: var(--theme-border);
 }
@@ -258,4 +259,10 @@ body {
   transition: 200ms ease all;
   background: var(--theme-border);
   padding: 0 1ch 0 1ch;
+}
+
+.icon-inline {
+  width: calc(var(--space) * 2);
+  height: var(--line);
+  vertical-align: top;
 }

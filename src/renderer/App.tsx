@@ -28,6 +28,8 @@ interface ElementOptions {
   text?: string
   classes?: string[]
   style?: string
+  html?: string
+  children?: Node[]
 }
 
 function el(options: ElementOptions = {}) {
@@ -41,7 +43,50 @@ function el(options: ElementOptions = {}) {
   if (options.style) {
     el.setAttribute('style', options.style)
   }
+  if (options.html) {
+    el.innerHTML = options.html
+  }
+  if (options.children) {
+    for (const child of options.children) {
+      el.appendChild(child)
+    }
+  }
   return el
+}
+
+function svg(options: ElementOptions) {
+  const svgElement = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+  if (options.classes) {
+    for (let c of options.classes) {
+      svgElement.classList.add(c)
+    }
+  }
+  svgElement.classList.add('icon-inline')
+  svgElement.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
+  svgElement.setAttribute('viewBox', '0 0 24 24')
+  svgElement.setAttribute('fill', 'none')
+  svgElement.setAttribute('stroke', 'currentColor')
+  svgElement.setAttribute('stroke-width', '1.5')
+  svgElement.setAttribute('stroke-linecap', 'round')
+  svgElement.setAttribute('stroke-linejoin', 'round')
+
+  if (options.html) {
+    // Create the path element properly
+    const tempDiv = document.createElement('div')
+    tempDiv.innerHTML = options.html
+    const path = tempDiv.querySelector('path')
+    if (path) {
+      const svgPath = document.createElementNS('http://www.w3.org/2000/svg', 'path')
+      svgPath.setAttribute('d', path.getAttribute('d') || '')
+      svgElement.appendChild(svgPath)
+    }
+  }
+
+  if (options.style) {
+    svgElement.setAttribute('style', options.style)
+  }
+
+  return svgElement
 }
 
 function Model() {
@@ -53,41 +98,57 @@ function Model() {
   const app = document.getElementById('app')!
 
   effect(() => {
-    if (documentLoaded.get()) {
-      app.innerHTML = Intro()
-      app.appendChild(el({ classes: ['line'] }))
-      app.appendChild(el({ classes: ['line'] }))
-
-      const tableGradient = createTableGradient(DEFAULT_COLORS.grayScale)
-
-      app.appendChild(
-        el({
-          classes: ['key-value', 'title'],
-          text: 'GLWeb Translation Profile'
-        })
-      )
-      app.appendChild(
-        el({
-          classes: ['key'],
-          text: 'Key',
-          style: `background-color: ${tableGradient.getHeaderColor(0, 2)}`
-        })
-      )
-      app.appendChild(
-        el({
-          classes: ['value'],
-          text: 'Value',
-          style: `background-color: ${tableGradient.getHeaderColor(1, 2)}`
-        })
-      )
-      app.appendChild(
-        el({
-          classes: ['key'],
-          text: 'intro prompt',
-          style: `background-color: ${tableGradient.getCellColor(0, 0, 4, 2)}`
-        })
-      )
+    if (!documentLoaded.get()) {
+      return
     }
+    app.innerHTML = Intro()
+    app.appendChild(el({ classes: ['line'] }))
+    app.appendChild(el({ classes: ['line'] }))
+
+    const tableGradient = createTableGradient(DEFAULT_COLORS.grayScale)
+
+    app.appendChild(
+      el({
+        classes: ['key-value', 'title'],
+        text: 'GLWeb Translation Profile'
+      })
+    )
+
+    const keyIcon = svg({
+      html: `<path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1 1 21.75 8.25Z" />`
+    })
+
+    const bgColor = tableGradient.getHeaderColor(0, 2)
+
+    app.appendChild(
+      el({
+        classes: ['key'],
+        children: [keyIcon],
+        style: `background-color: ${bgColor}; color: red; text-align: center; `
+      })
+    )
+
+    app.appendChild(
+      el({
+        classes: ['value'],
+        text: '',
+        style: `background-color: ${tableGradient.getHeaderColor(1, 2)}`
+      })
+    )
+    app.appendChild(
+      el({
+        classes: ['key'],
+        text: 'intro prompt',
+        style: `background-color: ${tableGradient.getCellColor(0, 0, 4, 2)}`
+      })
+    )
+    app.appendChild(
+      el({
+        classes: ['value'],
+        text: '•',
+        style: `background-color: ${tableGradient.getCellColor(0, 1, 4, 2)}`
+      })
+    )
   })
 }
 
