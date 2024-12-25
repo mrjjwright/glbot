@@ -32,7 +32,7 @@ export function rgbaToString(color: RGBAColor): string {
   return `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a.toFixed(2)})`
 }
 
-export function createTableGradient(config: GradientConfig) {
+export function createCellGradient(config: GradientConfig) {
   return {
     getHeaderColor: (colIndex: number, totalCols: number): string => {
       const factor = totalCols > 1 ? colIndex / (totalCols - 1) : 0

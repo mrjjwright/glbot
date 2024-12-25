@@ -113,7 +113,7 @@ body,
   color: var(--theme-text); /* This is where currentColor inherits from */
 }
 
-/* thems */
+/* themes */
 .theme-blue {
   --theme-overlay: var(--color-blue-20-5);
   --theme-background: var(--color-blue-80);
@@ -188,10 +188,18 @@ body {
   height: 100dvh;
   display: grid;
   grid-template-columns: repeat(var(--page-num-columns), var(--cell-width));
-  grid-auto-rows: var(--line);
+  grid-template-rows: [Control] 1fr [Edit] 1fr;
   margin: 0 0;
   gap: 0;
   padding: var(--line) var(--space);
+}
+
+.Control {
+  width: var(--width-max);
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-auto-rows: var(--line);
+  gap: 0;
 }
 
 .KeyValueGrid {
