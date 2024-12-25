@@ -90,7 +90,7 @@ function svg(options: ElementOptions) {
 }
 
 function Control() {
-  const root = el({ classes: ['Control', 'span-line'] })
+  const root = el({ classes: ['Control', 'span-line', 'subgrid'] })
 
   root.innerHTML = Intro()
   root.appendChild(el({ classes: ['line'] }))
@@ -161,17 +161,17 @@ function Control() {
   return root
 }
 
-function Edit(options: { editValue: Signal<string> }) {
+function Edit(options: { editValue: Signal<string | null> }) {
   const root = el({ classes: ['Control', 'span-line'] })
   effect(() => {
-    root.textContent = options.editValue.get()
+    root.textContent = options.editValue.get() ?? ''
   })
   return root
 }
 
 function Model() {
   const documentLoaded = signal(false)
-  const editValue = signal('hello')
+  const editValue = signal<string | null>(null)
   document.addEventListener('DOMContentLoaded', () => {
     documentLoaded.set(true)
   })
