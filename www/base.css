@@ -189,7 +189,7 @@ body {
   margin: 0 0;
   display: grid;
   grid-template-columns: repeat(var(--page-num-columns), var(--cell-width));
-  grid-template-rows: [Control] 1fr [Edit] 1fr;
+  grid-template-rows: min-content [Control] 1fr [Edit] 1fr;
   padding: var(--line) var(--space);
 }
 
@@ -230,8 +230,7 @@ body {
 }
 
 .key {
-  grid-column-start: 1;
-  grid-column-end: span 4;
+  grid-column: 1 / 5;
   text-align: left;
 }
 
@@ -242,8 +241,7 @@ body {
 }
 
 .key-value {
-  grid-column-start: 1;
-  grid-column-end: span 5;
+  grid-column: 1 / 6;
 }
 
 .title {

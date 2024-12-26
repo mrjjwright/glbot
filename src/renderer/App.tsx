@@ -11,7 +11,9 @@ function GLWebLogo() {
 }
 
 function Intro() {
-  return `
+  const root = el({
+    classes: ['Intro', 'span-line', 'subgrid'],
+    html: `
       <div class="start-line" style="font-weight:bold">glbot</div>
       <div class="span-line" style="grid-column-start: 2;">
         <span class="Badge">Hello Transperfect</span> 
@@ -19,8 +21,13 @@ function Intro() {
         ${GLWebLogo()}
       </div>
       <div class="line subdued">interact less, collaborate more,interact less, collaborate more</div>
-    </div>
-  `
+    `
+  })
+
+  root.appendChild(el({ classes: ['line'] }))
+  root.appendChild(el({ classes: ['line'] }))
+
+  return root
 }
 
 interface ElementOptions {
@@ -89,12 +96,40 @@ function svg(options: ElementOptions) {
   return svgElement
 }
 
+function KeyValuePair({
+  keyText,
+  valueText,
+  cellGradient,
+  rowIndex,
+  totalRows
+}: {
+  keyText: string
+  valueText: string
+  cellGradient: any
+  rowIndex: number
+  totalRows: number
+}) {
+  const fragment = document.createDocumentFragment()
+
+  const keyEl = el({
+    classes: ['key'],
+    text: keyText,
+    style: `background-color: ${cellGradient.getCellColor(rowIndex, 0, totalRows, 2)}`
+  })
+
+  const valueEl = el({
+    classes: ['value'],
+    text: valueText,
+    style: `background-color: ${cellGradient.getCellColor(rowIndex, 1, totalRows, 2)}`
+  })
+
+  fragment.appendChild(keyEl)
+  fragment.appendChild(valueEl)
+  return fragment
+}
+
 function Control() {
   const root = el({ classes: ['Control', 'span-line', 'subgrid'] })
-
-  root.innerHTML = Intro()
-  root.appendChild(el({ classes: ['line'] }))
-  root.appendChild(el({ classes: ['line'] }))
 
   const cellGradient = createCellGradient(DEFAULT_COLORS.grayScale)
 
@@ -109,60 +144,36 @@ function Control() {
     html: `<path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1 1 21.75 8.25Z" />`
   })
 
-  const bgColor = cellGradient.getHeaderColor(0, 2)
-
   root.appendChild(
     el({
       classes: ['key'],
       children: [keyIcon],
-      style: `background-color: ${bgColor};  text-align: center; `
+      style: `text-align: center; background-color: ${cellGradient.getCellColor(0, 0, 4, 2)}`
     })
   )
 
   root.appendChild(
     el({
       classes: ['value'],
-      text: '',
-      style: `background-color: ${cellGradient.getHeaderColor(1, 2)}`
-    })
-  )
-  root.appendChild(
-    el({
-      classes: ['key'],
-      text: 'intro prompt',
-      style: `background-color: ${cellGradient.getCellColor(0, 0, 4, 2)}`
-    })
-  )
-
-  root.appendChild(
-    el({
-      classes: ['value'],
-      text: '•',
       style: `background-color: ${cellGradient.getCellColor(0, 1, 4, 2)}`
     })
   )
 
   root.appendChild(
-    el({
-      html: `
-          <div class="App">
-            <div class="control-cell">
-              <!-- Control content here -->
-            </div>
-            <div class="details-cell">
-              <div class="gl-profile-grid">
-                <!-- GL Profile Assistant grid content here -->
-              </div>
-            </div>
-          </div>
-        `
+    KeyValuePair({
+      keyText: 'intro prompt',
+      valueText: '•',
+      cellGradient,
+      rowIndex: 1,
+      totalRows: 4
     })
   )
+
   return root
 }
 
 function Edit(options: { editValue: Signal<string | null> }) {
-  const root = el({ classes: ['Control', 'span-line'] })
+  const root = el({ classes: ['Edit', 'span-line'] })
   effect(() => {
     root.textContent = options.editValue.get() ?? ''
   })
@@ -176,12 +187,13 @@ function Model() {
     documentLoaded.set(true)
   })
   const app = document.getElementById('app')!
-  const edit = Edit({ editValue })
-  const control = Control()
   effect(() => {
     if (!documentLoaded.get()) {
       return
     }
+    app.appendChild(Intro())
+    const control = Control()
+    const edit = Edit({ editValue })
     app.appendChild(control)
     app.appendChild(edit)
   })
