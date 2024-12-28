@@ -93,7 +93,7 @@ function tiles are json files from which typescript code is generated. that code
 
 #### basic example
 
-a key value tile holds a prompt, a json schema, an example json to build a little custom JSON editor
+a key value tile holds a prompt, a json schema, an example json all to build a little custom JSON editor
 
 a function tile with input as storage tile, and ai model name
 
