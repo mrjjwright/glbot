@@ -10,10 +10,11 @@
   --line-half: calc(var(--line) * 0.5);
   --line-2x: calc(var(--line) * 2);
   --line-4x: calc(var(--line) * 4);
-  --page-num-columns: 10;
+  --num-cols: 10;
+  --num-control-cols: 5;
   --cell-num-spaces: 10;
   --cell-width: calc(var(--cell-num-spaces) * var(--space));
-  --width-max: calc(var(--cell-width) * var(--page-num-columns) + var(--space) + var(--space));
+  --width-max: calc(var(--cell-width) * var(--num-cols) + var(--space) + var(--space));
 
   --color-black-100: #000;
   --color-black-100-1: rgba(0, 0, 0, 0.1);
@@ -188,7 +189,7 @@ body {
   height: 100dvh;
   margin: 0 0;
   display: grid;
-  grid-template-columns: repeat(var(--page-num-columns), var(--cell-width));
+  grid-template-columns: repeat(var(--num-cols), var(--cell-width));
   grid-template-rows: min-content [Control] 1fr [Edit] 1fr;
   padding: var(--line) var(--space);
 }
@@ -204,12 +205,6 @@ body {
   padding: var(--pad);
 }
 
-.KeyValueGrid {
-  display: grid;
-  grid-column: span 4;
-  grid-template-columns: subgrid;
-}
-
 .GLWebLogo {
   width: calc(5 * var(--space));
   height: calc(var(--line));
@@ -221,15 +216,24 @@ body {
 }
 
 .span-line {
-  grid-column-end: span var(--page-num-columns);
+  grid-column-end: span var(--num-cols);
+}
+
+.span-control-line {
+  grid-column-end: span var(--num-control-cols);
 }
 
 .line {
   grid-column-start: 1;
-  grid-column-end: span var(--page-num-columns);
+  grid-column-end: span var(--num-cols);
 }
 
-.key {
+.control-line {
+  grid-column-start: 1;
+  grid-column-end: span var(--num-control-cols);
+}
+
+.label {
   grid-column: 1 / 5;
   text-align: left;
 }
@@ -238,10 +242,6 @@ body {
   grid-column-start: 5;
   grid-column-end: 6;
   text-align: center;
-}
-
-.key-value {
-  grid-column: 1 / 6;
 }
 
 .title {
