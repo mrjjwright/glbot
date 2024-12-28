@@ -68,19 +68,19 @@ and to do this you need some kind of prototypal objects to build all the objects
 
 so we start with our alphabet objects
 
-memory, and functions
+key value, and functions
 
-#### memory tile
+#### key value tile
 
-a memory tile stores content
+a key value tile stores content or any data in a key value format
 
-one file | chunk of content per line
+one physcal file | chunk | value | property of content per line
 
-with optional labels
+key can be specified by the user and double as label or just be uuid
 
 one cell in each line of the tile holds the content, the rest hold the optional label
 
-a memory tile is a json file that maps it's cell's content to single files in git
+key value tiles are json files in git with their values often mapping to actual content in other files in the repo
 
 #### function tiles
 
@@ -93,11 +93,11 @@ function tiles are json files from which typescript code is generated. that code
 
 #### basic example
 
-a memory tile holds a prompt, a json schema, an example json to build a little custom JSON editor
+a key value tile holds a prompt, a json schema, an example json to build a little custom JSON editor
 
 a function tile with input as storage tile, and ai model name
 
-first line uses `cat` instruction cell to concatenate all content from memory tile
+first line uses `cat` instruction cell to concatenate all content from key value tile
 
 second line calls ai model with name with concatenated prompt
 

@@ -233,7 +233,7 @@ body {
   grid-column-end: span var(--num-control-cols);
 }
 
-.label {
+.key {
   grid-column: 1 / 5;
   text-align: left;
 }

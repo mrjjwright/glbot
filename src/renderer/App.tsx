@@ -135,7 +135,7 @@ function Control() {
 
   root.appendChild(
     el({
-      classes: ['key-value', 'title'],
+      classes: ['control-line', 'title'],
       text: 'GLWeb Translation Profile'
     })
   )
