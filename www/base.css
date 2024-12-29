@@ -233,12 +233,12 @@ body {
   grid-column-end: span var(--num-control-cols);
 }
 
-.key {
+.label {
   grid-column: 1 / 5;
   text-align: left;
 }
 
-.value {
+.content {
   grid-column-start: 5;
   grid-column-end: 6;
   text-align: center;

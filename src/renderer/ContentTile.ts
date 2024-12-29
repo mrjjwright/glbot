@@ -50,38 +50,37 @@ export class ContentTile {
     const fragment = document.createDocumentFragment()
     const totalRows = this.data.get().lines.length
 
-    const keyEl = document.createElement('div')
-    keyEl.className = 'key'
-    keyEl.textContent = lineData.label ?? ''
-    keyEl.style.backgroundColor = this.cellGradient.getCellColor(index, 0, totalRows, 2)
+    const labelEl = document.createElement('div')
+    labelEl.className = 'label'
+    labelEl.textContent = lineData.label ?? ''
+    labelEl.style.backgroundColor = this.cellGradient.getCellColor(index, 0, totalRows, 2)
 
-    const valueEl = document.createElement('div')
-    valueEl.className = 'value'
-    valueEl.textContent = lineData.content ? '✓' : '✗'
-    valueEl.style.backgroundColor = this.cellGradient.getCellColor(index, 1, totalRows, 2)
+    const contentEl = document.createElement('div')
+    contentEl.className = 'content'
+    contentEl.textContent = lineData.content ? '✓' : '✗'
+    contentEl.style.backgroundColor = this.cellGradient.getCellColor(index, 1, totalRows, 2)
 
-    fragment.appendChild(keyEl)
-    fragment.appendChild(valueEl)
+    fragment.appendChild(labelEl)
+    fragment.appendChild(contentEl)
     return fragment
   }
 
   public buildUI(): HTMLElement {
     const root = document.createElement('div')
-    root.className = 'ContentTile span-line subgrid'
-
-    const titleEl = document.createElement('div')
-    titleEl.className = 'control-line title'
-    titleEl.textContent = this.data.get().label || 'Content Tile'
-    root.appendChild(titleEl)
+    root.className = 'control-line subgrid'
 
     effect(() => {
-      const data = this.data.get()
-      // Clear existing pairs
       while (root.children.length > 1) {
         root.removeChild(root.lastChild!)
       }
 
-      // Add new pairs
+      const titleEl = document.createElement('div')
+      titleEl.className = 'control-line title'
+      titleEl.textContent = this.data.get().label || 'Content Tile'
+      root.appendChild(titleEl)
+
+      const data = this.data.get()
+
       data.lines.forEach((lineData, index) => {
         root.appendChild(this.createLineUI(lineData, index))
       })
