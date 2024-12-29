@@ -50,12 +50,13 @@ function Model() {
   document.addEventListener('DOMContentLoaded', () => {
     documentLoaded.set(true)
   })
-  const grid = document.getElementById('grid')!
+  const app = document.getElementById('app')!
+  app.classList.add('grid')
   effect(() => {
     if (!documentLoaded.get()) {
       return
     }
-    grid.appendChild(Intro())
+    app.appendChild(Intro())
     const controller = el({
       classes: ['Controller', 'subgrid', 'line'],
       children: [
@@ -68,9 +69,8 @@ function Model() {
       ]
     })
     const edit = Edit({ editValue })
-    grid.classList.add('grid', 'App')
-    grid.appendChild(controller)
-    grid.appendChild(edit)
+    app.appendChild(controller)
+    app.appendChild(edit)
   })
 }
 
