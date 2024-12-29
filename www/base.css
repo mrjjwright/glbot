@@ -10,9 +10,9 @@
   --line-half: calc(var(--line) * 0.5);
   --line-2x: calc(var(--line) * 2);
   --line-4x: calc(var(--line) * 4);
-  --num-cols: 10;
-  --num-control-cols: 5;
-  --cell-num-spaces: 10;
+  --num-cols: 30;
+  --num-control-cols: 6;
+  --cell-num-spaces: 4;
   --cell-width: calc(var(--cell-num-spaces) * var(--space));
   --width-max: calc(var(--cell-width) * var(--num-cols) + var(--space) + var(--space));
 
@@ -203,7 +203,6 @@ body {
 
 .Controller {
   font-size: 12px;
-  padding: var(--pad);
 }
 
 .GLWebLogo {
@@ -235,13 +234,13 @@ body {
 }
 
 .label {
-  grid-column: 1 / 5;
+  grid-column: 1 / var(--num-control-cols);
   text-align: left;
 }
 
 .content {
-  grid-column-start: 5;
-  grid-column-end: 6;
+  grid-column-start: var(--num-control-cols);
+  grid-column-end: calc(--num-control-cols + 1);
   text-align: center;
 }
 
@@ -274,8 +273,4 @@ body {
   width: calc(var(--space) * 2);
   height: var(--line);
   vertical-align: top;
-}
-
-.tile {
-  font-size: 75%rem;
 }
