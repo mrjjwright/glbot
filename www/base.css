@@ -4,19 +4,19 @@
   --font-family-serif: Georgia, Times New Roman, serif;
 
   --space: 1ch;
-  --col-num-spaces: 4;
-  --line: 1.25rem;
   --space-2x: calc(var(--space) * 2);
   --space-4x: calc(var(--space) * 4);
+  --line: 1.25rem;
   --line-half: calc(var(--line) * 0.5);
   --line-2x: calc(var(--line) * 2);
   --line-4x: calc(var(--line) * 4);
+
+  --col-num-spaces: 4;
+  --col-width: calc(var(--col-num-spaces) * var(--space));
   --num-cols: 30;
   --width-max: calc(var(--col-width) * var(--num-cols) + var(--space) + var(--space));
-  --col-width: calc(var(--col-num-spaces) * var(--space));
 
-  --control-tile-num-cols: 6;
-  --control-tile-width: calc(var(--col-width) * var(--control-tile-num-cols));
+  --control-line-num-cols: 5;
   --control-tile-num-visible-rows: 5;
 
   --color-black-100: #000;
@@ -226,7 +226,7 @@ body {
 }
 
 .span-control-line {
-  grid-column-end: span var(--control-tile-num-cols);
+  grid-column-end: span var(--control-line-num-cols);
 }
 
 .line {
@@ -236,16 +236,16 @@ body {
 
 .control-line {
   grid-column-start: 1;
-  grid-column-end: span var(--control-tile-num-cols);
+  grid-column-end: span var(--control-line-num-cols);
 }
 
 .label {
-  grid-column: 1 / var(--control-tile-num-cols);
+  grid-column: 1 / var(--control-line-num-cols);
   text-align: left;
 }
 
 .content {
-  grid-column-start: var(--control-tile-num-cols);
+  grid-column-start: var(--control-line-num-cols);
   text-align: center;
 }
 

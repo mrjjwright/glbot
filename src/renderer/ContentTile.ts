@@ -74,7 +74,7 @@ export class ContentTile {
 
   private createLineUI(lineData: ContentLineData, index: number): DocumentFragment {
     const fragment = document.createDocumentFragment()
-    const totalRows = this.data.get().lines.length
+    const totalRows = this.data.get().lines.length + 1
 
     const labelEl = document.createElement('div')
     labelEl.className = 'label'
@@ -99,30 +99,33 @@ export class ContentTile {
         root.removeChild(root.lastChild!)
       }
 
-      const titleEl = document.createElement('div')
-      titleEl.className = 'control-line title'
+      const titleEl = el({
+        classes: ['control-line', 'title'],
+        style: `background-color: ${this.cellGradient.getCellColor(0, 0, 4, 2)}`,
+        text: this.data.get().label || 'Content Tile'
+      })
       titleEl.textContent = this.data.get().label || 'Content Tile'
       root.appendChild(titleEl)
 
-      root.appendChild(
-        el({
-          classes: ['label'],
-          text: 'label',
-          style: `text-align: center; background-color: ${this.cellGradient.getCellColor(0, 0, 4, 2)}`
-        })
-      )
+      // root.appendChild(
+      //   el({
+      //     classes: ['label'],
+      //     text: 'label',
+      //     style: `text-align: center; background-color: ${this.cellGradient.getCellColor(0, 0, 4, 2)}`
+      //   })
+      // )
 
-      root.appendChild(
-        el({
-          classes: ['content'],
-          style: `background-color: ${this.cellGradient.getCellColor(0, 1, 4, 2)}`
-        })
-      )
+      // root.appendChild(
+      //   el({
+      //     classes: ['content'],
+      //     style: `background-color: ${this.cellGradient.getCellColor(0, 1, 4, 2)}`
+      //   })
+      // )
 
       const data = this.data.get()
 
       data.lines.forEach((lineData, index) => {
-        root.appendChild(this.createLineUI(lineData, index))
+        root.appendChild(this.createLineUI(lineData, index + 1))
       })
     })
 
