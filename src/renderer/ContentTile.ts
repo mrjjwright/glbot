@@ -1,8 +1,8 @@
 import { signal, Signal, effect } from 'alien-signals'
-import { readFileSync } from 'fs'
-import { resolve } from 'path'
 import { createCellGradient, DEFAULT_COLORS } from './interpolate'
 import { el, svg } from './dom'
+import { Platform } from 'esbuild'
+import { PlatformPath } from 'path'
 
 interface ContentLineData<T = any> {
   path: string
@@ -18,6 +18,7 @@ interface ContentTileData {
 
 interface TileContext {
   basePath: string
+  path: PlatformPath
 }
 
 export class ContentTile {
@@ -141,6 +142,6 @@ export class ContentTile {
   }
 
   public resolve(relativePath: string): string {
-    return resolve(this.context.basePath, relativePath)
+    return this.context.path.resolve(this.context.basePath, relativePath)
   }
 }
