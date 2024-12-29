@@ -109,12 +109,6 @@ body,
   padding: 0;
 }
 
-.glbot {
-  font-family: var(--font-family-mono);
-  line-height: var(--line);
-  color: var(--theme-text); /* This is where currentColor inherits from */
-}
-
 /* themes */
 .theme-blue {
   --theme-overlay: var(--color-blue-20-5);
@@ -184,15 +178,19 @@ body {
   background: var(--theme-background);
 }
 
-.App {
-  background: var(--theme-background);
-  width: var(--width-max);
+.grid {
   height: 100dvh;
   margin: 0 0;
+  padding: var(--line) var(--space);
   display: grid;
+  width: var(--width-max);
+  gap: var(--space);
   grid-template-columns: repeat(var(--num-cols), var(--cell-width));
   grid-template-rows: min-content [Control] 1fr [Edit] 1fr;
-  padding: var(--line) var(--space);
+  background: var(--theme-background);
+  font-family: var(--font-family-mono);
+  line-height: var(--line);
+  color: var(--theme-text); /* This is where currentColor inherits from */
 }
 
 .subgrid {
