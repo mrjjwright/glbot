@@ -17,7 +17,7 @@
 
   --control-tile-num-cols: 6;
   --control-tile-width: calc(var(--col-width) * var(--control-tile-num-cols));
-  --control-tile-num-visible-rows: 6;
+  --control-tile-num-visible-rows: 5;
 
   --color-black-100: #000;
   --color-black-100-1: rgba(0, 0, 0, 0.1);
@@ -203,6 +203,12 @@ body {
 
 .Controller {
   font-size: 12px;
+  grid-auto-rows: calc(var(--line) * var(--control-tile-num-visible-rows));
+}
+
+.tile {
+  grid-template-rows: repeat(var(--control-tile-num-visible-rows), var(--line));
+  border: 0.5px solid var(--theme-border);
 }
 
 .GLWebLogo {

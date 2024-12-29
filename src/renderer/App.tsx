@@ -57,6 +57,7 @@ function Model() {
       return
     }
     app.appendChild(Intro())
+
     const controller = el({
       classes: ['Controller', 'subgrid', 'line'],
       children: [
