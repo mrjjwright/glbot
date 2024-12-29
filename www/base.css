@@ -4,18 +4,20 @@
   --font-family-serif: Georgia, Times New Roman, serif;
 
   --space: 1ch;
+  --col-num-spaces: 4;
+  --line: 1.25rem;
   --space-2x: calc(var(--space) * 2);
   --space-4x: calc(var(--space) * 4);
-  --line: 1.25rem;
   --line-half: calc(var(--line) * 0.5);
   --line-2x: calc(var(--line) * 2);
   --line-4x: calc(var(--line) * 4);
   --num-cols: 30;
-  --num-control-cols: 6;
-  --cell-num-spaces: 4;
+  --width-max: calc(var(--col-width) * var(--num-cols) + var(--space) + var(--space));
+  --col-width: calc(var(--col-num-spaces) * var(--space));
+
+  --control-tile-num-cols: 6;
+  --control-tile-width: calc(var(--col-width) * var(--control-tile-num-cols));
   --control-tile-num-visible-rows: 6;
-  --cell-width: calc(var(--cell-num-spaces) * var(--space));
-  --width-max: calc(var(--cell-width) * var(--num-cols) + var(--space) + var(--space));
 
   --color-black-100: #000;
   --color-black-100-1: rgba(0, 0, 0, 0.1);
@@ -184,8 +186,7 @@ body {
   padding: var(--line) var(--space);
   display: grid;
   width: var(--width-max);
-  gap: var(--space);
-  grid-template-columns: repeat(var(--num-cols), var(--cell-width));
+  grid-template-columns: repeat(var(--num-cols), var(--col-width));
   grid-template-rows: min-content [Control] 1fr [Edit] 1fr;
   background: var(--theme-background);
   font-family: var(--font-family-mono);
@@ -202,7 +203,6 @@ body {
 
 .Controller {
   font-size: 12px;
-  grid-auto-rows: calc(var(--line) * var(--control-tile-num-visible-rows));
 }
 
 .GLWebLogo {
@@ -220,7 +220,7 @@ body {
 }
 
 .span-control-line {
-  grid-column-end: span var(--num-control-cols);
+  grid-column-end: span var(--control-tile-num-cols);
 }
 
 .line {
@@ -230,16 +230,16 @@ body {
 
 .control-line {
   grid-column-start: 1;
-  grid-column-end: span var(--num-control-cols);
+  grid-column-end: span var(--control-tile-num-cols);
 }
 
 .label {
-  grid-column: 1 / var(--num-control-cols);
+  grid-column: 1 / var(--control-tile-num-cols);
   text-align: left;
 }
 
 .content {
-  grid-column-start: var(--num-control-cols);
+  grid-column-start: var(--control-tile-num-cols);
   text-align: center;
 }
 

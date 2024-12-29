@@ -1,6 +1,6 @@
 import { signal, Signal, effect } from 'alien-signals'
 import { createCellGradient, DEFAULT_COLORS } from './interpolate'
-import { el, svg } from './dom'
+import { el } from './dom'
 import { PlatformPath } from 'path'
 
 interface ContentLineData<T = any> {
@@ -93,7 +93,7 @@ export class ContentTile {
 
   public buildUI(): HTMLElement {
     const root = document.createElement('div')
-    root.className = 'ControlTile span-control-line subgrid'
+    root.className = 'ContentTile span-control-line subgrid'
 
     effect(() => {
       while (root.children.length > 1) {
