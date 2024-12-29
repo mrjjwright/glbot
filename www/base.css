@@ -13,6 +13,7 @@
   --num-cols: 30;
   --num-control-cols: 6;
   --cell-num-spaces: 4;
+  --control-tile-num-visible-rows: 6;
   --cell-width: calc(var(--cell-num-spaces) * var(--space));
   --width-max: calc(var(--cell-width) * var(--num-cols) + var(--space) + var(--space));
 
@@ -203,6 +204,7 @@ body {
 
 .Controller {
   font-size: 12px;
+  grid-auto-rows: calc(var(--line) * var(--control-tile-num-visible-rows));
 }
 
 .GLWebLogo {
@@ -240,7 +242,6 @@ body {
 
 .content {
   grid-column-start: var(--num-control-cols);
-  grid-column-end: calc(--num-control-cols + 1);
   text-align: center;
 }
 

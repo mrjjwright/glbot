@@ -93,7 +93,7 @@ export class ContentTile {
 
   public buildUI(): HTMLElement {
     const root = document.createElement('div')
-    root.className = 'ControlTile control-line subgrid'
+    root.className = 'ControlTile span-control-line subgrid'
 
     effect(() => {
       while (root.children.length > 1) {
