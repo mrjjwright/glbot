@@ -201,7 +201,8 @@ body {
   gap: 0;
 }
 
-.Control {
+.Controller {
+  font-size: 12px;
   padding: var(--pad);
 }
 
@@ -273,4 +274,8 @@ body {
   width: calc(var(--space) * 2);
   height: var(--line);
   vertical-align: top;
+}
+
+.tile {
+  font-size: 75%rem;
 }

@@ -1,7 +1,6 @@
 import { signal, Signal, effect } from 'alien-signals'
 import { createCellGradient, DEFAULT_COLORS } from './interpolate'
 import { el, svg } from './dom'
-import { Platform } from 'esbuild'
 import { PlatformPath } from 'path'
 
 interface ContentLineData<T = any> {
@@ -94,7 +93,7 @@ export class ContentTile {
 
   public buildUI(): HTMLElement {
     const root = document.createElement('div')
-    root.className = 'control-line subgrid'
+    root.className = 'ControlTile control-line subgrid'
 
     effect(() => {
       while (root.children.length > 1) {
@@ -106,19 +105,10 @@ export class ContentTile {
       titleEl.textContent = this.data.get().label || 'Content Tile'
       root.appendChild(titleEl)
 
-      const labelIcon = svg({
-        paths: [
-          {
-            d: 'M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z'
-          },
-          { d: 'M6 6h.008v.008H6V6Z' }
-        ]
-      })
-
       root.appendChild(
         el({
           classes: ['label'],
-          children: [labelIcon],
+          text: 'label',
           style: `text-align: center; background-color: ${this.cellGradient.getCellColor(0, 0, 4, 2)}`
         })
       )

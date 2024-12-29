@@ -56,9 +56,12 @@ function Model() {
       return
     }
     app.appendChild(Intro())
-    const contentTile = createContentTile()
+    const controller = el({
+      classes: ['Controller', 'subgrid', 'line'],
+      children: [createContentTile()]
+    })
     const edit = Edit({ editValue })
-    app.appendChild(contentTile)
+    app.appendChild(controller)
     app.appendChild(edit)
   })
 }
