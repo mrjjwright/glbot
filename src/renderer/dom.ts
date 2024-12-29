@@ -29,14 +29,13 @@ export function el(options: ElementOptions = {}) {
   return el
 }
 
-export function svg(options: ElementOptions) {
+export function svg(options: ElementOptions & { paths: { d: string }[] }) {
   const svgElement = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
   if (options.classes) {
     for (let c of options.classes) {
       svgElement.classList.add(c)
     }
   }
-  svgElement.classList.add('icon-inline')
   svgElement.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
   svgElement.setAttribute('viewBox', '0 0 24 24')
   svgElement.setAttribute('fill', 'none')
@@ -45,16 +44,13 @@ export function svg(options: ElementOptions) {
   svgElement.setAttribute('stroke-linecap', 'round')
   svgElement.setAttribute('stroke-linejoin', 'round')
 
-  if (options.html) {
-    // Create the path element properly
-    const tempDiv = document.createElement('div')
-    tempDiv.innerHTML = options.html
-    const path = tempDiv.querySelector('path')
-    if (path) {
+  if (options.paths) {
+    for (const path of options.paths) {
       const svgPath = document.createElementNS('http://www.w3.org/2000/svg', 'path')
-      svgPath.setAttribute('d', path.getAttribute('d') || '')
+      svgPath.setAttribute('d', path.d)
       svgElement.appendChild(svgPath)
     }
+    // Create the path element properly
   }
 
   if (options.style) {
