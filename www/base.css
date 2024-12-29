@@ -206,7 +206,7 @@ body {
   grid-auto-rows: calc(var(--line) * var(--control-tile-num-visible-rows));
 }
 
-.tile {
+.control-tile {
   grid-template-rows: repeat(var(--control-tile-num-visible-rows), var(--line));
   border: 0.5px solid var(--theme-border);
 }

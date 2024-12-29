@@ -92,7 +92,7 @@ export class ContentTile {
   }
 
   public buildUI(): HTMLElement {
-    const root = el({ classes: ['ContentTile', 'tile', 'span-control-line', 'subgrid'] })
+    const root = el({ classes: ['ContentTile', 'control-tile', 'span-control-line', 'subgrid'] })
 
     effect(() => {
       while (root.children.length > 1) {
