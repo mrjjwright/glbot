@@ -1,5 +1,6 @@
 import { effect, Signal, signal } from 'alien-signals'
 import { createCellGradient, DEFAULT_COLORS } from './interpolate'
+import { el } from './dom'
 
 // Live reload in development
 if (process.env.NODE_ENV !== 'production') {
@@ -28,104 +29,6 @@ function Intro() {
   root.appendChild(el({ classes: ['line'] }))
 
   return root
-}
-
-interface ElementOptions {
-  tag?: string
-  text?: string
-  classes?: string[]
-  style?: string
-  html?: string
-  children?: Node[]
-}
-
-function el(options: ElementOptions = {}) {
-  const el = document.createElement(options.tag ?? 'div')
-  if (options.text) {
-    el.textContent = options.text
-  }
-  for (let c of options.classes ?? []) {
-    el.classList.add(c)
-  }
-  if (options.style) {
-    el.setAttribute('style', options.style)
-  }
-  if (options.html) {
-    el.innerHTML = options.html
-  }
-  if (options.children) {
-    for (const child of options.children) {
-      el.appendChild(child)
-    }
-  }
-  return el
-}
-
-function svg(options: ElementOptions) {
-  const svgElement = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
-  if (options.classes) {
-    for (let c of options.classes) {
-      svgElement.classList.add(c)
-    }
-  }
-  svgElement.classList.add('icon-inline')
-  svgElement.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
-  svgElement.setAttribute('viewBox', '0 0 24 24')
-  svgElement.setAttribute('fill', 'none')
-  svgElement.setAttribute('stroke', 'currentColor')
-  svgElement.setAttribute('stroke-width', '1.5')
-  svgElement.setAttribute('stroke-linecap', 'round')
-  svgElement.setAttribute('stroke-linejoin', 'round')
-
-  if (options.html) {
-    // Create the path element properly
-    const tempDiv = document.createElement('div')
-    tempDiv.innerHTML = options.html
-    const path = tempDiv.querySelector('path')
-    if (path) {
-      const svgPath = document.createElementNS('http://www.w3.org/2000/svg', 'path')
-      svgPath.setAttribute('d', path.getAttribute('d') || '')
-      svgElement.appendChild(svgPath)
-    }
-  }
-
-  if (options.style) {
-    svgElement.setAttribute('style', options.style)
-  }
-
-  return svgElement
-}
-
-function KeyValuePair({
-  keyText,
-  valueText,
-  cellGradient,
-  rowIndex,
-  totalRows
-}: {
-  keyText: string
-  valueText: string
-  cellGradient: any
-  rowIndex: number
-  totalRows: number
-}) {
-  const fragment = document.createDocumentFragment()
-
-  const keyEl = el({
-    classes: ['key'],
-    text: keyText,
-    style: `background-color: ${cellGradient.getCellColor(rowIndex, 0, totalRows, 2)}`
-  })
-
-  const valueEl = el({
-    classes: ['value'],
-    text: valueText,
-    style: `background-color: ${cellGradient.getCellColor(rowIndex, 1, totalRows, 2)}`
-  })
-
-  fragment.appendChild(keyEl)
-  fragment.appendChild(valueEl)
-  return fragment
 }
 
 function Control() {
