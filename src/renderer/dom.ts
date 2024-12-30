@@ -1,3 +1,5 @@
+import { Effect } from 'effect'
+
 interface ElementOptions {
   tag?: string
   text?: string
@@ -71,3 +73,23 @@ export function tagIcon() {
     ]
   })
 }
+
+export const documentLoad = Effect.acquireRelease(
+  // Acquire
+  Effect.async<void, never>((resume) => {
+    const onLoadHandler = () => {
+      console.log('Document is loaded.')
+      resume(Effect.succeed(void 0))
+    }
+
+    document.addEventListener('DOMContentLoaded', onLoadHandler)
+
+    // Return the handler so it can be used in cleanup
+    return onLoadHandler
+  }),
+  // Release (cleanup)
+  (onLoadHandler) =>
+    Effect.sync(() => {
+      document.removeEventListener('DOMContentLoaded', onLoadHandler)
+    })
+)
