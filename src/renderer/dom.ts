@@ -74,22 +74,33 @@ export function tagIcon() {
   })
 }
 
-export const documentLoad = Effect.acquireRelease(
-  // Acquire
-  Effect.async<void, never>((resume) => {
-    const onLoadHandler = () => {
-      console.log('Document is loaded.')
-      resume(Effect.succeed(void 0))
-    }
+// Define the document load resource interface
+interface DocumentLoadResource {
+  readonly handler: EventListener
+  readonly cleanup: () => void
+}
 
-    document.addEventListener('DOMContentLoaded', onLoadHandler)
+// Define how the resource is acquired
+const acquire = Effect.tryPromise({
+  try: () =>
+    new Promise<DocumentLoadResource>((resolve) => {
+      const handler: EventListener = () => {
+        console.log('Document is loaded.')
+        resolve({
+          handler,
+          cleanup: () => {
+            console.log('removing handler for DOMContentLoaded', handler)
+            document.removeEventListener('DOMContentLoaded', handler)
+          }
+        })
+      }
+      document.addEventListener('DOMContentLoaded', handler)
+    }),
+  catch: () => new Error('documentLoadError')
+})
 
-    // Return the handler so it can be used in cleanup
-    return onLoadHandler
-  }),
-  // Release (cleanup)
-  (onLoadHandler) =>
-    Effect.sync(() => {
-      document.removeEventListener('DOMContentLoaded', onLoadHandler)
-    })
-)
+// Define how the resource is released
+const release = (resource: DocumentLoadResource) => Effect.sync(() => resource.cleanup())
+
+// Create the resource management workflow
+export const documentLoad = Effect.acquireRelease(acquire, release)
