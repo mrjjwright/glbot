@@ -89,7 +89,6 @@ const acquire = Effect.tryPromise({
         resolve({
           handler,
           cleanup: () => {
-            console.log('removing handler for DOMContentLoaded', handler)
             document.removeEventListener('DOMContentLoaded', handler)
           }
         })
