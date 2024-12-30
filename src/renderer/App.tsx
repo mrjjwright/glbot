@@ -51,7 +51,7 @@ function Model() {
     documentLoaded.set(true)
   })
   const app = document.getElementById('app')!
-  app.classList.add('grid')
+  app.classList.add('App', 'grid')
   effect(() => {
     if (!documentLoaded.get()) {
       return

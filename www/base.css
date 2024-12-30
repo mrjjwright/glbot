@@ -187,7 +187,7 @@ body {
   display: grid;
   width: var(--width-max);
   grid-template-columns: repeat(var(--num-cols), var(--col-width));
-  grid-template-rows: min-content [Control] 1fr [Edit] 1fr;
+  grid-auto-rows: var(--line);
   background: var(--theme-background);
   font-family: var(--font-family-mono);
   line-height: var(--line);
@@ -199,6 +199,10 @@ body {
   grid-template-columns: subgrid;
   grid-auto-rows: var(--line);
   gap: 0;
+}
+
+.App {
+  grid-template-rows: [Intro] calc(var(--line) * 4) [Control] 1fr [Edit] 1fr;
 }
 
 .Controller {
