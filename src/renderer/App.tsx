@@ -20,9 +20,8 @@ function Intro() {
         <i class="subdued"> via<span>&nbsp;</span> </i>
         ${GLWebLogo()}
       </div>
-      <div class="span-line" style="grid-column-start: 2;"></div>
       <div class="line subdued">
-        interact less, collaborate more,interact less, collaborate more
+        interact less, collaborate more
       </div>
     `
   })
