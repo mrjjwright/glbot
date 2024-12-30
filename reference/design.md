@@ -38,19 +38,19 @@ the foundation of systematic is plain content in cells backed by git and run on 
 
 so grid files are special json files in git that point to cells in other files in the repo
 
-#### control and edit
+#### controller and editor
 
 the ui of **systematic** is oriented towards giving you 2 strong functions to control its objects:
 
 > objects are tiles, lines, or cells
 
-**controller** (top): a unique cell editor made up of special objects that can be navigated, selected, and linked together and with pieces of content on your computer
+**controller** (top): control and connect control tiles through: history, storage, content, logic, and actions
 
 **editor** (bottom): view and edit the content of selected objects using the built-in Monaco editor, simple rendered forms or a good tool on your computer
 
 the ui is then a simple stacked web based editor that can be anchored to the side of some work product if desired or used standalone in flexible ways
 
-#### control
+#### why a controller
 
 controlling the computer is aided by git and setting up content from your computer to be transformed to new more useful content on your computer
 
@@ -70,19 +70,21 @@ you can use the computer to do anything you want especially with help of the int
 
 so the controller is the tool you will use where you setup content that is important to you
 
-and to do this you need some kind of prototypal objects to build all the objects you need and want
+#### content tiles
 
-so we start with our alphabet objects
+content tiles store one or more lines of content
 
-content and function tiles
+each line of a content tile corresponds to one file on your computer or a single value in memory
 
-#### content tile
+you don't have to know that exactly but you do need to know that **systematc** is built on a sophisticated database for content
 
-a content tile stores one or more lines of content
+you don't have to know that the name of it is git
 
-each line of the content tile corresponds to one file on your computer or a single value in memory
+you do need to have some intution for what content is
 
-you don't have to know that
+a pdf, an image, a screenshot, a text file, a json or javascript file, a csv file, a video, a sound file, a 3d model, a program, a function, a class, a module
+
+or think of it more as something just more raw and singular
 
 one physcal file | chunk | value | property of content per line
 
@@ -92,14 +94,87 @@ one cell in each line of the content tile holds the content, the rest hold the o
 
 content tiles implmented using json files in git with their values often mapping to actual content in other files in the repo
 
-#### function tiles
+content tiles can be placed in signals and hence becomes reactive content and values
 
-a function tile is roughly a Typescript function
-each line in the function is roughly like a line of Typescript
+#### logic tiles
 
-function tiles have input lines, input validation lines, instruction lines, invariant lines, output lines, output validation lines
+a logic tile is implemented like most things in **systematic** by a single coherent TS class
 
-function tiles are json files from which typescript code is generated. that code loads the content, and runs the function setting up any needed systems
+each line in the tile contributes logic
+
+logic tiles have input lines, input validation lines, instruction lines, invariant lines, output lines, output validation lines
+
+logic tiles are json files from which typescript code is generated. that code loads the content
+
+logic tiles can be set up as alien-signals computeds and hence become "reactive logic"
+
+logic tiles and run tiles are both similar in that they are essential functional tiles that can run "code".
+
+logic tiles are designed with restraints
+
+logic tiles cannot run "POST" fetches
+
+logic tiles cannot set data/content/values into cells outside them
+
+logic tiles can only read files, not write to them or delete them
+
+logic files can only select from sqlite, not insert, update, or delete
+
+#### run tile
+
+a run tile is a tile that runs in the real world and can do things like draw on the screen
+
+they do not have the same access restraints as logic tiles
+
+run tiles can write to files or post to apis or insert into databases
+
+run tiles can optionally reactively run in alien-signals effects and keep uis up to date or anything in sync with the real world
+
+quite powerful, in combo with the other powerful primitive tiles
+
+#### runner
+
+the controller is not just a grid of tiles
+
+those tiles don't do anything by default
+
+they should be considered inert
+
+only things in the runner are running
+
+you can run multiple things there in nested ways that correspond roughly to alien-signals scopes and roughly to like nested uis but mostly we will describe a really direct way to control the input and output process
+
+we try to be dumb, like git
+
+the basic idea is that there is this special TS class called RunnerTile, and there is one as the child of the Controller
+
+the RunnerTile renders a tile wide strip down the left hand side of the Controller interface
+
+a pipeline where run tiles can be dragged
+
+it is rather strict because tiles must be strictly sequenced within it and lower tiles can only refer to tiles above them
+
+a logicTile to add needs 2 input cells on it's first line
+
+in normal cases it might not need to run its input and output validation
+
+it has an output
+
+in the runner it needs some kind of run tile to make it actually run
+
+a simple one is print which prints the tile output before it by default
+
+a lot of run tiles operate by default on the tiles above them making them convenient to drop into the Runner tile pipeline
+
+we call it a pipeline but it's a proper alien-signals reactive network as well if need be
+
+reactive pipelines are more complex and live and wait and react so we call them out as "live" tiles
+
+but pipelines can have no alien-signals
+
+they can just be plain JS running as plain JS on the JS event loop
+
+the Runner runes lines ultimately
 
 #### basic example
 

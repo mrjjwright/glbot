@@ -1,5 +1,5 @@
 <p align="center">
-	<img src="assets/alien_signals.png" width="250"><br>
+	<img src="assets/logo.png" width="250"><br>
 <p>
 
 <p align="center">
@@ -8,11 +8,9 @@
 
 # alien-signals
 
-Project Status: **Preview**
+The goal of `alien-signals` is to create a ~~push-pull~~ [push-pull-push model](https://github.com/stackblitz/alien-signals/pull/19) based signal library with the lowest overhead.
 
-The goal of `alien-signals` is to create a push-pull model based signal library with the lowest overhead.
-
-We have set the following scheduling logic constraints:
+We have set the following constraints in scheduling logic:
 
 1. No dynamic object fields
 2. No use of Array/Set/Map
@@ -31,10 +29,6 @@ In the past, I accumulated some knowledge of reactivity systems in https://githu
 
 Since Vue 3.5 switched to a Pull reactivity system in https://github.com/vuejs/core/pull/10397, I continued to research the Push-Pull reactivity system here. It is worth mentioning that I was inspired by the doubly-linked concept, but `alien-signals` does not use a similar implementation.
 
-## Other Languages
-
-- Lua: https://github.com/YanqingXu/alien-signals-in-lua
-
 ## Adoptions
 
 - Used in Vue language tools (https://github.com/vuejs/language-tools) for virtual code generation.
@@ -46,41 +40,41 @@ Since Vue 3.5 switched to a Pull reactivity system in https://github.com/vuejs/c
 ### Basic
 
 ```ts
-import { signal, computed, effect } from 'alien-signals';
+import { signal, computed, effect } from 'alien-signals'
 
-const count = signal(1);
-const doubleCount = computed(() => count.get() * 2);
+const count = signal(1)
+const doubleCount = computed(() => count.get() * 2)
 
 effect(() => {
-  console.log(`Count is: ${count.get()}`);
-}); // Console: Count is: 1
+  console.log(`Count is: ${count.get()}`)
+}) // Console: Count is: 1
 
-console.log(doubleCount.get()); // 2
+console.log(doubleCount.get()) // 2
 
-count.set(2); // Console: Count is: 2
+count.set(2) // Console: Count is: 2
 
-console.log(doubleCount.get()); // 4
+console.log(doubleCount.get()) // 4
 ```
 
 ### Effect Scope
 
 ```ts
-import { signal, effectScope } from 'alien-signals';
+import { signal, effectScope } from 'alien-signals'
 
-const count = signal(1);
-const scope = effectScope();
+const count = signal(1)
+const scope = effectScope()
 
 scope.run(() => {
   effect(() => {
-    console.log(`Count in scope: ${count.get()}`);
-  }); // Console: Count in scope: 1
+    console.log(`Count in scope: ${count.get()}`)
+  }) // Console: Count in scope: 1
 
-  count.set(2); // Console: Count in scope: 2
-});
+  count.set(2) // Console: Count in scope: 2
+})
 
-scope.stop();
+scope.stop()
 
-count.set(3); // No console output
+count.set(3) // No console output
 ```
 
 ## About `propagate` and `checkDirty` functions
@@ -92,95 +86,365 @@ This results in code that is difficult to understand, and you don't necessarily 
 #### `propagate`
 
 ```ts
-export function propagate(link: Link, targetFlag: SubscriberFlags = SubscriberFlags.Dirty): void {
-	do {
-		const sub = link.sub;
-		const subFlags = sub.flags;
+import { expect, test } from 'vitest'
+import { Effect } from '../src'
+import { computed, effect, effectScope, endBatch, signal, startBatch } from './api'
 
-		if (!(subFlags & SubscriberFlags.Tracking)) {
-			let canPropagate = !(subFlags >> 2);
-			if (!canPropagate && subFlags & SubscriberFlags.CanPropagate) {
-				sub.flags &= ~SubscriberFlags.CanPropagate;
-				canPropagate = true;
-			}
-			if (canPropagate) {
-				sub.flags |= targetFlag;
-				const subSubs = (sub as Dependency).subs;
-				if (subSubs !== undefined) {
-					propagate(subSubs, 'notify' in sub
-						? SubscriberFlags.RunInnerEffects
-						: SubscriberFlags.ToCheckDirty);
-				} else if ('notify' in sub) {
-					if (queuedEffectsTail !== undefined) {
-						queuedEffectsTail.nextNotify = sub;
-					} else {
-						queuedEffects = sub;
-					}
-					queuedEffectsTail = sub;
-				}
-			} else if (!(sub.flags & targetFlag)) {
-				sub.flags |= targetFlag;
-			}
-		} else if (isValidLink(link, sub)) {
-			if (!(subFlags >> 2)) {
-				sub.flags |= targetFlag | SubscriberFlags.CanPropagate;
-				const subSubs = (sub as Dependency).subs;
-				if (subSubs !== undefined) {
-					propagate(subSubs, 'notify' in sub
-						? SubscriberFlags.RunInnerEffects
-						: SubscriberFlags.ToCheckDirty);
-				}
-			} else if (!(sub.flags & targetFlag)) {
-				sub.flags |= targetFlag;
-			}
-		}
+test('should clear subscriptions when untracked by all subscribers', () => {
+  let bRunTimes = 0
 
-		link = link.nextSub!;
-	} while (link !== undefined);
+  const a = signal(1)
+  const b = computed(() => {
+    bRunTimes++
+    return a.get() * 2
+  })
+  const effect1 = effect(() => {
+    b.get()
+  })
 
-	if (targetFlag === SubscriberFlags.Dirty && !batchDepth) {
-		drainQueuedEffects();
-	}
+  expect(bRunTimes).toBe(1)
+  a.set(2)
+  expect(bRunTimes).toBe(2)
+  effect1.stop()
+  a.set(3)
+  expect(bRunTimes).toBe(2)
+})
+
+test('should not run untracked inner effect', () => {
+  const a = signal(3)
+  const b = computed(() => a.get() > 0)
+
+  effect(() => {
+    if (b.get()) {
+      effect(() => {
+        if (a.get() == 0) {
+          throw new Error('bad')
+        }
+      })
+    }
+  })
+
+  decrement()
+  decrement()
+  decrement()
+
+  function decrement() {
+    a.set(a.get() - 1)
+  }
+})
+
+test('should run outer effect first', () => {
+  const a = signal(1)
+  const b = signal(1)
+
+  effect(() => {
+    if (a.get()) {
+      effect(() => {
+        b.get()
+        if (a.get() == 0) {
+          throw new Error('bad')
+        }
+      })
+    } else {
+    }
+  })
+
+  startBatch()
+  b.set(0)
+  a.set(0)
+  endBatch()
+})
+
+test('should not trigger inner effect when resolve maybe dirty', () => {
+  const a = signal(0)
+  const b = computed(() => a.get() % 2)
+
+  let innerTriggerTimes = 0
+
+  effect(() => {
+    effect(() => {
+      b.get()
+      innerTriggerTimes++
+      if (innerTriggerTimes > 1) {
+        throw new Error('bad')
+      }
+    })
+  })
+
+  a.set(2)
+})
+
+test('should trigger inner effects in sequence', () => {
+  const a = signal(0)
+  const b = signal(0)
+  const c = computed(() => a.get() - b.get())
+  const order: string[] = []
+
+  effect(() => {
+    c.get()
+
+    effect(() => {
+      order.push('first inner')
+      a.get()
+    })
+
+    effect(() => {
+      order.push('last inner')
+      a.get()
+      b.get()
+    })
+  })
+
+  order.length = 0
+
+  startBatch()
+  b.set(1)
+  a.set(1)
+  endBatch()
+
+  expect(order).toEqual(['first inner', 'last inner'])
+})
+
+test('should trigger inner effects in sequence in effect scope', () => {
+  const a = signal(0)
+  const b = signal(0)
+  const scope = effectScope()
+  const order: string[] = []
+
+  scope.run(() => {
+    effect(() => {
+      order.push('first inner')
+      a.get()
+    })
+
+    effect(() => {
+      order.push('last inner')
+      a.get()
+      b.get()
+    })
+  })
+
+  order.length = 0
+
+  startBatch()
+  b.set(1)
+  a.set(1)
+  endBatch()
+
+  expect(order).toEqual(['first inner', 'last inner'])
+})
+
+test('should custom effect support batch', () => {
+  class BatchEffect<T = any> extends Effect<T> {
+    run(): T {
+      startBatch()
+      try {
+        return super.run()
+      } finally {
+        endBatch()
+      }
+    }
+  }
+
+  const logs: string[] = []
+  const a = signal(0)
+  const b = signal(0)
+
+  const aa = computed(() => {
+    logs.push('aa-0')
+    if (a.get() === 0) {
+      b.set(1)
+    }
+    logs.push('aa-1')
+  })
+
+  const bb = computed(() => {
+    logs.push('bb')
+    return b.get()
+  })
+
+  new BatchEffect(() => {
+    bb.get()
+  }).run()
+  new BatchEffect(() => {
+    aa.get()
+  }).run()
+
+  expect(logs).toEqual(['bb', 'aa-0', 'aa-1', 'bb'])
+})
+
+import { expect, test } from 'vitest'
+import { checkDirty, Computed, shallowPropagate, SubscriberFlags } from '../src'
+import { computed, signal } from './api'
+
+test('should correctly propagate changes through computed signals', () => {
+  const src = signal(0)
+  const c1 = computed(() => src.get() % 2)
+  const c2 = computed(() => c1.get())
+  const c3 = computed(() => c2.get())
+
+  c3.get()
+  src.set(1) // c1 -> dirty, c2 -> toCheckDirty, c3 -> toCheckDirty
+  c2.get() // c1 -> none, c2 -> none
+  src.set(3) // c1 -> dirty, c2 -> toCheckDirty
+
+  expect(c3.get()).toBe(1)
+})
+
+test('should custom computed support recursion', () => {
+  class RecursiveComputed<T> extends Computed<T> {
+    get(): T {
+      let flags = this.flags
+      if (flags & SubscriberFlags.Dirty) {
+        if (this.update()) {
+          const subs = this.subs
+          if (subs !== undefined) {
+            shallowPropagate(subs)
+          }
+        }
+      } else if (flags & SubscriberFlags.ToCheckDirty) {
+        if (checkDirty(this.deps!)) {
+          if (this.update()) {
+            const subs = this.subs
+            if (subs !== undefined) {
+              shallowPropagate(subs)
+            }
+          }
+        } else {
+          this.flags = flags & ~SubscriberFlags.ToCheckDirty
+        }
+      }
+      flags = this.flags
+      if (flags & SubscriberFlags.Recursed) {
+        this.flags = flags & ~SubscriberFlags.Recursed
+        return this.get()
+      }
+      return super.get()
+    }
+  }
+
+  const logs: string[] = []
+  const a = signal(0)
+  const b = new RecursiveComputed(() => {
+    if (a.get() === 0) {
+      logs.push('b-0')
+      a.set(100)
+      logs.push('b-1 ' + a.get())
+      a.set(200)
+      logs.push('b-2 ' + a.get())
+    } else {
+      logs.push('b-2 ' + a.get())
+    }
+  })
+
+  b.get()
+
+  expect(logs).toEqual(['b-0', 'b-1 100', 'b-2 200', 'b-2 200'])
+})
+
+import { expect, test } from 'vitest'
+import { unstable } from '../src'
+import { signal } from './api'
+
+const { asyncComputed, asyncEffect } = unstable
+
+test('should track dep after await', async () => {
+  const src = signal(0)
+  const c = asyncComputed(async function* () {
+    await sleep(100)
+    return (yield src, src).get()
+  })
+  expect(await c.get()).toBe(0)
+
+  src.set(1)
+  expect(await c.get()).toBe(1)
+})
+
+test('should trigger asyncEffect', async () => {
+  let triggerTimes = 0
+
+  const src = signal(0)
+  const c = asyncComputed(async function* () {
+    await sleep(100)
+    return (yield src, src).get()
+  })
+  asyncEffect(async function* () {
+    triggerTimes++
+    ;(yield c, c).get()
+  })
+  expect(triggerTimes).toBe(1)
+
+  await sleep(200)
+  src.set(1)
+  await sleep(200)
+  expect(triggerTimes).toBe(2)
+})
+
+test.skip('should stop calculating when dep updated', async () => {
+  let calcTimes = 0
+
+  const a = signal('a0')
+  const b = signal('b0')
+  const c = asyncComputed(async function* () {
+    calcTimes++
+    const v1 = (yield a, a).get()
+    await sleep(200)
+    const v2 = (yield b, b).get()
+    return v1 + '-' + v2
+  })
+
+  expect(await c.get()).toBe('a0-b0')
+  expect(calcTimes).toBe(1)
+
+  a.set('a1')
+  const promise = c.get()
+  await sleep(100)
+  expect(calcTimes).toBe(2)
+  a.set('a2')
+
+  expect(await promise).toBe('a2-b0')
+  expect(calcTimes).toBe(3)
+})
+
+function sleep(ms: number) {
+  return new Promise((r) => setTimeout(r, ms))
 }
+
+import { expect, test } from 'vitest'
+import { effect, effectScope, signal } from './api'
+
+test('should not trigger after stop', () => {
+  const count = signal(1)
+  const scope = effectScope()
+
+  let triggers = 0
+  let effect1
+
+  scope.run(() => {
+    effect1 = effect(() => {
+      triggers++
+      count.get()
+    })
+  })
+
+  expect(triggers).toBe(1)
+  count.set(2)
+  expect(triggers).toBe(2)
+  scope.stop()
+  count.set(3)
+  expect(triggers).toBe(2)
+})
+
+import { untrack } from '../src'
+import { signal, computed } from './api'
+import { expect, test } from 'vitest'
+
+test('should untrack', () => {
+  const src = signal(0)
+  const c = computed(() => untrack(() => src.get()))
+  expect(c.get()).toBe(0)
+
+  src.set(1)
+  expect(c.get()).toBe(0)
+})
 ```
-
-#### `checkDirty`
-
-```ts
-export function checkDirty(link: Link): boolean {
-	do {
-		const dep = link.dep;
-		if ('update' in dep) {
-			if (dep.version !== link.version) {
-				return true;
-			}
-			const depFlags = dep.flags;
-			if (depFlags & SubscriberFlags.Dirty) {
-				if (dep.update()) {
-					return true;
-				}
-			} else if (depFlags & SubscriberFlags.ToCheckDirty) {
-				if (checkDirty(dep.deps!)) {
-					if (dep.update()) {
-						return true;
-					}
-				} else {
-					dep.flags &= ~SubscriberFlags.ToCheckDirty;
-				}
-			}
-		}
-		link = link.nextDep!;
-	} while (link !== undefined);
-
-	return false;
-}
-```
-
-## Roadmap
-
-| Version | Savings                                                                                       |
-|---------|-----------------------------------------------------------------------------------------------|
-| 0.3     | Satisfy all 4 constraints                                                                     |
-| 0.2     | Correctly schedule computed side effects                                                      |
-| 0.1     | Correctly schedule inner effect callbacks                                                     |
-| 0.0     | Add APIs: `signal()`, `computed()`, `effect()`, `effectScope()`, `startBatch()`, `endBatch()` |
