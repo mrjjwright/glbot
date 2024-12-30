@@ -191,7 +191,7 @@ body {
   background: var(--theme-background);
   font-family: var(--font-family-mono);
   line-height: var(--line);
-  color: var(--theme-text); /* This is where currentColor inherits from */
+  color: var(--theme-text);
 }
 
 .subgrid {

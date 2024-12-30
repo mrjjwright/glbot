@@ -15,13 +15,15 @@ function Intro() {
   const root = el({
     classes: ['Intro', 'span-line', 'subgrid'],
     html: `
-      <div class="start-line" style="font-weight:bold">glbot</div>
-      <div class="span-line" style="grid-column-start: 2;">
-        <span class="Badge">Hello Transperfect</span> 
+      <div class="span-line">
+        <b>glbot</b> <span class="Badge">Hello Transperfect</span>
         <i class="subdued"> via<span>&nbsp;</span> </i>
         ${GLWebLogo()}
       </div>
-      <div class="line subdued">interact less, collaborate more,interact less, collaborate more</div>
+      <div class="span-line" style="grid-column-start: 2;"></div>
+      <div class="line subdued">
+        interact less, collaborate more,interact less, collaborate more
+      </div>
     `
   })
 
