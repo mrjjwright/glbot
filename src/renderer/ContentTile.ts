@@ -92,7 +92,7 @@ export class ContentTile {
   }
 
   public buildUI(): HTMLElement {
-    const root = el({ classes: ['ContentTile', 'control-tile', 'span-control-line', 'subgrid'] })
+    const root = el({ classes: ['ContentTile', 'tile', 'span-tile-line', 'subgrid'] })
 
     effect(() => {
       while (root.children.length > 1) {
@@ -100,7 +100,7 @@ export class ContentTile {
       }
 
       const titleEl = el({
-        classes: ['control-line', 'title'],
+        classes: ['tile-line', 'title'],
         style: `background-color: ${this.cellGradient.getCellColor(0, 0, 4, 2)}`,
         text: this.data.get().label || 'Content Tile'
       })

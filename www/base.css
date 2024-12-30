@@ -16,8 +16,8 @@
   --num-cols: 30;
   --width-max: calc(var(--col-width) * var(--num-cols) + var(--space) + var(--space));
 
-  --control-line-num-cols: 5;
-  --control-tile-num-visible-rows: 5;
+  --tile-line-num-cols: 5;
+  --tile-num-visible-rows: 5;
 
   --color-black-100: #000;
   --color-black-100-1: rgba(0, 0, 0, 0.1);
@@ -182,6 +182,7 @@ body {
 
 .grid {
   height: 100dvh;
+  overflow: hidden;
   margin: 0 0;
   padding: var(--line) var(--space);
   display: grid;
@@ -198,7 +199,6 @@ body {
   display: grid;
   grid-template-columns: subgrid;
   grid-auto-rows: var(--line);
-  gap: 0;
 }
 
 .App {
@@ -207,11 +207,10 @@ body {
 
 .Controller {
   font-size: 12px;
-  grid-auto-rows: calc(var(--line) * var(--control-tile-num-visible-rows));
 }
 
-.control-tile {
-  grid-template-rows: repeat(var(--control-tile-num-visible-rows), var(--line));
+.tile {
+  grid-template-rows: repeat(var(--tile-num-visible-rows), var(--line));
   border: 0.5px solid var(--theme-border);
 }
 
@@ -229,8 +228,8 @@ body {
   grid-column-end: span var(--num-cols);
 }
 
-.span-control-line {
-  grid-column-end: span var(--control-line-num-cols);
+.span-tile-line {
+  grid-column-end: span var(--tile-line-num-cols);
 }
 
 .line {
@@ -238,18 +237,18 @@ body {
   grid-column-end: span var(--num-cols);
 }
 
-.control-line {
+.tile-line {
   grid-column-start: 1;
-  grid-column-end: span var(--control-line-num-cols);
+  grid-column-end: span var(--tile-line-num-cols);
 }
 
 .label {
-  grid-column: 1 / var(--control-line-num-cols);
+  grid-column: 1 / var(--tile-line-num-cols);
   text-align: left;
 }
 
 .content {
-  grid-column-start: var(--control-line-num-cols);
+  grid-column-start: var(--tile-line-num-cols);
   text-align: center;
 }
 

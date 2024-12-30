@@ -103,3 +103,28 @@ const release = (resource: DocumentLoadResource) => Effect.sync(() => resource.c
 
 // Create the resource management workflow
 export const documentLoad = Effect.acquireRelease(acquire, release)
+
+// Get and initialize the app container
+
+export function elementById(id: string) {
+  return Effect.try({
+    try: () => {
+      const el = document.getElementById('app')
+      if (!el) throw new Error(`element with id ${id} not found`)
+      return el
+    },
+    catch: (error) => new Error(`Failed to find element with id ${id} ${error}`)
+  })
+}
+
+export function appendChild(createElement: () => HTMLElement) {
+  return (parentElement: HTMLElement) => {
+    return Effect.try({
+      try: () => {
+        parentElement.appendChild(createElement())
+        return parentElement
+      },
+      catch: (error) => new Error(`Failed to append child: ${error}`)
+    })
+  }
+}
