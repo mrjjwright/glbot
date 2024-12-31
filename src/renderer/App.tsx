@@ -1,5 +1,5 @@
 import { appendAndGetChild, appendChild, documentLoad, el, elementById } from './dom'
-import { Effect } from 'effect'
+import { Effect, SubscriptionRef, Stream } from 'effect'
 
 // Live reload in development
 if (process.env.NODE_ENV !== 'production') {
@@ -61,10 +61,27 @@ function Play() {
   })
 }
 
+type PlayState = {
+  effect: Effect.Effect<any, never, never>
+}
+
+const makePlayRef = SubscriptionRef.make<PlayState>({
+  effect: Effect.succeed('Hello World')
+})
+
+const player = Effect.gen(function* () {
+  const playRef = yield* makePlayRef
+  yield* playRef.changes.pipe(
+    Stream.tap((state) => Effect.runFork(state.effect)),
+    Stream.runDrain
+  )
+})
+
 const program = Effect.gen(function* () {
-  // wait for document to load
   yield* documentLoad
   yield* Effect.log('Document loaded successfully')
+
+  yield* Effect.fork(player)
 
   const app = yield* elementById('app')
   yield* appendChild(Intro)(app)
