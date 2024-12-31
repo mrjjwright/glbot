@@ -33,31 +33,31 @@ function Intro() {
 
 function Controller() {
   return el({
-    classes: ['Controller', 'subgrid', 'line']
+    classes: ['Controller', 'grid', 'line']
   })
 }
 
 function Editor() {
   return el({
-    classes: ['Editor', 'subgrid', 'line']
+    classes: ['Editor', 'grid', 'line']
   })
 }
 
 function Graph() {
   return el({
-    classes: ['Graph', 'subgrid']
+    classes: ['Graph', 'grid']
   })
 }
 
 function Tiles() {
   return el({
-    classes: ['Tiles', 'subgrid']
+    classes: ['Tiles', 'grid']
   })
 }
 
 function Play() {
   return el({
-    classes: ['Play', 'subgrid']
+    classes: ['Play', 'grid']
   })
 }
 
@@ -71,6 +71,8 @@ const program = Effect.gen(function* () {
   const controller = yield* appendAndGetChild(Controller)(app)
   yield* appendChild(Editor)(app)
   yield* appendChild(Graph)(controller)
+  yield* appendChild(Tiles)(controller)
+  yield* appendChild(Play)(controller)
 })
 
 Effect.runPromise(Effect.scoped(program))

@@ -13,8 +13,7 @@
 
   --col-num-spaces: 4;
   --col-width: calc(var(--col-num-spaces) * var(--space));
-  --num-cols: 30;
-  --width-max: calc(var(--col-width) * var(--num-cols) + var(--space) + var(--space));
+  --width-max: 120ch;
 
   --tile-line-num-cols: 5;
   --tile-num-visible-rows: 5;
@@ -183,7 +182,7 @@ body {
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(var(--num-cols), var(--col-width));
+  grid-auto-columns: var(--col-width);
   grid-auto-rows: var(--line);
 }
 
@@ -199,6 +198,7 @@ body {
   width: var(--width-max);
   margin: 0 0;
   padding: var(--line) var(--space);
+  grid-template-columns: 1fr;
   grid-template-rows: [Intro] calc(var(--line) * 4) [Control] 1fr [Edit] 1fr;
   background: var(--theme-background);
   font-family: var(--font-family-mono);
@@ -212,7 +212,7 @@ body {
   grid-template-columns:
     [Graph] calc(var(--tile-width) * 2)
     [Tiles] 1fr
-    [Play] var(--tile-width);
+    [Play] calc(var(--tile-width) * 1.5);
   grid-template-rows: 1fr;
 }
 
@@ -247,7 +247,7 @@ body {
 }
 
 .span-line {
-  grid-column-end: span var(--num-cols);
+  grid-column-end: -1;
 }
 
 .span-tile-line {
@@ -256,7 +256,7 @@ body {
 
 .line {
   grid-column-start: 1;
-  grid-column-end: span var(--num-cols);
+  grid-column-end: -1;
 }
 
 .tile-line {
