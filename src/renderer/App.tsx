@@ -65,23 +65,32 @@ type PlayState = {
   effect: Effect.Effect<any, never, never>
 }
 
-const makePlayRef = SubscriptionRef.make<PlayState>({
-  effect: Effect.succeed('Hello World')
-})
+const player = (playRef: SubscriptionRef.SubscriptionRef<PlayState>) =>
+  Effect.gen(function* () {
+    yield* playRef.changes.pipe(
+      Stream.tap((state) => Effect.log('yo', state)),
+      Stream.tap((state) => Effect.runFork(state.effect)),
+      Stream.runDrain
+    )
+  })
 
-const player = Effect.gen(function* () {
-  const playRef = yield* makePlayRef
-  yield* playRef.changes.pipe(
-    Stream.tap((state) => Effect.runFork(state.effect)),
-    Stream.runDrain
-  )
-})
+const testPlayer = (playRef: SubscriptionRef.SubscriptionRef<PlayState>) =>
+  Effect.gen(function* () {
+    yield* Effect.sleep('2 seconds')
+    yield* SubscriptionRef.set(playRef, {
+      effect: Effect.log('Testing player: Effect executed!')
+    })
+  })
 
 const program = Effect.gen(function* () {
+  const playRef = yield* SubscriptionRef.make<PlayState>({
+    effect: Effect.succeed('Hello World')
+  })
+
   yield* documentLoad
   yield* Effect.log('Document loaded successfully')
 
-  yield* Effect.fork(player)
+  yield* Effect.fork(player(playRef))
 
   const app = yield* elementById('app')
   yield* appendChild(Intro)(app)
@@ -90,6 +99,10 @@ const program = Effect.gen(function* () {
   yield* appendChild(Graph)(controller)
   yield* appendChild(Tiles)(controller)
   yield* appendChild(Play)(controller)
+
+  const testPlayerFork = yield* Effect.fork(testPlayer(playRef))
+  const res = yield* testPlayerFork.await
+  console.log(res)
 })
 
 Effect.runPromise(Effect.scoped(program))
