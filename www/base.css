@@ -18,6 +18,7 @@
 
   --tile-line-num-cols: 5;
   --tile-num-visible-rows: 5;
+  --tile-width: calc(var(--tile-line-num-cols) * var(--col-width));
 
   --color-black-100: #000;
   --color-black-100-1: rgba(0, 0, 0, 0.1);
@@ -181,18 +182,9 @@ body {
 }
 
 .grid {
-  height: 100dvh;
-  overflow: hidden;
-  margin: 0 0;
-  padding: var(--line) var(--space);
   display: grid;
-  width: var(--width-max);
   grid-template-columns: repeat(var(--num-cols), var(--col-width));
   grid-auto-rows: var(--line);
-  background: var(--theme-background);
-  font-family: var(--font-family-mono);
-  line-height: var(--line);
-  color: var(--theme-text);
 }
 
 .subgrid {
@@ -202,11 +194,41 @@ body {
 }
 
 .App {
+  height: 100dvh;
+  overflow: hidden;
+  width: var(--width-max);
+  margin: 0 0;
+  padding: var(--line) var(--space);
   grid-template-rows: [Intro] calc(var(--line) * 4) [Control] 1fr [Edit] 1fr;
+  background: var(--theme-background);
+  font-family: var(--font-family-mono);
+  line-height: var(--line);
+  color: var(--theme-text);
 }
 
 .Controller {
+  min-height: 0;
   font-size: 12px;
+  grid-template-columns:
+    [Graph] calc(var(--tile-width) * 2)
+    [Tiles] 1fr
+    [Play] var(--tile-width);
+  grid-template-rows: 1fr;
+}
+
+.Graph {
+  overflow-x: clip;
+  overflow-y: auto;
+}
+
+.Tiles {
+  overflow-x: clip;
+  overflow-y: auto;
+}
+
+.Play {
+  overflow-x: clip;
+  overflow-y: auto;
 }
 
 .tile {

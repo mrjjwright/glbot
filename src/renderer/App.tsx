@@ -1,7 +1,5 @@
-import { appendChild, documentLoad, el, elementById } from './dom'
-// import { ContentTile } from './ContentTile'
+import { appendAndGetChild, appendChild, documentLoad, el, elementById } from './dom'
 import { Effect } from 'effect'
-import { release } from 'os'
 
 // Live reload in development
 if (process.env.NODE_ENV !== 'production') {
@@ -33,13 +31,46 @@ function Intro() {
   return root
 }
 
-const program = Effect.scoped(
-  documentLoad.pipe(
-    Effect.tap(() => Effect.log('Document loaded successfully')),
-    Effect.flatMap(() => elementById('app')),
-    Effect.flatMap(appendChild(Intro))
-  )
-)
+function Controller() {
+  return el({
+    classes: ['Controller', 'subgrid', 'line']
+  })
+}
 
-// Run it
-Effect.runPromise(program)
+function Editor() {
+  return el({
+    classes: ['Editor', 'subgrid', 'line']
+  })
+}
+
+function Graph() {
+  return el({
+    classes: ['Graph', 'subgrid']
+  })
+}
+
+function Tiles() {
+  return el({
+    classes: ['Tiles', 'subgrid']
+  })
+}
+
+function Play() {
+  return el({
+    classes: ['Play', 'subgrid']
+  })
+}
+
+const program = Effect.gen(function* () {
+  // wait for document to load
+  yield* documentLoad
+  yield* Effect.log('Document loaded successfully')
+
+  const app = yield* elementById('app')
+  yield* appendChild(Intro)(app)
+  const controller = yield* appendAndGetChild(Controller)(app)
+  yield* appendChild(Editor)(app)
+  yield* appendChild(Graph)(controller)
+})
+
+Effect.runPromise(Effect.scoped(program))

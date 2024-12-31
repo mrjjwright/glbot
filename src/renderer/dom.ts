@@ -128,3 +128,16 @@ export function appendChild(createElement: () => HTMLElement) {
     })
   }
 }
+
+export function appendAndGetChild(createElement: () => HTMLElement) {
+  return (parentElement: HTMLElement) => {
+    return Effect.try({
+      try: () => {
+        const child = createElement()
+        parentElement.appendChild(child)
+        return child
+      },
+      catch: (error) => new Error(`Failed to append child: ${error}`)
+    })
+  }
+}

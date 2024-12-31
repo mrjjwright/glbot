@@ -26,7 +26,7 @@ CSS Core Specification/
     ├── Text Properties
     └── Writing Modes
 ```
-    
+
 #### Box Model
 
 Every element is a box with 4 layers (inside to out):
@@ -48,6 +48,7 @@ Every element is a box with 4 layers (inside to out):
 ```
 
 Two box models:
+
 ```css
 /* Default - width is just content */
 box-sizing: content-box;
@@ -57,6 +58,7 @@ box-sizing: border-box;
 ```
 
 Pro tip: Use this on everything:
+
 ```css
 * {
   box-sizing: border-box;
@@ -64,6 +66,7 @@ Pro tip: Use this on everything:
 ```
 
 Shorthand properties:
+
 ```css
 /* clockwise: top right bottom left */
 margin: 10px 20px 10px 20px;
@@ -88,7 +91,7 @@ box-shadow: inset x y blur spread color;
 - `spread` is the distance between the shadow and the element.
 - `color` is the color of the shadow.
 
-Think of it like this: 
+Think of it like this:
 
 ```text
 ┌────────────────┐
@@ -105,12 +108,11 @@ Think of it like this:
 
 Here's the bare minimum to understand CSS transitions:
 
-
 ```css
 .element {
   /* Property you want to animate */
   opacity: 1;
-  
+
   /* Basic transition */
   transition: opacity 0.2s ease;
 }
@@ -126,11 +128,12 @@ That's it. Transitions are just:
 - How long it takes
 - How it moves (ease/linear/etc)
 
- 
 You can do multiple properties:
 
 ```css
-transition: opacity 0.2s ease, background 0.3s linear;
+transition:
+  opacity 0.2s ease,
+  background 0.3s linear;
 ```
 
 Or all properties:
@@ -143,49 +146,67 @@ Common timing functions:
 
 - `ease` - Quick ramp up, zooms through middle, gentle landing. Feels like: throwing a ball
 - `linear` - Robot-like constant speed. Feels like: conveyor belt
-- `ease-in` - Starts sluggish, keeps accelerating.  Feels like: car accelerating
-- `ease-out` - Starts fast, gradually slows to stop.  Feels like: car braking.
-- `ease-in-out` - Gentle acceleration and deceleration.  Feels like: elevator starting/stopping
+- `ease-in` - Starts sluggish, keeps accelerating. Feels like: car accelerating
+- `ease-out` - Starts fast, gradually slows to stop. Feels like: car braking.
+- `ease-in-out` - Gentle acceleration and deceleration. Feels like: elevator starting/stopping
 
 A bit deeper into transitions:
 
 Transitions are triggered when their target property CHANGES. Here's exactly when:
 
 1. Class changes
+
 ```css
-.button { opacity: 0; }
+.button {
+  opacity: 0;
+}
 /* Triggers when .visible is added/removed */
-.button.visible { opacity: 1; } 
+.button.visible {
+  opacity: 1;
+}
 ```
 
 1. State changes
+
 ```css
-.button { opacity: 1; }
+.button {
+  opacity: 1;
+}
 /* Triggers on mouse enter/leave */
-.button:hover { opacity: 0.8; } 
+.button:hover {
+  opacity: 0.8;
+}
 ```
 
 1. Inline style changes
+
 ```js
-element.style.opacity = '0'; // Triggers when changed via JS
+element.style.opacity = '0' // Triggers when changed via JS
 ```
 
 1. Media query changes
+
 ```css
-.button { opacity: 1; }
+.button {
+  opacity: 1;
+}
 @media (max-width: 768px) {
   /* Triggers when viewport crosses breakpoint */
-  .button { opacity: 0.8; } 
+  .button {
+    opacity: 0.8;
+  }
 }
 ```
 
 Transitions do NOT trigger:
+
 - Initial page load/element mount
 - When element is added to DOM
 - Display: none ↔️ block changes
 - Properties that can't be interpolated (like display)
 
 Pro tip: To trigger on mount, trick is:
+
 ```css
 .button {
   opacity: 0;
@@ -202,6 +223,7 @@ Pro tip: To trigger on mount, trick is:
 CSS variables can be animated through their properties (not directly). Here's how:
 
 1. State changes:
+
 ```css
 .Button {
   --bg: blue;
@@ -215,6 +237,7 @@ CSS variables can be animated through their properties (not directly). Here's ho
 ```
 
 2. Media queries:
+
 ```css
 :root {
   --size: 100px;
@@ -233,6 +256,7 @@ CSS variables can be animated through their properties (not directly). Here's ho
 ```
 
 3. Parent class changes:
+
 ```css
 .theme-light {
   --color: black;
@@ -249,6 +273,7 @@ CSS variables can be animated through their properties (not directly). Here's ho
 ```
 
 4. Prefers color scheme:
+
 ```css
 @media (prefers-color-scheme: dark) {
   :root {
@@ -270,10 +295,10 @@ Note: You can only transition the properties that use the variables, not the var
 
 Think of specificity as a score with 4 numbers: (A,B,C,D)
 
-A: Style attribute      `style="color: red"`     (1,0,0,0)
-B: IDs                  `#header`                (0,1,0,0)
-C: Classes/attributes   `.button[type="submit"]` (0,0,1,0)
-D: Elements             `div p`                  (0,0,0,1)
+A: Style attribute `style="color: red"` (1,0,0,0)
+B: IDs `#header` (0,1,0,0)
+C: Classes/attributes `.button[type="submit"]` (0,0,1,0)
+D: Elements `div p` (0,0,0,1)
 
 Examples:
 
@@ -284,8 +309,8 @@ Examples:
 div p /* (0,0,0,2) - Two elements */
 ```
 
-
 It's just math:
+
 - Each ID adds 1 to the second number
 - Each class/attribute adds 1 to the third number
 - Each element adds 1 to the fourth number
@@ -293,8 +318,7 @@ It's just math:
 
 So `#header #logo` beats `.anything` because (0,2,0,0) > (0,0,1,0)
 
-**And style always wins!*
-
+\*_And style always wins!_
 
 #### CSS Variables
 
@@ -314,13 +338,14 @@ Use them with `var()`:
 .button {
   background: var(--primary);
   padding: var(--spacing);
-  
+
   /* Fallback if variable isn't defined */
   color: var(--text-color, black);
 }
 ```
 
 Variables:
+
 - Must start with `--`
 - Are case-sensitive
 - Inherit like regular properties
@@ -329,6 +354,7 @@ Variables:
 - Can be scoped to components
 
 Scoping example:
+
 ```css
 .dark-theme {
   --primary: darkblue;
@@ -340,6 +366,7 @@ Scoping example:
 ```
 
 Common use cases:
+
 - Theme colors
 - Spacing/sizing systems
 - Component variations
@@ -349,32 +376,29 @@ Reading/writing from JavaScript:
 
 ```js
 // Read a variable
-const primary = getComputedStyle(document.documentElement)
-  .getPropertyValue('--primary');
+const primary = getComputedStyle(document.documentElement).getPropertyValue('--primary')
 
 // Write a variable
-document.documentElement.style
-  .setProperty('--primary', 'red');
+document.documentElement.style.setProperty('--primary', 'red')
 
 // Write multiple with a class
-document.body.classList.add('dark-theme');
+document.body.classList.add('dark-theme')
 
 // Remove variables
-document.documentElement.style
-  .removeProperty('--primary');
+document.documentElement.style.removeProperty('--primary')
 ```
 
 Common patterns:
+
 ```js
 // Theme switching
 const toggleTheme = (isDark) => {
-  document.body.classList.toggle('dark-theme', isDark);
+  document.body.classList.toggle('dark-theme', isDark)
 }
 
 // Dynamic values
 const updateSpacing = (value) => {
-  document.documentElement.style
-    .setProperty('--spacing', value + 'px');
+  document.documentElement.style.setProperty('--spacing', value + 'px')
 }
 ```
 
@@ -408,17 +432,19 @@ vs
 ```
 
 Inline behavior:
+
 ```html
 <p>
-  Some text with 
-  <span>inline elements</span> 
-  <a>that sit</a> 
+  Some text with
+  <span>inline elements</span>
+  <a>that sit</a>
   <strong>right in the text</strong>
   without breaking to new lines
 </p>
 ```
 
 Block behavior:
+
 ```html
 <p>This starts a new line</p>
 <div>This forces a new line</div>
@@ -428,6 +454,7 @@ Block behavior:
 #### Text Editors vs CSS Flow
 
 Text Editor (Monaco):
+
 ```text
 Every character has the same width
 | M | o | n | a | c | o |
@@ -435,6 +462,7 @@ And lines are strictly managed
 ```
 
 Browser Text Flow:
+
 ```text
 Characters have different widths:
 |W|i|d|t|h|s| |v|a|r|y|
@@ -451,12 +479,14 @@ when the window resizes.
 ```
 
 Key Differences:
+
 - Text editors: Monospace grid, every character same width
 - Browsers: Variable width, fluid layout, automatic reflow
 - Text editors: Manual line breaks
 - Browsers: Automatic wrapping based on container width
 
 Breaking out of normal flow:
+
 ```css
 /* Element is removed from document flow */
 position: absolute;
@@ -474,56 +504,75 @@ position: sticky;
 #### Selectors & Combinators
 
 Basic selectors:
+
 ```css
 /* Tag name */
-div { }
+div {
+}
 
 /* Class */
-.button { }
+.button {
+}
 
 /* ID */
-#header { }
+#header {
+}
 
 /* Multiple selectors */
-h1, h2, .title { }
+h1,
+h2,
+.title {
+}
 ```
 
 Combinators:
+
 ```css
 /* Descendant - any child/grandchild */
-.parent .child { }
+.parent .child {
+}
 
 /* Direct child only */
-.parent > .child { }
+.parent > .child {
+}
 
 /* Adjacent sibling - right next to */
-.element + .sibling { }
+.element + .sibling {
+}
 
 /* All siblings - any after */
-.element ~ .siblings { }
+.element ~ .siblings {
+}
 ```
 
 Attribute selectors:
+
 ```css
 /* Has attribute */
-[disabled] { }
+[disabled] {
+}
 
 /* Exact match */
-[type="checkbox"] { }
+[type='checkbox'] {
+}
 
 /* Starts with */
-[href^="https"] { }
+[href^='https'] {
+}
 
 /* Ends with */
-[src$=".png"] { }
+[src$='.png'] {
+}
 
 /* Contains */
-[class*="btn"] { }
+[class*='btn'] {
+}
 ```
 
 #### Pseudo-Classes & Elements
 
 States:
+
 ```css
 /* Mouse */
 :hover  /* hovering */
@@ -543,15 +592,18 @@ States:
 ```
 
 Generated content:
+
 ```css
 /* Add content before/after */
 .button::before {
-  content: "→";
+  content: '→';
 }
 
 /* Style first letter/line */
-p::first-letter { }
-p::first-line { }
+p::first-letter {
+}
+p::first-line {
+}
 
 /* Selection highlight */
 ::selection {
@@ -562,40 +614,43 @@ p::first-line { }
 #### Positioning & Layout Patterns
 
 Default positioning:
+
 ```css
 /* Static - the default */
 position: static;
 ```
 
 Every element starts with `position: static`:
+
 - Elements flow naturally in the document
 - Top/right/bottom/left properties do nothing
 - Can't be a positioning parent for absolute children
 - Ignores z-index
 
 Other position values:
+
 ```css
 /* Relative - offset from natural position */
 .element {
   position: relative;
-  top: 10px;    /* Shifts DOWN 10px from natural position */
-  left: 20px;   /* Shifts RIGHT 20px from natural position */
+  top: 10px; /* Shifts DOWN 10px from natural position */
+  left: 20px; /* Shifts RIGHT 20px from natural position */
   /* Still takes up original space in document flow */
 }
 
 /* Absolute - removed from flow, positioned to nearest non-static parent */
 .element {
   position: absolute;
-  top: 0;      /* Distance from parent's top edge */
-  right: 0;    /* Distance from parent's right edge */
+  top: 0; /* Distance from parent's top edge */
+  right: 0; /* Distance from parent's right edge */
   /* No longer takes up space in document flow */
 }
 
 /* Fixed - removed from flow, positioned to viewport */
 .element {
   position: fixed;
-  bottom: 20px;  /* Distance from viewport bottom */
-  right: 20px;   /* Distance from viewport right */
+  bottom: 20px; /* Distance from viewport bottom */
+  right: 20px; /* Distance from viewport right */
   /* Stays put even when scrolling */
 }
 
@@ -608,6 +663,7 @@ Other position values:
 ```
 
 Common centering patterns:
+
 ```css
 /* Horizontal center for block elements */
 .center-block {
@@ -634,21 +690,22 @@ Common centering patterns:
 #### Flexbox
 
 Container properties:
+
 ```css
 .flex-container {
   display: flex;
-  
+
   /* Main axis */
   justify-content: space-between;
   /* start | center | end | space-around */
-  
+
   /* Cross axis */
   align-items: center;
   /* start | center | end | stretch */
-  
+
   /* Single or multi-line */
   flex-wrap: wrap;
-  
+
   /* Direction */
   flex-direction: row;
   /* column | row-reverse | column-reverse */
@@ -656,17 +713,18 @@ Container properties:
 ```
 
 Item properties:
+
 ```css
 .flex-item {
   /* Growth factor */
   flex-grow: 1;
-  
+
   /* Shrink factor */
   flex-shrink: 0;
-  
+
   /* Base size */
   flex-basis: 200px;
-  
+
   /* Shorthand */
   flex: 1 0 200px;
 }
@@ -675,22 +733,23 @@ Item properties:
 #### CSS Grid
 
 Container basics:
+
 ```css
 .grid {
   display: grid;
-  
+
   /* Fixed columns */
   grid-template-columns: 200px 1fr 200px;
-  
+
   /* Responsive columns */
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  
+
   /* Named areas */
-  grid-template-areas: 
-    "header header"
-    "sidebar content"
-    "footer footer";
-    
+  grid-template-areas:
+    'header header'
+    'sidebar content'
+    'footer footer';
+
   /* Spacing */
   gap: 20px;
   /* row-gap | column-gap */
@@ -698,15 +757,16 @@ Container basics:
 ```
 
 Item placement:
+
 ```css
 .item {
   /* By line numbers */
   grid-column: 1 / 3;
   grid-row: 2 / 4;
-  
+
   /* By area name */
   grid-area: header;
-  
+
   /* Span multiple */
   grid-column: span 2;
 }
@@ -715,6 +775,7 @@ Item placement:
 #### Media Queries
 
 Basic responsive design:
+
 ```css
 /* Mobile first */
 .element {
@@ -737,24 +798,31 @@ Basic responsive design:
 ```
 
 Common breakpoints:
+
 ```css
 /* Small phones */
-@media (max-width: 320px) { }
+@media (max-width: 320px) {
+}
 
 /* Phones */
-@media (max-width: 480px) { }
+@media (max-width: 480px) {
+}
 
 /* Tablets */
-@media (max-width: 768px) { }
+@media (max-width: 768px) {
+}
 
 /* Laptops */
-@media (max-width: 1024px) { }
+@media (max-width: 1024px) {
+}
 
 /* Large screens */
-@media (max-width: 1200px) { }
+@media (max-width: 1200px) {
+}
 ```
 
 Feature queries:
+
 ```css
 /* Check for feature support */
 @supports (display: grid) {
@@ -769,4 +837,40 @@ Feature queries:
 }
 ```
 
+#### Minimum Size Behavior
 
+Layout containers and items have default minimum sizes that control how they behave when content pushes against their bounds:
+
+```css
+/* Block elements can shrink vertically but maintain content width */
+min-width: auto   /* Won't shrink narrower than content */
+min-height: 0     /* Can collapse completely */
+
+/* Flex/Grid items resist shrinking in both directions */
+min-width: auto   /* Won't shrink narrower than content */
+min-height: auto  /* Won't shrink shorter than content */
+```
+
+This behavior exists to prevent content from becoming illegible or unusable. Think of it like a balloon:
+
+- Content acts as the air inside
+- The container is the balloon's surface
+- By default, you can't squeeze content smaller than its natural minimum
+
+However, this can break layouts. When you say:
+
+```css
+.grid {
+  grid-template-rows: 1fr 1fr; /* "Split in half" */
+}
+```
+
+You might expect two equal rows. But if content in either row is tall, it pushes back against the 1fr constraint due to `min-height: auto`. The solution `min-height: 0` tells the item "it's okay to shrink below content size" - we'll handle overflow another way (usually with scrolling).
+
+Similar principles apply in flexbox:
+
+- `flex-shrink: 1`: Try to shrink this item when space is tight
+- But `min-width: auto` means "...but not smaller than content"
+- Setting `min-width: 0` allows true shrinking
+
+Understanding these minimums explains many common layout "bugs" - the browser isn't misbehaving, it's protecting content by default.
