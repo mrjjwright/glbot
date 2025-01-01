@@ -68,7 +68,7 @@ type PlayState = {
 const player = (playRef: SubscriptionRef.SubscriptionRef<PlayState>) =>
   Effect.gen(function* () {
     yield* playRef.changes.pipe(
-      Stream.tap((state) => Effect.log('yo', state)),
+      Stream.tap((state) => Effect.log('Playing tile', state)),
       Stream.tap((state) => Effect.runFork(state.effect)),
       Stream.runDrain
     )
@@ -105,4 +105,4 @@ const program = Effect.gen(function* () {
   console.log(res)
 })
 
-Effect.runPromise(Effect.scoped(program))
+Effect.runFork(Effect.scoped(program))
