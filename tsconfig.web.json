@@ -3,8 +3,7 @@
   "include": [
     "types/*.d.ts",
     "src/renderer/**/*",
-    "src/spreadsheet.ts",
-    "esbuild.app.ts"
+    "esbuild.app.ts",
   ],
   "compilerOptions": {
     "jsx": "react-jsx",

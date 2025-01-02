@@ -1,4 +1,4 @@
-# GLWeb Profile Assistant
+# glbot
 
 A minimalist AI-powered tool for working with Transperfect services locally and safely.
 
