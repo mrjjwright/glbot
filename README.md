@@ -10,7 +10,6 @@ a `--space` is `1ch` of monospace font
 
 a `--line` is `1.25rem` high or about `20px`
 
-
 a tile is 5 columns wide and multiple lines high,
 all lines past the visible ones are revealed via scrolling
 
@@ -18,8 +17,7 @@ all lines past the visible ones are revealed via scrolling
 
 the ui of **systematic** is oriented towards giving you 2 strong functions to control its tiles:
 
-
-**controller** (top): the controller is made up of 3 main parts: 
+**controller** (top): the controller is made up of 3 main parts:
 
 `Graph` - organize tiles in useful ways
 `Tiles` - filter, search and pick tles
@@ -29,23 +27,10 @@ the ui of **systematic** is oriented towards giving you 2 strong functions to co
 
 the ui is then a simple stacked web based editor that can be anchored to the side of some work product if desired or used standalone in flexible ways
 
-#### tiles 
+#### tiles
 
 each tile does one thing and one thing well and can be composed with other tiles to do more things
 
-tiles are designed to describe useful operations on top of the JavaScript virtual machine and are ultimately backed by the powerful Typescript Effect library.  each tile is basically an effect
+tiles are designed to describe useful operations on top of the JavaScript virtual machine and are ultimately backed by the powerful Typescript Effect library. each tile is basically an effect
 
 each tile is not a function, it is a descriptive declarative value
-
-each tile runs all it's lines in a sequential logical sequence
-
-a line of tile can be another effect
-
-or set a parameter
-
-or something useful to further lines and tiles
-
-tiles are the basic unit of systematic
-
-tiles compose
-
