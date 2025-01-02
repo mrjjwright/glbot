@@ -2,7 +2,7 @@ import * as esbuild from 'esbuild'
 
 const config = {
   entryPoints: {
-    index: 'src/renderer/App.tsx'
+    index: 'src/renderer/app.ts'
   },
   tsconfig: 'tsconfig.web.json',
   target: ['chrome131'],
