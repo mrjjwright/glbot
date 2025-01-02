@@ -1,5 +1,5 @@
 import { appendAndGetChild, appendChild, documentLoad, el, elementById } from './dom'
-import { Effect, SubscriptionRef, Stream } from 'effect'
+import { Effect, SubscriptionRef, Stream, pipe } from 'effect'
 
 // Live reload in development
 if (process.env.NODE_ENV !== 'production') {
@@ -106,3 +106,25 @@ const program = Effect.gen(function* () {
 })
 
 Effect.runFork(Effect.scoped(program))
+
+function textEffect(text: string) {
+  return Effect.succeed(text)
+}
+
+function listToTextEffect(sepChar: string) {
+  return (texts: string[]) => Effect.succeed(texts.join(sepChar))
+}
+
+const demoParallelText = pipe(
+  Effect.all([textEffect('Hello'), textEffect('Parallel'), textEffect('World')]),
+  Effect.andThen(listToTextEffect(' '))
+)
+
+Effect.runPromise(demoParallelText).then(console.log)
+
+// Tile effect registry
+const tileRegistry = {
+  'core.text': textEffect,
+  'core.list.to_text': listToTextEffect,
+  'core.all': (effects: Effect.Effect<any, never, any>[]) => Effect.all(effects)
+}
