@@ -1,8 +1,18 @@
 import * as esbuild from 'esbuild'
 
-const config = {
+// Configure worker entry points
+const workers = {
+  'editor.worker': 'monaco-editor/esm/vs/editor/editor.worker.js',
+  'json.worker': 'monaco-editor/esm/vs/language/json/json.worker',
+  'css.worker': 'monaco-editor/esm/vs/language/css/css.worker',
+  'html.worker': 'monaco-editor/esm/vs/language/html/html.worker',
+  'ts.worker': 'monaco-editor/esm/vs/language/typescript/ts.worker'
+}
+
+const config: esbuild.BuildOptions = {
   entryPoints: {
-    index: 'src/renderer/app.ts'
+    index: 'src/renderer/app.ts',
+    ...workers
   },
   tsconfig: 'tsconfig.web.json',
   target: ['chrome131'],
@@ -11,6 +21,11 @@ const config = {
   assetNames: '[name]-[hash]',
   minify: process.argv.includes('--minify'),
   sourcemap: true,
+  loader: {
+    '.ttf': 'file',
+    '.woff': 'file',
+    '.woff2': 'file'
+  },
   plugins: [
     {
       name: 'react',
@@ -40,7 +55,7 @@ const config = {
       process.argv.includes('--minify') ? 'production' : 'development'
     )
   }
-} satisfies esbuild.BuildOptions
+}
 
 async function build() {
   return await esbuild.build(config)

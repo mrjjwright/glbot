@@ -1,5 +1,6 @@
 import { appendAndGetChild, appendChild, documentLoad, el, elementById } from './dom'
 import { Effect, SubscriptionRef, Stream, pipe } from 'effect'
+import { createEditor } from './monaco'
 
 // Live reload in development
 if (process.env.NODE_ENV !== 'production') {
@@ -50,9 +51,19 @@ function Map() {
 }
 
 function Control() {
-  return el({
+  const root = el({
     classes: ['Control', 'grid']
   })
+
+  const editorContainer = el({
+    classes: ['editor-container']
+  })
+  root.appendChild(editorContainer)
+
+  // Create Monaco editor
+  createEditor(editorContainer)
+
+  return root
 }
 
 type PlayState = {

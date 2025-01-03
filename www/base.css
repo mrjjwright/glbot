@@ -219,6 +219,9 @@ body {
 .Control {
   overflow-x: clip;
   overflow-y: auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
 }
 
 .GLWebLogo {
@@ -270,4 +273,24 @@ body {
   width: calc(var(--space) * 2);
   height: var(--line);
   vertical-align: top;
+}
+
+.editor-container {
+  grid-column: 1 / -1;
+  grid-row: 1 / -1;
+  min-height: 0;
+  height: 100%;
+  width: 100%;
+}
+
+/* Adjust Monaco's line height to match our grid */
+.monaco-editor .view-line {
+  line-height: var(--line) !important;
+}
+
+/* Ensure Monaco editor fills container */
+.monaco-editor,
+.monaco-editor .overflow-guard {
+  width: 100% !important;
+  height: 100% !important;
 }

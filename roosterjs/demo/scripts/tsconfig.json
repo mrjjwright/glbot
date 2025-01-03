@@ -1,0 +1,26 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs",
+        "baseUrl": "../../",
+        "lib": ["es6", "dom"],
+        "jsx": "react",
+        "sourceMap": true,
+        "removeComments": true,
+        "noImplicitAny": true,
+        "preserveConstEnums": false,
+        "noUnusedLocals": true,
+        "paths": {
+            "roosterjs-color-utils": ["packages/roosterjs-color-utils/lib/index"],
+            "roosterjs-react": ["packages/roosterjs-react/lib/index"],
+            "roosterjs-content-model-types": ["packages/roosterjs-content-model-types/lib/index"],
+            "roosterjs-content-model-dom": ["packages/roosterjs-content-model-dom/lib/index"],
+            "roosterjs-content-model-core": ["packages/roosterjs-content-model-core/lib/index"],
+            "roosterjs-content-model-api": ["packages/roosterjs-content-model-api/lib/index"],
+            "roosterjs-content-model-plugins": [
+                "packages/roosterjs-content-model-plugins/lib/index"
+            ]
+        }
+    },
+    "include": ["./**/*.ts", "./**/*.tsx"]
+}
