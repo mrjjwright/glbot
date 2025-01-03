@@ -1,36 +1,46 @@
-**systematic** - a simple way to work with your computer
+# systematic
 
-#### grids
+systematic is an editor for building systems - simple programs made of lines that describe effects.
 
-systematic has a base modern css stylesheet hand maintained with css variables that setup a strict grid and subgrid layout.
+## hello world
 
-cols are 4 spaces wide and rows are 1 line high
+Open systematic. Create a new system file (or open an existing one). The main system editor appears - a Monaco-based text editor with a monospace font at 1.25rem line height.
 
-a `--space` is `1ch` of monospace font
+Type:
 
-a `--line` is `1.25rem` high or about `20px`
+```
+all
+text "Hello"
+text "Parallel"
+text "World"
 
-a tile is 5 columns wide and multiple lines high,
-all lines past the visible ones are revealed via scrolling
+to text " "
+```
 
-#### controller and editor
+As you type each line, systematic parses it into an effect. The editor provides subtle hints - autocompletion for effect names, validation, hover documentation.
 
-the ui of **systematic** is oriented towards giving you 2 strong functions to control its tiles:
+Below the editor is the output panel. When you run the system (⌘+Enter), it shows:
 
-**controller** (top): the controller is made up of 3 main parts:
+```
+Hello Parallel World
+```
 
-`Graph` - organize tiles in useful ways
-`Tiles` - filter, search and pick tles
-`Runner` - run tiles
+## design
 
-**editor** (bottom): view and edit the content of selected objects using the built-in Monaco editor, simple rendered forms or a good tool on your computer
+The UI is minimal - just monospaced text in simple panels on a grid. Each panel is a multiple of our base units (1.25rem × 1ch). The system editor panel displays:
 
-the ui is then a simple stacked web based editor that can be anchored to the side of some work product if desired or used standalone in flexible ways
+- Monaco editor (top)
+- Output (bottom)
+- Simple player controls
 
-#### tiles
+Monaco's line height and font match our grid, so it integrates seamlessly. Every character aligns to the grid.
 
-each tile does one thing and one thing well and can be composed with other tiles to do more things
+## concepts
 
-tiles are designed to describe useful operations on top of the JavaScript virtual machine and are ultimately backed by the powerful Typescript Effect library. each tile is basically an effect
+- system: a text file containing lines of effects
+- line: a single effect with its configuration
+- effect: something that can be run to produce a result
 
-each tile is not a function, it is a descriptive declarative value
+The editor parses each line into an effect as you type. Blank lines separate effect groups. Running a system executes its effects in sequence.
+
+Would you like me to expand on any particular aspect of this design? I've tried to stay focused on just the core concepts needed for hello world.

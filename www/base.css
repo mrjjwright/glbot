@@ -15,10 +15,6 @@
   --col-width: calc(var(--col-num-spaces) * var(--space));
   --width-max: 120ch;
 
-  --tile-line-num-cols: 5;
-  --tile-num-visible-rows: 5;
-  --tile-width: calc(var(--tile-line-num-cols) * var(--col-width));
-
   --color-black-100: #000;
   --color-black-100-1: rgba(0, 0, 0, 0.1);
   --color-black-100-2: rgba(0, 0, 0, 0.2);
@@ -199,41 +195,30 @@ body {
   margin: 0 0;
   padding: var(--line) var(--space);
   grid-template-columns: 1fr;
-  grid-template-rows: [Intro] calc(var(--line) * 4) [Control] 1fr [Edit] 1fr;
+  grid-template-rows: [Intro] calc(var(--line) * 4) [Top] 1fr [Bottom] 1fr;
   background: var(--theme-background);
   font-family: var(--font-family-mono);
   line-height: var(--line);
   color: var(--theme-text);
 }
 
-.Controller {
+.Top {
   min-height: 0;
   font-size: 12px;
   grid-template-columns:
-    [Graph] calc(var(--tile-width) * 2)
-    [Tiles] 1fr
-    [Play] calc(var(--tile-width) * 1.5);
+    [Map] calc(var(--col-width) * 10)
+    [Control] 1fr;
   grid-template-rows: 1fr;
 }
 
-.Graph {
+.Map {
   overflow-x: clip;
   overflow-y: auto;
 }
 
-.Tiles {
+.Control {
   overflow-x: clip;
   overflow-y: auto;
-}
-
-.Play {
-  overflow-x: clip;
-  overflow-y: auto;
-}
-
-.tile {
-  grid-template-rows: repeat(var(--tile-num-visible-rows), var(--line));
-  border: 0.5px solid var(--theme-border);
 }
 
 .GLWebLogo {
@@ -250,28 +235,9 @@ body {
   grid-column-end: -1;
 }
 
-.span-tile-line {
-  grid-column-end: span var(--tile-line-num-cols);
-}
-
 .line {
   grid-column-start: 1;
   grid-column-end: -1;
-}
-
-.tile-line {
-  grid-column-start: 1;
-  grid-column-end: span var(--tile-line-num-cols);
-}
-
-.label {
-  grid-column: 1 / var(--tile-line-num-cols);
-  text-align: left;
-}
-
-.content {
-  grid-column-start: var(--tile-line-num-cols);
-  text-align: center;
 }
 
 .title {

@@ -31,33 +31,27 @@ function Intro() {
   return root
 }
 
-function Controller() {
+function Top() {
   return el({
-    classes: ['Controller', 'grid', 'line']
+    classes: ['Top', 'grid', 'line']
   })
 }
 
-function Editor() {
+function Bottom() {
   return el({
-    classes: ['Editor', 'grid', 'line']
+    classes: ['Bottom', 'grid', 'line']
   })
 }
 
-function Graph() {
+function Map() {
   return el({
-    classes: ['Graph', 'grid']
+    classes: ['Map', 'grid']
   })
 }
 
-function Tiles() {
+function Control() {
   return el({
-    classes: ['Tiles', 'grid']
-  })
-}
-
-function Play() {
-  return el({
-    classes: ['Play', 'grid']
+    classes: ['Control', 'grid']
   })
 }
 
@@ -94,11 +88,10 @@ const program = Effect.gen(function* () {
 
   const app = yield* elementById('app')
   yield* appendChild(Intro)(app)
-  const controller = yield* appendAndGetChild(Controller)(app)
-  yield* appendChild(Editor)(app)
-  yield* appendChild(Graph)(controller)
-  yield* appendChild(Tiles)(controller)
-  yield* appendChild(Play)(controller)
+  const top = yield* appendAndGetChild(Top)(app)
+  yield* appendChild(Bottom)(app)
+  yield* appendChild(Map)(top)
+  yield* appendChild(Control)(top)
 
   const testPlayerFork = yield* Effect.fork(testPlayer(playRef))
   const res = yield* testPlayerFork.await
