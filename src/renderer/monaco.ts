@@ -20,12 +20,19 @@ self.MonacoEnvironment = {
 }
 
 export function createEditor(container: HTMLElement) {
+  const defaultContent = `all
+text "Hello"
+text "Parallel"
+text "World"
+
+to text " "`
+
   const editor = monaco.editor.create(container, {
-    value: '{"a": 1}',
-    language: 'json',
+    value: defaultContent,
+    language: 'plaintext',
     theme: 'vs-dark',
     fontFamily: 'monaco, monospace',
-    fontSize: 12,
+    fontSize: 16,
     lineHeight: 20,
     minimap: { enabled: false },
     wordWrap: 'on',

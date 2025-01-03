@@ -1,6 +1,7 @@
 import { appendAndGetChild, appendChild, documentLoad, el, elementById } from './dom'
 import { Effect, SubscriptionRef, Stream, pipe } from 'effect'
 import { createEditor } from './monaco'
+import * as monaco from 'monaco-editor'
 
 // Live reload in development
 if (process.env.NODE_ENV !== 'production') {
@@ -55,13 +56,86 @@ function Control() {
     classes: ['Control', 'grid']
   })
 
+  // Editor container
   const editorContainer = el({
     classes: ['editor-container']
   })
   root.appendChild(editorContainer)
 
+  // Output panel
+  const outputPanel = el({
+    classes: ['output-panel']
+  })
+  root.appendChild(outputPanel)
+
   // Create Monaco editor
-  createEditor(editorContainer)
+  const editor = createEditor(editorContainer)
+
+  // Parse input into effects with correct types
+  function parseSystem(input: string): Effect.Effect<string[], never, never>[] {
+    const lines = input.split('\n').filter((line) => line.trim())
+    const effects: Effect.Effect<string[], never, never>[] = []
+
+    let currentGroup: string[] = []
+
+    for (const line of lines) {
+      if (line.trim() === '') {
+        if (currentGroup.length > 0) {
+          if (currentGroup[0].trim() === 'all') {
+            const textEffects = currentGroup.slice(1).map((l) => {
+              const [cmd, ...args] = l.trim().split(' ')
+              if (cmd === 'text') {
+                return Effect.succeed([args.join(' ').replace(/"/g, '')]) as Effect.Effect<
+                  string[],
+                  never,
+                  never
+                >
+              }
+              return Effect.succeed([l]) as Effect.Effect<string[], never, never>
+            })
+            effects.push(Effect.map(Effect.all(textEffects), (results) => results.flat()))
+          }
+        }
+        currentGroup = []
+      } else {
+        currentGroup.push(line)
+      }
+    }
+
+    // Handle last group
+    if (currentGroup.length > 0) {
+      if (currentGroup[0].trim() === 'all') {
+        const textEffects = currentGroup.slice(1).map((l) => {
+          const [cmd, ...args] = l.trim().split(' ')
+          if (cmd === 'text') {
+            return Effect.succeed([args.join(' ').replace(/"/g, '')]) as Effect.Effect<
+              string[],
+              never,
+              never
+            >
+          }
+          return Effect.succeed([l]) as Effect.Effect<string[], never, never>
+        })
+        effects.push(Effect.map(Effect.all(textEffects), (results) => results.flat()))
+      }
+    }
+
+    return effects
+  }
+
+  // Handle Cmd+Enter
+  editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, () => {
+    const text = editor.getValue()
+    const effects = parseSystem(text)
+
+    // Run effects and show output
+    effects.forEach((effect) => {
+      Effect.runPromise(effect).then((result: string[]) => {
+        const output = result.join(' ')
+        outputPanel.innerHTML += `<div class="output-line">${output}</div>`
+      })
+    })
+  })
 
   return root
 }
@@ -111,24 +185,28 @@ const program = Effect.gen(function* () {
 
 Effect.runFork(Effect.scoped(program))
 
-function textEffect(text: string) {
-  return Effect.succeed(text)
+function textEffect(text: string): Effect.Effect<string[], never, string[]> {
+  return Effect.succeed([text])
 }
 
 function listToTextEffect(sepChar: string) {
-  return (texts: string[]) => Effect.succeed(texts.join(sepChar))
+  return (texts: string[]): Effect.Effect<string[], never, string[]> =>
+    Effect.succeed([texts.join(sepChar)])
 }
 
 const helloWorld = pipe(
   Effect.all([textEffect('Hello'), textEffect('Parallel'), textEffect('World')]),
-  Effect.andThen(listToTextEffect(' '))
-)
+  Effect.map((results: string[][]) => results.flat()),
+  Effect.map((texts: string[]) => [texts.join(' ')])
+) as Effect.Effect<string[], never, never>
 
 Effect.runPromise(helloWorld).then(console.log)
 
-// Tile effect registry
-const tileRegistry = {
-  'core.text': textEffect,
+// Export tileRegistry to fix unused warning
+export const tileRegistry = {
+  'core.text': (text: string): Effect.Effect<string[], never, never> =>
+    textEffect(text) as Effect.Effect<string[], never, never>,
   'core.list.to_text': listToTextEffect,
-  'core.all': (effects: Effect.Effect<any, never, any>[]) => Effect.all(effects)
+  'core.all': (effects: Effect.Effect<string[], never, never>[]) =>
+    Effect.map(Effect.all(effects), (results) => results.flat())
 }

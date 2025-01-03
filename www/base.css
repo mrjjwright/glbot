@@ -221,7 +221,7 @@ body {
   overflow-y: auto;
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 1fr;
+  grid-template-rows: [editor] 1fr [output] auto;
 }
 
 .GLWebLogo {
@@ -277,4 +277,18 @@ body {
 
 .editor-container {
   min-height: 0;
+}
+
+.output-panel {
+  grid-row: output;
+  padding: var(--space);
+  border-top: 1px solid var(--theme-border);
+  font-family: var(--font-family-mono);
+  line-height: var(--line);
+  max-height: calc(var(--line) * 10);
+  overflow-y: auto;
+}
+
+.output-line {
+  min-height: var(--line);
 }
