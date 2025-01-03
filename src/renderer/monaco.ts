@@ -21,8 +21,8 @@ self.MonacoEnvironment = {
 
 export function createEditor(container: HTMLElement) {
   const editor = monaco.editor.create(container, {
-    value: '',
-    language: 'systematic',
+    value: '{"a": 1}',
+    language: 'json',
     theme: 'vs-dark',
     fontSize: 16,
     lineHeight: 20,

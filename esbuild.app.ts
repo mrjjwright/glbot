@@ -26,30 +26,6 @@ const config: esbuild.BuildOptions = {
     '.woff': 'file',
     '.woff2': 'file'
   },
-  plugins: [
-    {
-      name: 'react',
-      setup(build) {
-        build.onResolve({ filter: /^react$/ }, () => {
-          return {
-            path: './node_modules/react/cjs/react.development.js',
-            external: true
-          }
-        })
-      }
-    },
-    {
-      name: 'react-dom',
-      setup(build) {
-        build.onResolve({ filter: /^react-dom$/ }, () => {
-          return {
-            path: './node_modules/react-dom/cjs/react-dom.development.js',
-            external: true
-          }
-        })
-      }
-    }
-  ],
   define: {
     'process.env.NODE_ENV': JSON.stringify(
       process.argv.includes('--minify') ? 'production' : 'development'
