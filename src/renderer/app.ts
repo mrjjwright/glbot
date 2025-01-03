@@ -115,12 +115,12 @@ function listToTextEffect(sepChar: string) {
   return (texts: string[]) => Effect.succeed(texts.join(sepChar))
 }
 
-const demoParallelText = pipe(
+const helloWorld = pipe(
   Effect.all([textEffect('Hello'), textEffect('Parallel'), textEffect('World')]),
   Effect.andThen(listToTextEffect(' '))
 )
 
-Effect.runPromise(demoParallelText).then(console.log)
+Effect.runPromise(helloWorld).then(console.log)
 
 // Tile effect registry
 const tileRegistry = {
