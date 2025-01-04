@@ -18,11 +18,6 @@ The spiritual successor of [Split.js](https://github.com/nathancahill/split/tree
 
 ## Installation
 
-Yarn:
-
-```
-$ yarn add split-grid
-```
 
 npm:
 
@@ -36,8 +31,6 @@ Include with a module bundler like [rollup](http://rollupjs.org/) or [webpack](h
 // using ES6 modules
 import Split from 'split-grid'
 
-// using CommonJS modules
-var Split = require('split-grid')
 ```
 
 The [UMD](https://github.com/umdjs/umd) build is also available on [unpkg](http://unpkg.com/):

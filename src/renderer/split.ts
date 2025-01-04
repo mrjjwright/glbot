@@ -646,7 +646,7 @@ const createGutter =
     )
   }
 
-class Grid {
+export class SplitGrid {
   columnGutters: Record<number, Gutter>
   rowGutters: Record<number, Gutter>
   options: GridOptions
@@ -759,5 +759,3 @@ class Grid {
     )
   }
 }
-
-export default (options: GridOptions): Grid => new Grid(options)

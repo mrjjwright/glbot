@@ -1,7 +1,7 @@
-import { appendAndGetChild, appendChild, documentLoad, el, elementById } from './dom'
-import { Effect, SubscriptionRef, Stream, pipe } from 'effect'
+import { Effect, SubscriptionRef, Stream } from 'effect'
+import { appendChild, documentLoad, el, elementById } from './dom'
 import { createEditor } from './monaco'
-import * as monaco from 'monaco-editor'
+import createSplitGrid from 'split-grid'
 
 // Live reload in development
 if (process.env.NODE_ENV !== 'production') {
@@ -13,131 +13,114 @@ function GLWebLogo() {
 }
 
 function Intro() {
-  const root = el({
-    classes: ['Intro', 'span-line', 'subgrid'],
+  return el({
+    classes: ['Intro', 'cell'],
     html: `
-      <div class="line">
+      <div class="intro-content">
         <b>glbot</b> <span class="Badge">Hello Transperfect</span>
         <i class="subdued"> via<span>&nbsp;</span> </i>
         ${GLWebLogo()}
       </div>
-      <div class="line subdued">
+      <div class="subdued">
         interact less, collaborate more
       </div>
     `
   })
-
-  root.appendChild(el({ classes: ['line'] }))
-  root.appendChild(el({ classes: ['line'] }))
-
-  return root
 }
 
-function Top() {
-  return el({
-    classes: ['Top', 'grid', 'line']
-  })
-}
+function createGridCells() {
+  const fragment = document.createDocumentFragment()
 
-function Bottom() {
-  return el({
-    classes: ['Bottom', 'grid', 'line']
-  })
-}
+  // Create intro cell
+  const introCell = document.createElement('div')
+  introCell.className = 'intro-cell cell'
+  fragment.appendChild(introCell)
 
-function Map() {
-  return el({
-    classes: ['Map', 'grid']
-  })
-}
+  // Create first gutter
+  const gutterRow1 = document.createElement('div')
+  gutterRow1.className = 'gutter gutter-row-1'
+  fragment.appendChild(gutterRow1)
 
-function Control() {
-  const root = el({
-    classes: ['Control', 'grid']
-  })
+  // Create top row container
+  const topRow = document.createElement('div')
+  topRow.className = 'top-row'
 
-  // Editor container
-  const editorContainer = el({
-    classes: ['editor-container']
-  })
-  root.appendChild(editorContainer)
+  // Create map cell
+  const mapCell = document.createElement('div')
+  mapCell.className = 'cell map-cell'
+  topRow.appendChild(mapCell)
 
-  // Output panel
-  const outputPanel = el({
-    classes: ['output-panel']
-  })
-  root.appendChild(outputPanel)
+  // Create first column gutter
+  const gutterColumn1 = document.createElement('div')
+  gutterColumn1.className = 'gutter gutter-column-1'
+  topRow.appendChild(gutterColumn1)
 
-  // Create Monaco editor
-  const editor = createEditor(editorContainer)
+  // Create editor cell
+  const editorCell = document.createElement('div')
+  editorCell.className = 'cell editor-cell'
+  topRow.appendChild(editorCell)
 
-  // Parse input into effects with correct types
-  function parseSystem(input: string): Effect.Effect<string[], never, never>[] {
-    const lines = input.split('\n').filter((line) => line.trim())
-    const effects: Effect.Effect<string[], never, never>[] = []
+  // Create second column gutter
+  const gutterColumn2 = document.createElement('div')
+  gutterColumn2.className = 'gutter gutter-column-2'
+  topRow.appendChild(gutterColumn2)
 
-    let currentGroup: string[] = []
+  // Create preview cell
+  const previewCell = document.createElement('div')
+  previewCell.className = 'cell preview-cell'
+  topRow.appendChild(previewCell)
 
-    for (const line of lines) {
-      if (line.trim() === '') {
-        if (currentGroup.length > 0) {
-          if (currentGroup[0].trim() === 'all') {
-            const textEffects = currentGroup.slice(1).map((l) => {
-              const [cmd, ...args] = l.trim().split(' ')
-              if (cmd === 'text') {
-                return Effect.succeed([args.join(' ').replace(/"/g, '')]) as Effect.Effect<
-                  string[],
-                  never,
-                  never
-                >
-              }
-              return Effect.succeed([l]) as Effect.Effect<string[], never, never>
-            })
-            effects.push(Effect.map(Effect.all(textEffects), (results) => results.flat()))
-          }
-        }
-        currentGroup = []
-      } else {
-        currentGroup.push(line)
-      }
+  // Append top row to fragment
+  fragment.appendChild(topRow)
+
+  // Create second gutter
+  const gutterRow2 = document.createElement('div')
+  gutterRow2.className = 'gutter gutter-row-2'
+  fragment.appendChild(gutterRow2)
+
+  // Create output cell
+  const outputCell = document.createElement('div')
+  outputCell.className = 'cell output-cell'
+  fragment.appendChild(outputCell)
+
+  return {
+    fragment,
+    cells: {
+      intro: introCell,
+      map: mapCell,
+      editor: editorCell,
+      preview: previewCell,
+      output: outputCell
     }
-
-    // Handle last group
-    if (currentGroup.length > 0) {
-      if (currentGroup[0].trim() === 'all') {
-        const textEffects = currentGroup.slice(1).map((l) => {
-          const [cmd, ...args] = l.trim().split(' ')
-          if (cmd === 'text') {
-            return Effect.succeed([args.join(' ').replace(/"/g, '')]) as Effect.Effect<
-              string[],
-              never,
-              never
-            >
-          }
-          return Effect.succeed([l]) as Effect.Effect<string[], never, never>
-        })
-        effects.push(Effect.map(Effect.all(textEffects), (results) => results.flat()))
-      }
-    }
-
-    return effects
   }
+}
 
-  // Handle Cmd+Enter
-  editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, () => {
-    const text = editor.getValue()
-    const effects = parseSystem(text)
-
-    // Run effects and show output
-    effects.forEach((effect) => {
-      Effect.runPromise(effect).then((result: string[]) => {
-        const output = result.join(' ')
-        outputPanel.innerHTML += `<div class="output-line">${output}</div>`
-      })
-    })
+function initializeSplitGrid(container: HTMLElement) {
+  return createSplitGrid({
+    columnGutters: [
+      {
+        track: 1,
+        element: container.querySelector('.gutter-column-1')! as HTMLElement
+      },
+      {
+        track: 3,
+        element: container.querySelector('.gutter-column-2')! as HTMLElement
+      }
+    ],
+    rowGutters: [
+      {
+        track: 1,
+        element: container.querySelector('.gutter-row-1')! as HTMLElement
+      },
+      {
+        track: 3,
+        element: container.querySelector('.gutter-row-2')! as HTMLElement
+      }
+    ],
+    onDrag: () => {
+      window.dispatchEvent(new Event('resize'))
+    }
   })
-
-  return root
 }
 
 type PlayState = {
@@ -153,14 +136,6 @@ const player = (playRef: SubscriptionRef.SubscriptionRef<PlayState>) =>
     )
   })
 
-const testPlayer = (playRef: SubscriptionRef.SubscriptionRef<PlayState>) =>
-  Effect.gen(function* () {
-    yield* Effect.sleep('2 seconds')
-    yield* SubscriptionRef.set(playRef, {
-      effect: Effect.log('Testing player: Effect executed!')
-    })
-  })
-
 const program = Effect.gen(function* () {
   const playRef = yield* SubscriptionRef.make<PlayState>({
     effect: Effect.succeed('Hello World')
@@ -172,40 +147,27 @@ const program = Effect.gen(function* () {
   yield* Effect.fork(player(playRef))
 
   const app = yield* elementById('app')
-  yield* appendChild(Intro)(app)
-  const top = yield* appendAndGetChild(Top)(app)
-  yield* appendChild(Bottom)(app)
-  yield* appendChild(Map)(top)
-  yield* appendChild(Control)(top)
+  const { fragment, cells } = createGridCells()
 
-  const testPlayerFork = yield* Effect.fork(testPlayer(playRef))
-  const res = yield* testPlayerFork.await
-  console.log(res)
+  // Setup initial content
+  cells.intro.appendChild(Intro())
+  createEditor(cells.editor as HTMLElement)
+
+  // Append fragment to app
+  yield* appendChild(() => fragment)(app)
+
+  // Initialize split grid using the app element directly
+  initializeSplitGrid(app)
 })
 
 Effect.runFork(Effect.scoped(program))
 
-function textEffect(text: string): Effect.Effect<string[], never, string[]> {
-  return Effect.succeed([text])
-}
-
-function listToTextEffect(sepChar: string) {
-  return (texts: string[]): Effect.Effect<string[], never, string[]> =>
-    Effect.succeed([texts.join(sepChar)])
-}
-
-const helloWorld = pipe(
-  Effect.all([textEffect('Hello'), textEffect('Parallel'), textEffect('World')]),
-  Effect.map((results: string[][]) => results.flat()),
-  Effect.map((texts: string[]) => [texts.join(' ')])
-) as Effect.Effect<string[], never, never>
-
-Effect.runPromise(helloWorld).then(console.log)
-
-const tileRegistry = {
-  'core.text': (text: string): Effect.Effect<string[], never, never> =>
-    textEffect(text) as Effect.Effect<string[], never, never>,
-  'core.list.to_text': listToTextEffect,
+export const tileRegistry = {
+  'core.text': (text: string): Effect.Effect<string[], never, never> => Effect.succeed([text]),
+  'core.list.to_text':
+    (sepChar: string) =>
+    (texts: string[]): Effect.Effect<string[], never, string[]> =>
+      Effect.succeed([texts.join(sepChar)]),
   'core.all': (effects: Effect.Effect<string[], never, never>[]) =>
     Effect.map(Effect.all(effects), (results) => results.flat())
 }

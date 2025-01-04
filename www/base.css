@@ -195,7 +195,7 @@ body {
   margin: 0 0;
   padding: var(--line) var(--space);
   grid-template-columns: 1fr;
-  grid-template-rows: [Intro] calc(var(--line) * 4) [Top] 1fr [Bottom] 1fr;
+  grid-template-rows: 40px 10px 1fr 10px 1fr;
   background: var(--theme-background);
   font-family: var(--font-family-mono);
   line-height: var(--line);
@@ -291,4 +291,8 @@ body {
 
 .output-line {
   min-height: var(--line);
+}
+
+.gutter {
+  background: var(--theme-border);
 }
