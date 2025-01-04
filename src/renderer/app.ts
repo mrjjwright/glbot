@@ -202,8 +202,7 @@ const helloWorld = pipe(
 
 Effect.runPromise(helloWorld).then(console.log)
 
-// Export tileRegistry to fix unused warning
-export const tileRegistry = {
+const tileRegistry = {
   'core.text': (text: string): Effect.Effect<string[], never, never> =>
     textEffect(text) as Effect.Effect<string[], never, never>,
   'core.list.to_text': listToTextEffect,
