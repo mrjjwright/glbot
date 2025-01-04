@@ -388,8 +388,6 @@ class Gutter {
     this.grid.addEventListener('dragstart', NOOP)
 
     this.grid.style.userSelect = 'none'
-    this.grid.style.MozUserSelect = 'none'
-    this.grid.style.webkitUserSelect = 'none'
     this.grid.style.pointerEvents = 'none'
 
     this.grid.style.cursor = this.cursor
@@ -520,8 +518,6 @@ class Gutter {
       this.grid.removeEventListener('dragstart', NOOP)
 
       this.grid.style.userSelect = ''
-      this.grid.style.MozUserSelect = ''
-      this.grid.style.webkitUserSelect = ''
       this.grid.style.pointerEvents = ''
 
       this.grid.style.cursor = ''
